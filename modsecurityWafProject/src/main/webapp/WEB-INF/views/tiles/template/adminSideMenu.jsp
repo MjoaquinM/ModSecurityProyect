@@ -5,9 +5,10 @@
                 <li>
                     <a href="<c:url value="/admin" />"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i> Dashboard</a>
                 </li>
-                
+                <li>
+                    <a href="#"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i>Users Administration</a>
+                </li>
                 <li class="active">
-                    <i class="fa fa-bar-chart-o fa-fw"></i>Users Administration<span class="fa arrow"></span>
                     <ul class="nav nav-second-level">
                         <li> 
                             <a href="<c:url value="/listUsers" />">User List</a>
@@ -21,8 +22,10 @@
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
+                <li>
+                    <a href="#"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i>Manage Files Configuration</a>
+                </li>
                 <li class="active">
-                    <i class="fa fa-bar-chart-o fa-fw"></i>Manage Files Configuration<span class="fa arrow"></span>
                     <ul class="nav nav-third-level collapse in" aria-expanded="true" style="">
                         <li>
                             <a href="<c:url value="/modSecConf" />">ModSecurity</a>
@@ -39,8 +42,10 @@
                     </ul>
                     <!-- /.nav-third-level -->
                 </li>
+                <li>
+                    <a href="#"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i>Monitoring</a>
+                </li>
                 <li class="active">
-                    <i class="fa fa-bar-chart-o fa-fw"></i>Monitoring<span class="fa arrow"></span>
                     <ul class="nav nav-third-level collapse in" aria-expanded="true" style="">
                         <li>
                             <a href="<c:url value="/charts" />">Statistical Charts</a>

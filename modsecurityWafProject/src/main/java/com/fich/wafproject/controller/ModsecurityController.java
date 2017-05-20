@@ -57,7 +57,7 @@ public class ModsecurityController {
     
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(ModelMap model) {
-        System.out.println(configurationFileAttributeService.findAll());
+        model.addAttribute("user",getPrincipal());
         return "adminHome";
     }
     
