@@ -71,5 +71,8 @@
         <!-- Custom Theme JavaScript -->
         <script src="<c:url value='/static/js/SBAdmin2/sb-admin-2.js' />"></script>
         
+        <!-- Validation JavaScript -->
+        <script src="<c:url value='/static/js/jquery.validate.min.js' />"></script>
+        
     </body>
 </html>

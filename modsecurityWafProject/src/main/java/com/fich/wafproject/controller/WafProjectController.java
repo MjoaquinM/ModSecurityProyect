@@ -9,6 +9,7 @@ package com.fich.wafproject.controller;
  *
  * @author r3ng0
  */
+import com.fich.wafproject.model.ConfigurationFile;
 import java.util.List;
  
 import javax.servlet.http.HttpServletRequest;
@@ -29,8 +30,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
  
 import com.fich.wafproject.model.User;
 import com.fich.wafproject.model.UserProfile;
+import com.fich.wafproject.service.ConfigurationFileService;
 import com.fich.wafproject.service.UserProfileService;
 import com.fich.wafproject.service.UserService;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.RequestParam;
  
 @Controller
 public class WafProjectController {
@@ -41,9 +46,114 @@ public class WafProjectController {
     @Autowired
     UserService userService;
     
+    @Autowired
+    ConfigurationFileService configurationFileService;
+    
+    
+    /******************************User Module*********************************/
+    
+    @RequestMapping(value = "/listUsers", method = RequestMethod.GET)
+    public String userListPage(ModelMap model) {
+        List<User> users = userService.findAll();
+        model.addAttribute("users", users);
+        model.addAttribute("user", getPrincipal());
+        return "listUsers";
+    }
+    
+    @RequestMapping(value = "/historyUsers", method = RequestMethod.GET)
+    public String userHistoryPage(ModelMap model) {        
+        //model.addAttribute("users", userService.findAll());
+        model.addAttribute("user", getPrincipal());
+        return "historyUsers";
+    }
+    
+    @RequestMapping(value = "/chronHistoryUsers", method = RequestMethod.GET)
+    public String userChronHistoryPage(ModelMap model) {
+        model.addAttribute("user", getPrincipal());
+        return "chronHistoryUsers";
+    }
+
+    /**
+     * Get add user form
+     */
+    @RequestMapping(value = "/addUserForm", method = RequestMethod.GET)
+    public String getAddUserForm(ModelMap model, @RequestParam("id") int id) {
+        
+        User user = new User();
+        boolean update = false;
+        if (id != -1){
+            user = userService.findById(id);
+            update = true;
+        }
+        model.addAttribute("user", user);
+        model.addAttribute("update", user);
+        model.addAttribute("action","saveNewUser");
+        return "addUserForm";
+    }
+    
+    /**
+     * Delete a user
+     */
+    @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
+    public String deleteUser(ModelMap model, @RequestParam("id") int id) {
+        System.out.println("ESTE ES EL OBJETO A ELIMINAR");
+        userService.delete(id);
+        
+        List<User> users = userService.findAll();
+        model.addAttribute("users", users);
+        model.addAttribute("user", getPrincipal());
+        return "listUsers";
+    }
+    
+    /**
+     * Save new user or update one
+     */
+    @RequestMapping(value = "/saveNewUser", method = RequestMethod.POST)
+    public String saveNewUser(@Valid User user,
+            BindingResult result, ModelMap model) {
+        String messageSatus = "User "+user.getFirstName()+", "+user.getLastName()+" was succefully added to the system.";
+        
+        if (result.hasErrors()) {
+            System.out.println("There are errors");
+            System.out.print(result.getAllErrors());
+            for (Object object : result.getAllErrors()) {
+                if(object instanceof FieldError) {
+                    FieldError fieldError = (FieldError) object;
+                    System.out.println(fieldError.getCode());
+                }
+
+                if(object instanceof ObjectError) {
+                    ObjectError objectError = (ObjectError) object;
+                    System.out.println(objectError.getCode());
+                }
+            }
+            messageSatus = "There was an error.";
+        }else{
+            userService.save(user);
+        }
+        List<User> users = userService.findAll();
+        model.addAttribute("users", users);
+        model.addAttribute("user", getPrincipal());
+        return "listUsers";
+    }
+    
+    /******************************User Module - END*********************************/
+    
+    @RequestMapping(value = "/admin", method = RequestMethod.GET)
+    public String adminPage(ModelMap model) {
+        model.addAttribute("user",getPrincipal());
+        List<ConfigurationFile> cfs = configurationFileService.findAll();
+        String user = getPrincipal();
+        model.addAttribute("configFiles",cfs);
+        model.addAttribute("user",user);
+        return "adminHome";
+    }
+    
+    
     /**
      * User Module
      **/
+    /*
     @RequestMapping(value = "/listUsers", method = RequestMethod.GET)
     public String userListPage(ModelMap model) {        
         //model.addAttribute("users", userService.findAll());
@@ -64,6 +174,7 @@ public class WafProjectController {
         model.addAttribute("user", getPrincipal());
         return "chronHistoryUsers";
     }
+    */
     /**
      * User Module - END
      **/

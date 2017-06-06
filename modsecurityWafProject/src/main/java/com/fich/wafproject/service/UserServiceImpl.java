@@ -32,6 +32,14 @@ public class UserServiceImpl implements UserService{
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         dao.save(user);
     }
+    
+    public void update(User user){
+        dao.update(user);
+    }
+    
+    public void delete(int id){
+        dao.delete(id);
+    }
  
     public User findById(int id) {
         return dao.findById(id);

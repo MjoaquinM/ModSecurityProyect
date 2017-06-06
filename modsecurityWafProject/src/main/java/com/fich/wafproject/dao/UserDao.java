@@ -21,5 +21,9 @@ public interface UserDao {
     User findBySSO(String sso);
     
     List<User> findAll();
-     
+    
+    void update(User user);
+    
+    void delete(int user);
+         
 }

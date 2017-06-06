@@ -41,28 +41,18 @@
        <put-attribute name="body" value="/WEB-INF/views/tiles/page/admin/modsecurity/request-body-handling.jsp" />  
    </definition>
    
-   <!-- Request Files Configuration -> Controller in Modsecurity.conf file -->
-   <definition name="modsecurityFileConfig" extends="admin-layout">  
-       <put-attribute name="title" value="File Configuration" />  
-       <put-attribute name="body" value="/WEB-INF/views/tiles/page/admin/files-configuration/index.jsp" />  
-   </definition>
-   
-   
-   <!-- Request Add Files Configuration -> Controller in Modsecurity.conf file -->
-   <definition name="addConfigurationFile" template="/WEB-INF/views/tiles/page/admin/files-configuration/addFileConfiguration.jsp">
-   </definition>
-   
-   <!-- Request Show File Configuration Attributes -> Controller in Modsecurity.conf file -->
-   <definition name="showFileConfigurationAttributes" template="/WEB-INF/views/tiles/page/admin/files-configuration/showFileConfigurationParametter.jsp">
-   </definition>
-   
    <!--****************** USERS MODULE ******************-->
    
    <!-- Request Show Users List Page -> Controller Admin -->
    <definition name="listUsers" extends="admin-layout">  
        <put-attribute name="title" value="Users List" />  
-       <put-attribute name="body" value="/WEB-INF/views/tiles/page/admin/users/index.jsp" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/admin/users/index.jsp" />
    </definition>
+   
+   <!-- Request add user form Page -> Controller Admin -->
+   <definition name="addUserForm" template="/WEB-INF/views/tiles/page/admin/users/addUserForm.jsp">
+   </definition>
+   
    
    <!-- Request Show Users History Page -> Controller Admin -->
    <definition name="historyUsers" extends="admin-layout">  
@@ -79,6 +69,32 @@
    <!--****************** USERS MODULE - END ******************-->
    
    <!--****************** FILES CONFIGURATION MODULE ******************-->
+   
+   
+   <!-- Request Files Configuration -> Controller in Modsecurity.conf file -->
+   <definition name="configurationFilesTemplate" extends="admin-layout">  
+       <put-attribute name="title" value="File Configuration" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/files-configuration/configurationFileTemplate.jsp" />
+   </definition>
+   
+   <!-- Request Files Configuration -> Controller in Modsecurity.conf file -->
+   <definition name="configurationFilesPage" extends="admin-layout">  
+       <put-attribute name="title" value="File Configuration" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/files-configuration/index.jsp" />
+   </definition>
+   
+   
+   <!-- Request Add Files Configuration -> Controller in Modsecurity.conf file -->
+   <definition name="addConfigurationFile" template="/WEB-INF/views/tiles/page/files-configuration/addFileConfiguration.jsp">
+   </definition>
+   
+   <!-- Request Show File Configuration Attributes -> Controller in Modsecurity.conf file -->
+   <definition name="showFileConfigurationAttributes" template="/WEB-INF/views/tiles/page/admin/files-configuration/showFileConfigurationParametter.jsp">
+   </definition>
+   
+   <!-- Request add configuration file form Page -> Controller Admin -->
+   <definition name="addConfigurationFileForm" template="/WEB-INF/views/tiles/page/files-configuration/addFileConfiguration.jsp">
+   </definition>
    
    <!-- Request Show Modsecurity Parameters Configuration File Page -> Controller Admin -->
    <definition name="modSecConf" extends="admin-layout">  
@@ -127,5 +143,15 @@
    </definition>
    
    <!--****************** CONTROL PANEL MODULE - END ******************-->
+       
+   <!--****************** REDIRECT PAGE ERROR - END ******************-->
+   <definition name="accessDenied" template="/WEB-INF/views/tiles/page/accessDenied.jsp">
+   </definition>
+   <!--****************** REDIRECT PAGE ERROR - END ******************-->
+   
+   <!--BORRAMEEEEEEEEEEE--> 
+   <definition name="newuser" template="/WEB-INF/views/tiles/page/newuser.jsp">
+   </definition>
+    
      
 </tiles-definitions>

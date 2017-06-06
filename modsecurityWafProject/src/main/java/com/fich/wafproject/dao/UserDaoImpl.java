@@ -23,6 +23,15 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     public void save(User user) {
         persist(user);
     }
+    
+    public void update(User user) {
+        update(user);
+    }
+    
+    public void delete(int id){
+        User user = this.findById(id);
+        delete(user);
+    }
      
     public User findById(int id) {
         return getByKey(id);
@@ -37,7 +46,8 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
     @SuppressWarnings("unchecked")
     public List<User> findAll(){
         Criteria crit = createEntityCriteria();
-        crit.addOrder(Order.asc("name"));
+        crit.addOrder(Order.asc("ssoId"));
         return (List<User>)crit.list();
     }
+    
 }

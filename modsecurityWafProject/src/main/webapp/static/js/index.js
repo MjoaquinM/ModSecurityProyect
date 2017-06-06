@@ -5,7 +5,7 @@
 $(document).ready(function(){
     console.log('Alto: ' + screen.height + ' - Ancho: ' + screen.width);
     
-    //LOGIN PAGE
+    /************************LOGIN PAGE****************************/
     
     //Center login form
     $('#div-container-login').css('height','300');
@@ -15,51 +15,178 @@ $(document).ready(function(){
     //Disapear logout message
     $('.notice-login-page').fadeOut(4000);
     
-    //ADMIN FILE CONFIGURATION PAGE
-    //
-    //ADD FILE CONFIGURATION
+    /************************LOGIN PAGE END****************************/
+    
+    /************************ADMIN FILE CONFIGURATION PAGE****************************/
     
     //Cancel form button
-    $('body').on('click','#cancel-new-file-configuration-button',function(){
-        $('#right-column-configuration-file-page').empty();  
+       
+    $('#fileConfigurationModal').on('click','#configurationFileModalCancel',function(){
+        $('#fileConfigurationModal').modal('hide');
     })
     
-    //List configuration attributes of current file
-    $('body').on('click','#show-file-configuration-attributes-button',function(){
-       console.log('Apretaste');
-       data = {'fileId': $(this).data('id')};
-       replaceRightColumnPage('addFileConfigurationAttributes',data,'GET');
+    //Show form to edit a new configuration file
+    $('#add-file-configuration-button,#edit-file-configuration-button,#remove-file-configuration-button').on('click',function(){        
+        var action = $(this).data('action');
+        var data = {};
+        var url = '';
+        var id = $(this).data('id');
+        if (!id){
+            id = -1;
+        }
+        var modalFooter = "";
+        switch(action){
+            case 'remove':
+                console.log('remove');
+                url = 'removeFileConfiguration';
+                modalFooter = '<button type="button" class="btn btn-primary" id="removeFileConfiguration" data-id="'+id+'">Delete</button>';
+            break;
+            default:
+                console.log('el otro');
+                modalFooter = '<button type="button" class="btn btn-primary" id="addFileConfiguration">Add</button>';
+                data = {id: id};
+                url = 'addFileConfigurationForm';
+        }
+        modalFooter += '<button type="button" class="btn btn-secondary" data-dismiss="modal" id="configurationFileModalCancel">Cancel</button>';
+        $('#fileConfigurationModalFooter').empty().html(modalFooter);
+        $('#fileConfigurationModal').modal('show');
+        if(url=='removeFileConfiguration'){
+            $('#loading-image-modal').hide();
+            $('#fileConfigurationModalBody').empty().html('<p> Confirm remove selected configuration file? </p>');
+        }else{
+            console.log(url);
+            $.ajax({
+                url: url,
+                method: 'GET',
+                dataType: 'html',
+                data: data
+                }).done(function(response){
+                    $('#loading-image-modal').hide();
+                    $('#fileConfigurationModalBody').empty().html(response);
+                }).fail(function(){
+                    $('#fileConfigurationModalBody').empty().html('<p>There was an error </p>');
+                   $('#loading-image-modal').hide();
+                });
+            }
+        });
+        
+        $('#configurationFileModalCancel').on('click',function(){
+            $('#fileConfigurationModalBody').empty();
+            $('#fileConfigurationModal').modal('close');
+        });
+
+        $('#fileConfigurationModal').on('click','#addFileConfiguration',function(){
+            $('#fileConfigurationModal').find('form').validate({
+                rules: {
+                    name: "required",
+                    path:"required"
+                },
+                messages: {
+                    name: "Please enter a name",
+                    path: "Please enter a valid file path"
+                }
+            });
+            $('#fileConfigurationModal').find('form').submit();
+        })
+
+        $('body').on('click','#removeFileConfiguration',function(){
+            console.log('hola');
+            $('#deleteFileconfiguration').append('<input type="text" name="id" value="'+$(this).data("id")+'" />');
+            $('#deleteFileconfiguration').submit();
+            console.log('chau');
+        });
+    
+    /************************ADMIN FILE CONFIGURATION PAGE END****************************/
+        
+    
+    /************************MANAGE USERS****************************/
+    
+    /**
+     * Show add user modal - Get add user form
+     **/
+        
+    $('#add-user-button,#edit-user-button,#remove-user-button').on('click',function(){
+        var action = $(this).data('action');
+        var data = {};
+        var url = '';
+        var id = $(this).data('id');
+        if (!id){
+            id = -1;
+        }
+        var modalFooter = "";
+        switch(action){
+            case 'remove':
+                url = 'removeUser';
+                modalFooter = '<button type="button" class="btn btn-primary" id="removeUser" data-id="'+id+'">Delete</button>';
+            break;
+            default:
+                modalFooter = '<button type="button" class="btn btn-primary" id="addUser">Add</button>';
+                data = {id: id};
+                url = 'addUserForm';
+        }
+        modalFooter += '<button type="button" class="btn btn-secondary" data-dismiss="modal" id="userModalCancel">Cancel</button>';
+        $('#addUserModalFooter').html(modalFooter);
+        $('#userModal').modal('show');
+        if(url=='removeUser'){
+            $('#loading-image-modal').hide();
+            $('#userModalBody').html('<p> Confirm remove selected user? </p>');
+        }else{
+            $.ajax({
+                url: url,
+                method: 'GET',
+                dataType: 'html',
+                data: data
+            }).done(function(response){
+                $('#loading-image-modal').hide();
+                $('#userModalBody').html(response);
+            }).fail(function(){
+               $('#loading-image-modal').hide();
+            });
+        }
     });
     
-    //Show form to add a new configuration file
-    $('#add-file-configuration-button').on('click',function(){
-        replaceRightColumnPage('addConfigurationFile',{},'GET');
+    $('#cancel-add-user-modal-button').on('click',function(){
+        $('#add-user-modal-body-content').empty();
+        $('#addUserModal').modal('close');
+    });
+    
+    $('body').on('click','#addUser',function(){
+        $('#userModal').find('form').validate({
+            rules: {
+                ssoId: "required",
+                firstName:"required",
+                lastName:"required",
+                password: {
+                        required: true,
+                        minlength: 5
+                }
+            },
+            messages: {
+                ssoId: "Please enter a user name",
+                firstName: "Please enter your first name",
+                lastName: "Please enter your last name",
+                password: {
+                        required: "Please enter a password",
+                        minlength: "Your password must be at least 5 characters long"
+                }
+            }
+        });
+        
+        $('#userModal').find('form').submit();
+        
     })
     
-    //Right Panel Request
-    function replaceRightColumnPage(url,dataPass,method){
-        var data = Object.assign({}, {CSRF: $('#token-csrf').val()}, dataPass);
-        $.ajax({
-            url: url,
-            method: method,
-            dataType: 'html',
-            data: data
-        }).done(function(data){
-            $('#right-column-configuration-file-page').html(data);
-        })
-    }
+    $('body').on('click','#removeUser',function(){
+        $('#delete-user-form').append('<input type="text" name="id" value="'+$(this).data("id")+'" />');
+        $('#delete-user-form').submit();
+    });
     
-//    $('#add-file-configuration-button').on('click',function(){
-//        console.log('APRETASTE');
-//        $.ajax({
-//            url: 'addConfigurationFile',
-//            method: 'get',
-//            dataType: 'html',
-//            data: {CSRF: $('#token-csrf').val()}
-//        }).done(function(data){
-//            $('#right-column-configuration-file-page').html(data);
-//        })
-//    })
+    /************************MANAGE USERS END****************************/
     
+//    $.validator.setDefaults({
+//            submitHandler: function() {
+//                    alert("submitted!");
+//            }
+//    });
     
 })
