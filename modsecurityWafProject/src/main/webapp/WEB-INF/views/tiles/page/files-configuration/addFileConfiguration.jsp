@@ -3,10 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h3>New File Configuration</h3>
+        <h3>${title}</h3>
     </div>
     <!-- /.panel-heading -->
-    <form:form method="POST" modelAttribute="configurationFile" >
+    <form:form method="POST" modelAttribute="configFiles" action="${action}" >
         <div class="panel-body">
             <div class="table-responsive">
                 <table class="table table-hover">
@@ -67,20 +67,13 @@
                             </td>
                         </tr>
                         <!-- /.panel-body -->
-                        <tr>
-                            <td>
-                                <button type="submit" class="btn btn-default">Add File</button>
-                            </td>
-                            <td>
-                                <a href="#" class="btn btn-default" id="cancel-new-file-configuration-button">Cancel</a>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
             <!-- /.table-responsive -->
         </div>
         <!-- /.panel-body -->
+        <form:hidden path="id"></form:hidden>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </form:form>
 </div>

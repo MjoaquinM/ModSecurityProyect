@@ -50,4 +50,9 @@ public class ConfigurationFileDaoImpl extends AbstractDao<Integer, Configuration
     public void save(ConfigurationFile cf){
         persist(cf);
     }
+    
+    public void delete(int id){
+        ConfigurationFile cf = this.findById(id);
+        delete(cf);
+    }
 }

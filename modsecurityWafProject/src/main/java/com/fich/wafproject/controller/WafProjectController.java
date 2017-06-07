@@ -139,6 +139,96 @@ public class WafProjectController {
     
     /******************************User Module - END*********************************/
     
+    /******************************Files Configuration Module*********************************/
+    /**
+     * Return configuration file form
+    **/
+    @RequestMapping(value = "/addFileConfigurationForm", method = RequestMethod.GET)
+    public String getAddFileConfigurationForm(ModelMap model, @RequestParam("id") int id) {
+        ConfigurationFile cf = new ConfigurationFile();
+        String title = "Add File Configuration";
+        if (id != -1){
+            cf = configurationFileService.findById(id);
+            title = "Update File Configuration";
+        }
+        model.addAttribute("configFiles", cf);
+        model.addAttribute("title", title);
+        model.addAttribute("action","saveNewFileConfiguration");
+        return "addConfigurationFileForm";
+    }
+    
+    /**
+     * Save new configuration file or update one
+     */
+    @RequestMapping(value = "/saveNewFileConfiguration", method = RequestMethod.POST)
+    public String saveNewFileConfiguration(@Valid ConfigurationFile cf,
+            BindingResult result, ModelMap model) {
+        if (result.hasErrors()) {
+            System.out.println("There are errors tipona");
+            System.out.print(result.getAllErrors());
+            for (Object object : result.getAllErrors()) {
+                if(object instanceof FieldError) {
+                    FieldError fieldError = (FieldError) object;
+                    System.out.println(fieldError.getCode());
+                }
+
+                if(object instanceof ObjectError) {
+                    ObjectError objectError = (ObjectError) object;
+                    System.out.println(objectError.getCode());
+                }
+            }
+            
+            
+        }else{
+            configurationFileService.save(cf);
+        }
+        List<ConfigurationFile> cfs = configurationFileService.findAll();
+        model.addAttribute("configFiles", cfs);
+        model.addAttribute("user", getPrincipal());
+        return "configurationFilesPage";
+    }
+    
+    /**
+     * Delete a configuration file
+     */
+    @RequestMapping(value = "/deleteFileconfiguration", method = RequestMethod.POST)
+    public String deleteFileconfiguration(ModelMap model, @RequestParam("id") int id) {
+        
+        configurationFileService.delete(id);
+        
+        List<ConfigurationFile> cfs = configurationFileService.findAll();
+        model.addAttribute("configFiles", cfs);
+        model.addAttribute("user", getPrincipal());
+        return "configurationFilesPage";
+    }
+    /**
+     * Configuration Files Page
+    **/
+    @RequestMapping(value = { "/configurationFiles" }, method = RequestMethod.GET)
+    public String modSecFileConfig(ModelMap model) {
+        List<ConfigurationFile> configurationFilesAll = configurationFileService.findAll();
+        model.addAttribute("configFiles",configurationFilesAll);
+        model.addAttribute("user",getPrincipal());
+        return "configurationFilesPage";
+    }
+    
+    /**
+     * Configuration Files Template
+    **/
+//    @RequestMapping(value = { "/confFileTemp" }, method = RequestMethod.GET)
+//    public String configurationPageTemplate(ModelMap model, @RequestParam("currentFile") String currentFile) {
+//        List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
+//        ConfigurationFiles currentConfigFile = configurationFileService.findByName(currentFile);
+//        System.out.println(currentConfigFile);
+//        model.addAttribute("configFiles",configurationFilesAll);
+//        model.addAttribute("user",getPrincipal());
+//        model.addAttribute("currentFile",currentConfigFile);
+//        return "configurationFilesTemplate";
+//    }
+    
+    /******************************Files Configuration Module - END*********************************/
+    
+    
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(ModelMap model) {
         model.addAttribute("user",getPrincipal());
@@ -148,36 +238,6 @@ public class WafProjectController {
         model.addAttribute("user",user);
         return "adminHome";
     }
-    
-    
-    /**
-     * User Module
-     **/
-    /*
-    @RequestMapping(value = "/listUsers", method = RequestMethod.GET)
-    public String userListPage(ModelMap model) {        
-        //model.addAttribute("users", userService.findAll());
-        model.addAttribute("user", getPrincipal());
-        return "listUsers";
-    }
-    
-    @RequestMapping(value = "/historyUsers", method = RequestMethod.GET)
-    public String userHistoryPage(ModelMap model) {        
-        //model.addAttribute("users", userService.findAll());
-        model.addAttribute("user", getPrincipal());
-        return "historyUsers";
-    }
-    
-    @RequestMapping(value = "/chronHistoryUsers", method = RequestMethod.GET)
-    public String userChronHistoryPage(ModelMap model) {        
-        //model.addAttribute("users", userService.findAll());
-        model.addAttribute("user", getPrincipal());
-        return "chronHistoryUsers";
-    }
-    */
-    /**
-     * User Module - END
-     **/
     
     /**
      * File Configurations Module

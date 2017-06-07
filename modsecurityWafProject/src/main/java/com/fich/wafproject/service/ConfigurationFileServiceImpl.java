@@ -44,4 +44,8 @@ public class ConfigurationFileServiceImpl implements ConfigurationFileService {
         dao.save(cf);
     }
     
+    public void delete(int id){
+        dao.delete(id);
+    }
+    
 }

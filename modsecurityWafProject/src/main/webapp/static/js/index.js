@@ -26,7 +26,7 @@ $(document).ready(function(){
     })
     
     //Show form to edit a new configuration file
-    $('#add-file-configuration-button,#edit-file-configuration-button,#remove-file-configuration-button').on('click',function(){        
+    $('#add-file-configuration-button,#edit-file-configuration-button,#remove-file-configuration-button').on('click',function(){
         var action = $(this).data('action');
         var data = {};
         var url = '';
@@ -37,12 +37,10 @@ $(document).ready(function(){
         var modalFooter = "";
         switch(action){
             case 'remove':
-                console.log('remove');
                 url = 'removeFileConfiguration';
                 modalFooter = '<button type="button" class="btn btn-primary" id="removeFileConfiguration" data-id="'+id+'">Delete</button>';
             break;
             default:
-                console.log('el otro');
                 modalFooter = '<button type="button" class="btn btn-primary" id="addFileConfiguration">Add</button>';
                 data = {id: id};
                 url = 'addFileConfigurationForm';
@@ -90,10 +88,8 @@ $(document).ready(function(){
         })
 
         $('body').on('click','#removeFileConfiguration',function(){
-            console.log('hola');
             $('#deleteFileconfiguration').append('<input type="text" name="id" value="'+$(this).data("id")+'" />');
             $('#deleteFileconfiguration').submit();
-            console.log('chau');
         });
     
     /************************ADMIN FILE CONFIGURATION PAGE END****************************/

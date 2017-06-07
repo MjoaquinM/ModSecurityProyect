@@ -23,7 +23,7 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i>Manage Files Configuration</a>
+                    <a href="<c:url value="/configurationFiles" />"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i>Manage Files Configuration</a>
                 </li>
                 <li class="active">
                     <ul class="nav nav-third-level collapse in" aria-expanded="true" style="">
