@@ -215,16 +215,16 @@ public class WafProjectController {
     /**
      * Configuration Files Template
     **/
-//    @RequestMapping(value = { "/confFileTemp" }, method = RequestMethod.GET)
-//    public String configurationPageTemplate(ModelMap model, @RequestParam("currentFile") String currentFile) {
-//        List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
-//        ConfigurationFiles currentConfigFile = configurationFileService.findByName(currentFile);
-//        System.out.println(currentConfigFile);
-//        model.addAttribute("configFiles",configurationFilesAll);
-//        model.addAttribute("user",getPrincipal());
-//        model.addAttribute("currentFile",currentConfigFile);
-//        return "configurationFilesTemplate";
-//    }
+    @RequestMapping(value = { "/confFileTemp" }, method = RequestMethod.GET)
+    public String configurationPageTemplate(ModelMap model, @RequestParam("currentFile") String currentFile) {
+        List<ConfigurationFile> configurationFilesAll = configurationFileService.findAll();
+        ConfigurationFile currentConfigFile = configurationFileService.findByName(currentFile);
+        System.out.println(currentConfigFile);
+        model.addAttribute("configFiles",configurationFilesAll);
+        model.addAttribute("user",getPrincipal());
+        model.addAttribute("currentFile",currentConfigFile);
+        return "configurationFilesTemplate";
+    }
     
     /******************************Files Configuration Module - END*********************************/
     

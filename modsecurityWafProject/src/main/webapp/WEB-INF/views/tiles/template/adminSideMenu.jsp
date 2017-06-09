@@ -27,15 +27,11 @@
                 </li>
                 <li class="active">
                     <ul class="nav nav-third-level collapse in" aria-expanded="true" style="">
-                        <li>
-                            <a href="<c:url value="/modSecConf" />">ModSecurity</a>
-                        </li>
-                        <li>
-                            <a href="<c:url value="/modSecLogCollectorConf" />">ModSecurity Log Collector</a>
-                        </li>
-                        <li>
-                            <a href="<c:url value="/coreRuleSetConf" />">Core Rule Set</a>
-                        </li>
+                        <c:forEach items="${configFiles}" var="configFile">
+                            <li>
+                                <a href="<c:url value="/confFileTemp?currentFile=${configFile.name}" />">${configFile.name}</a>
+                            </li>
+                        </c:forEach>
                         <li>
                             <a href="<c:url value="/rulesConf" />">Rules</a>
                         </li>
