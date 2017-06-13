@@ -22,6 +22,8 @@ public interface ConfigurationFileService {
     
     ConfigurationFile findByName(String name);
     
+    void delete(int id);
+    
     void save(ConfigurationFile cf);
     
 }

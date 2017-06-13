@@ -24,4 +24,6 @@ public interface ConfigurationFileDao {
     
     void save(ConfigurationFile cf);
     
+    void delete(int id);
+    
 }

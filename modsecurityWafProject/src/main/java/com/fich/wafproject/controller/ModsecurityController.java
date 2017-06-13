@@ -54,13 +54,7 @@ public class ModsecurityController {
     
     @Autowired
     ConfigurationFileService configurationFileService;
-    
-    /*@RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String adminPage(ModelMap model) {
-        model.addAttribute("user",getPrincipal());
-        return "adminHome";
-    }*/
-    
+        
     /**Show File Configuration Attributes**/
     @RequestMapping(value = "/addFileConfigurationAttributes", method = RequestMethod.GET)
     public String showFileConfigurationParameters(ModelMap model, @RequestParam("fileId") int fileId) {
