@@ -145,6 +145,7 @@ public class WafProjectController {
         List<ConfigurationFile> cfs = configurationFileService.findAll();
         String user = getPrincipal();
         model.addAttribute("configFiles",cfs);
+//        User user1 = userService.findById(36);
         model.addAttribute("user",user);
         return "adminHome";
     }
