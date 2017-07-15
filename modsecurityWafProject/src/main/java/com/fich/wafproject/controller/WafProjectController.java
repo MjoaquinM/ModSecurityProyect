@@ -10,6 +10,7 @@ package com.fich.wafproject.controller;
  * @author r3ng0
  */
 import com.fich.wafproject.model.ConfigurationFile;
+import com.fich.wafproject.model.ConfigurationFileAttribute;
 import java.util.List;
  
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,7 @@ import com.fich.wafproject.model.UserProfile;
 import com.fich.wafproject.service.ConfigurationFileService;
 import com.fich.wafproject.service.UserProfileService;
 import com.fich.wafproject.service.UserService;
+import java.util.Iterator;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -96,7 +98,6 @@ public class WafProjectController {
      */
     @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
     public String deleteUser(ModelMap model, @RequestParam("id") int id) {
-        System.out.println("ESTE ES EL OBJETO A ELIMINAR");
         userService.delete(id);
         
         List<User> users = userService.findAll();
@@ -114,8 +115,6 @@ public class WafProjectController {
         String messageSatus = "User "+user.getFirstName()+", "+user.getLastName()+" was succefully added to the system.";
         
         if (result.hasErrors()) {
-            System.out.println("There are errors");
-            System.out.print(result.getAllErrors());
             for (Object object : result.getAllErrors()) {
                 if(object instanceof FieldError) {
                     FieldError fieldError = (FieldError) object;
@@ -164,8 +163,6 @@ public class WafProjectController {
     public String saveNewFileConfiguration(@Valid ConfigurationFile cf,
             BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
-            System.out.println("There are errors tipona");
-            System.out.print(result.getAllErrors());
             for (Object object : result.getAllErrors()) {
                 if(object instanceof FieldError) {
                     FieldError fieldError = (FieldError) object;
@@ -219,10 +216,25 @@ public class WafProjectController {
     public String configurationPageTemplate(ModelMap model, @RequestParam("currentFile") String currentFile) {
         List<ConfigurationFile> configurationFilesAll = configurationFileService.findAll();
         ConfigurationFile currentConfigFile = configurationFileService.findByName(currentFile);
-        System.out.println(currentConfigFile);
+        
+        List<ConfigurationFileAttribute> currentAttrs = currentConfigFile.getConfigurationAttributes();
+        System.out.println("MIRAME ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA!!!!!!!!!!!!!!!!!!!!!!!!          ");
+        
+        for(ConfigurationFileAttribute ca : currentAttrs){
+            System.out.println(ca.getName());
+        }
+        
+        System.out.println(currentAttrs);
+//        Iterator iter = currentAttrs.iterator();
+//        while (iter.hasNext()){
+//           
+//           System.out.println(iter.next());
+//        }
+        
         model.addAttribute("configFiles",configurationFilesAll);
         model.addAttribute("user",getPrincipal());
         model.addAttribute("currentFile",currentConfigFile);
+        model.addAttribute("currentFileAttributes",currentAttrs);
         return "configurationFilesTemplate";
     }
     
@@ -317,7 +329,6 @@ public class WafProjectController {
  
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage() {
-        System.out.println("ESTAS EN EL LOGIN");
         return "login";
     }
  
@@ -346,14 +357,13 @@ public class WafProjectController {
             BindingResult result, ModelMap model) {
  
         if (result.hasErrors()) {
-            System.out.println("There are errors");
             return "newuser";
         }
         userService.save(user);
          
         System.out.println("First Name : "+user.getFirstName());
         System.out.println("Last Name : "+user.getLastName());
-        System.out.println("SSO ID : "+user.getSsoId());
+        System.out.println("SSO ID : "+user.getUserName());
         System.out.println("Password : "+user.getPassword());
         System.out.println("Email : "+user.getEmail());
         System.out.println("Checking UsrProfiles....");
