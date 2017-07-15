@@ -24,7 +24,7 @@
     </div>
     <c:url var="loginUrl" value="/login" />
     <form action="${loginUrl}" method="post">
-        <input type="text" id="username" name="ssoId" placeholder="Enter Username" required class="input-txt">
+        <input type="text" id="username" name="user_name" placeholder="Enter Username" required class="input-txt">
         <input type="password" id="password" name="password" placeholder="Enter Password" required class="input-txt">
 
         <input type="hidden" name="${_csrf.parameterName}"  value="${_csrf.token}" />

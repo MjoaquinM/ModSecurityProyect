@@ -37,16 +37,24 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
         return getByKey(id);
     }
  
-    public User findBySSO(String sso) {
+    public User findByUserName(String user_name) {
+        System.out.println("1");
         Criteria crit = createEntityCriteria();
-        crit.add(Restrictions.eq("ssoId", sso));
-        return (User) crit.uniqueResult();
+        System.out.println("2");
+        crit.add(Restrictions.eq("user_name", user_name));
+        System.out.println("3");
+        System.out.println(crit.uniqueResult());
+        User u = (User) crit.uniqueResult();
+        System.out.println("4");
+        System.out.println(u);
+        //return (User) crit.uniqueResult();
+        return u;
     }
     
     @SuppressWarnings("unchecked")
     public List<User> findAll(){
         Criteria crit = createEntityCriteria();
-        crit.addOrder(Order.asc("ssoId"));
+        crit.addOrder(Order.asc("user_name"));
         return (List<User>)crit.list();
     }
     

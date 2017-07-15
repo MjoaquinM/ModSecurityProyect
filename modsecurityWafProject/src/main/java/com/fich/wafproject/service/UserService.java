@@ -23,7 +23,7 @@ public interface UserService {
      
     User findById(int id);
      
-    User findBySso(String sso);
+    User findByUserName(String user_name);
     
     List<User> findAll();
      

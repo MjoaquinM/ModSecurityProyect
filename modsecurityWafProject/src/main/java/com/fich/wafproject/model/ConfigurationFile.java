@@ -9,9 +9,12 @@ package com.fich.wafproject.model;
  *
  * @author r3ng0
  */
+import com.fich.wafproject.model.ConfigurationFileAttributeGroups;
+import com.fich.wafproject.model.ConfigurationFileStates;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
  
 import javax.persistence.Column;
@@ -23,9 +26,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
  
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -34,27 +40,56 @@ import org.hibernate.validator.constraints.NotEmpty;
 @UniqueConstraint(columnNames = "ID"),
 @UniqueConstraint(columnNames = "PATH_NAME") })
 public class ConfigurationFile {
- 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
     private int id;
- 
-    @Column(name = "NAME", nullable = false)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
+    @Column(name = "name")
     private String name;
-     
-    @Column(name = "PATH_NAME", unique = true, nullable = false)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
+    @Column(name = "path_name")
     private String pathName;
-    
-    @Column(name = "DESCRIPTION", nullable = true)
+    @Size(max = 100)
+    @Column(name = "description")
     private String description;
     
-    @Column(name = "STATE", nullable = false)
-    private Boolean state;
+    @JoinColumn(name = "configuration_file_states_id", referencedColumnName = "id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private ConfigurationFileStates configurationFileStates;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "configurationFilesId", fetch = FetchType.LAZY)
+    private List<ConfigurationFileAttributeGroups> configurationFileAttributeGroupsList;
  
-    @OneToMany//(mappedBy = "ConfigurationFileAttribute",cascade=CascadeType.ALL)
-    @JoinColumn(name="CONFIGURATION_FILE_ID")
+    //@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //private int id;
+ 
+//    @Column(name = "NAME", nullable = false)
+//    private String name;
+//     
+//    @Column(name = "PATH_NAME", unique = true, nullable = false)
+//    private String pathName;
+//    
+//    @Column(name = "DESCRIPTION", nullable = true)
+//    private String description;
+    
+//    @Column(name = "STATE", nullable = false)
+//    private Boolean state;
+ 
+//    @OneToMany//(mappedBy = "ConfigurationFileAttribute",cascade=CascadeType.ALL)
+//    @JoinColumn(name="CONFIGURATION_FILE_ID")
+//    private List<ConfigurationFileAttribute> configurationAttributes;
+    
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "confFile")
     private List<ConfigurationFileAttribute> configurationAttributes;
  
-    public int getId() {
+    public long getId() {
         return id;
     }
  
@@ -70,12 +105,12 @@ public class ConfigurationFile {
         this.name = name;
     }
     
-    public Boolean getState() {
-        return state;
+    public ConfigurationFileStates getState() {
+        return this.configurationFileStates;
     }
  
-    public void setState(Boolean state) {
-        this.state = state;
+    public void setState(ConfigurationFileStates state) {
+        this.configurationFileStates = state;
     }
     
     public String getPath() {
@@ -136,8 +171,36 @@ public class ConfigurationFile {
  
     @Override
     public String toString() {
-        return "ConfigurationFile [id=" + id + ", Name=" + name + ", State = " + state + 
-                ", Path = " + pathName + ", Description = " + description + "]";
+        return "ConfigurationFile [id=" + id + ", Name = " + name + ", Path = " + pathName + ", Description = " + description + "]";
+    }
+
+    public ConfigurationFile() {
+    }
+
+    public ConfigurationFile(int id) {
+        this.id = id;
+    }
+
+    public ConfigurationFile(int id, String name, String pathName) {
+        this.id = id;
+        this.name = name;
+        this.pathName = pathName;
+    }
+
+    public String getPathName() {
+        return pathName;
+    }
+
+    public void setPathName(String pathName) {
+        this.pathName = pathName;
+    }
+
+    public List<ConfigurationFileAttributeGroups> getConfigurationFileAttributeGroupsList() {
+        return configurationFileAttributeGroupsList;
+    }
+
+    public void setConfigurationFileAttributeGroupsList(List<ConfigurationFileAttributeGroups> configurationFileAttributeGroupsList) {
+        this.configurationFileAttributeGroupsList = configurationFileAttributeGroupsList;
     }
     
 }

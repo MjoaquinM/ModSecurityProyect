@@ -31,20 +31,23 @@ public class CustomUserDetailsService implements UserDetailsService{
     private UserService userService;
      
     @Transactional(readOnly=true)
-    public UserDetails loadUserByUsername(String ssoId)
+    public UserDetails loadUserByUsername(String user_name)
             throws UsernameNotFoundException {
-        System.out.println("ACA ESTOY TIPO NA");
-        User user = userService.findBySso(ssoId);
-        System.out.println("User : "+user);
+        System.out.println("ACA ESTOY TIPO NADA");
+        System.out.println("ANTES");
+        System.out.println(user_name);
+        User user = userService.findByUserName(user_name);
+        System.out.println(user);
+        System.out.println("DESPUES");
         if(user==null){
             System.out.println("User not found");
             throw new UsernameNotFoundException("Username not found");
         }
-            return new org.springframework.security.core.userdetails.User(user.getSsoId(), user.getPassword(), 
-                 user.getState().equals("Active"), true, true, true, getGrantedAuthorities(user));
+        
+        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), 
+        true, true, true, true, getGrantedAuthorities(user));
     }
- 
-     
+    
     private List<GrantedAuthority> getGrantedAuthorities(User user){
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
          

@@ -89,7 +89,7 @@ public class ModsecurityController {
         System.out.println("Name: "+cf.getName());
         System.out.println("Path: "+cf.getPath());
         System.out.println("Description: "+cf.getDescription());
-        String state = cf.getState() ? "Active" : "Disable";
+        String state = cf.getState().getName();
         System.out.println("State: "+ cf.getState());
 //        List<ConfigurationFile> configurationFilesAll = configurationFileService.findAll();
 //        model.addAttribute("configFiles", configurationFilesAll);
