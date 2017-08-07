@@ -9,19 +9,23 @@ package com.fich.wafproject.dao;
  *
  * @author r3ng0
  */
-import com.fich.wafproject.model.ConfigurationFileAttribute;
+import com.fich.wafproject.model.ConfigurationFilesAttributes;
 import java.util.List;
  
 public interface ConfigurationFileAttributeDao {
  
-    void save(ConfigurationFileAttribute cfa);
+    void save(ConfigurationFilesAttributes cfa);
      
-    ConfigurationFileAttribute findById(int id);
+    ConfigurationFilesAttributes findById(Long id);
     
-    ConfigurationFileAttribute findByFileConfiguration(int idFc);
+    void delete(Long id);
+    
+    List<ConfigurationFilesAttributes> findByFileConfiguration(Long idFc);
      
-    ConfigurationFileAttribute findByName(String name);
+    ConfigurationFilesAttributes findByName(String name);
     
-    List<ConfigurationFileAttribute> findAll();
+    List<ConfigurationFilesAttributes> findAll();
+    
+    void update(ConfigurationFilesAttributes cfa);
      
 }

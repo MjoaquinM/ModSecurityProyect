@@ -5,7 +5,7 @@
  */
 package com.fich.wafproject.dao;
 
-import com.fich.wafproject.model.ConfigurationFile;
+import com.fich.wafproject.model.ConfigurationFiles;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
@@ -18,41 +18,41 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("configurationFileDao")
-public class ConfigurationFileDaoImpl extends AbstractDao<Integer, ConfigurationFile>implements ConfigurationFileDao{
+public class ConfigurationFileDaoImpl extends AbstractDao<Long, ConfigurationFiles>implements ConfigurationFileDao{
 
     @SuppressWarnings("unchecked")
-    public List<ConfigurationFile> findAll() {
-        Criteria crit = createEntityCriteria();
+    public List<ConfigurationFiles> findAll() {
+        Criteria crit = createEntityCriteria().setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         crit.addOrder(Order.asc("name"));
-        return (List<ConfigurationFile>)crit.list();
+        return (List<ConfigurationFiles>)crit.list();
     }
     
-    public ConfigurationFile findByPath(String path) {
+    public ConfigurationFiles findByPath(String path) {
         Criteria crit = createEntityCriteria();
         crit.add(Restrictions.eq("path", path));
         crit.addOrder(Order.asc("name"));
-        return (ConfigurationFile) crit.uniqueResult();
+        return (ConfigurationFiles) crit.uniqueResult();
     }
 
     
-    public ConfigurationFile findById(int id) {
+    public ConfigurationFiles findById(Long id) {
         return getByKey(id);
     }
 
     
-    public ConfigurationFile findByName(String name) {
+    public ConfigurationFiles findByName(String name) {
         Criteria crit = createEntityCriteria();
         crit.add(Restrictions.eq("name", name));
         crit.addOrder(Order.asc("name"));
-        return (ConfigurationFile) crit.uniqueResult();
+        return (ConfigurationFiles) crit.uniqueResult();
     }
     
-    public void save(ConfigurationFile cf){
+    public void save(ConfigurationFiles cf){
         persist(cf);
     }
     
-    public void delete(int id){
-        ConfigurationFile cf = this.findById(id);
+    public void delete(Long id){
+        ConfigurationFiles cf = this.findById(id);
         delete(cf);
     }
 }

@@ -8,6 +8,6 @@
     </div>
     <!-- /.row -->
     <div class="row">
-        <h1>ACA VAN LOS GRAFICOS TIPO NA</h1>
+        <h1>ACA VAN LOS GRAFICOS</h1>
     </div>
 </div>

@@ -11,13 +11,13 @@ package com.fich.wafproject.dao;
  */
 import java.util.List;
  
-import com.fich.wafproject.model.UserProfile;
+import com.fich.wafproject.model.UserProfiles;
  
 public interface UserProfileDao {
  
-    List<UserProfile> findAll();
+    List<UserProfiles> findAll();
      
-    UserProfile findByType(String type);
+    UserProfiles findByType(String type);
      
-    UserProfile findById(int id);
+    UserProfiles findById(Long id);
 }

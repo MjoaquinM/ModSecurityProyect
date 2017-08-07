@@ -5,8 +5,6 @@
  */
 package com.fich.wafproject.model;
 
-import com.fich.wafproject.model.*;
-import com.fich.wafproject.model.User;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -26,7 +24,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author r3ng0
+ * @author joaquin
  */
 @Entity
 @Table(name = "USER_STATES", catalog = "waf_project", schema = "")
@@ -49,13 +47,11 @@ public class UserStates implements Serializable {
     @Column(name = "name")
     private String name;
     @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 300)
     @Column(name = "description")
     private String description;
-    
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "state", fetch = FetchType.LAZY)
-    private List<User> userList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userStates", fetch = FetchType.LAZY)
+    private List<Users> usersList;
 
     public UserStates() {
     }
@@ -94,12 +90,12 @@ public class UserStates implements Serializable {
         this.description = description;
     }
 
-    public List<User> getUserList() {
-        return userList;
+    public List<Users> getUsersList() {
+        return usersList;
     }
 
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
+    public void setUsersList(List<Users> usersList) {
+        this.usersList = usersList;
     }
 
     @Override

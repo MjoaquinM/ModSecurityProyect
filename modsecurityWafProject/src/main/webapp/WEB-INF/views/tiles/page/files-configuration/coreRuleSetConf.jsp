@@ -8,6 +8,6 @@
     </div>
     <!-- /.row -->
     <div class="row">
-        <h1>ACA VAN LOS PARAMETROS DE CONFIGURACION DEL CORE RULE SET TIPO NA</h1>
+        <h1>ACA VAN LOS PARAMETROS DE CONFIGURACION DEL CORE RULE SET</h1>
     </div>
 </div>

@@ -6,7 +6,7 @@
 package com.fich.wafproject.service;
 
 import com.fich.wafproject.dao.ConfigurationFileAttributeDao;
-import com.fich.wafproject.model.ConfigurationFileAttribute;
+import com.fich.wafproject.model.ConfigurationFilesAttributes;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,24 +23,32 @@ public class ConfigurationFileAttributeServiceImpl implements ConfigurationFileA
     @Autowired
     private ConfigurationFileAttributeDao dao;
     
-    public List<ConfigurationFileAttribute> findAll() {
+    public List<ConfigurationFilesAttributes> findAll() {
         return dao.findAll();
     }
     
-    public ConfigurationFileAttribute findById(int id) {
+    public ConfigurationFilesAttributes findById(Long id) {
         return dao.findById(id);
     }
 
-    public void save(ConfigurationFileAttribute cfa) {
+    public void save(ConfigurationFilesAttributes cfa) {
         dao.save(cfa);
     }
 
-    public ConfigurationFileAttribute findByName(String name) {
+    public ConfigurationFilesAttributes findByName(String name) {
         return dao.findByName(name);
     }
     
-    public ConfigurationFileAttribute findByFileConfiguration(int idFc){
+    public void update(ConfigurationFilesAttributes cfa){
+        dao.update(cfa);
+    }
+
+    public List<ConfigurationFilesAttributes> findByFileConfiguration(Long idFc) {
         return dao.findByFileConfiguration(idFc);
+    }
+    
+    public void delete(Long id){
+        dao.delete(id);
     }
     
 }

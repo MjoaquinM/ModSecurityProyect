@@ -5,7 +5,7 @@
  */
 package com.fich.wafproject.dao;
 
-import com.fich.wafproject.model.ConfigurationFileAttribute;
+import com.fich.wafproject.model.ConfigurationFilesAttributes;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
@@ -18,33 +18,43 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("configurationFileAttributeDao")
-public class ConfigurationFileAttributeDaoImpl extends AbstractDao<Integer, ConfigurationFileAttribute> implements ConfigurationFileAttributeDao {
+public class ConfigurationFileAttributeDaoImpl extends AbstractDao<Long, ConfigurationFilesAttributes> implements ConfigurationFileAttributeDao {
     
-    public void save(ConfigurationFileAttribute cfa){
+    public void save(ConfigurationFilesAttributes cfa){
         persist(cfa);
     };
      
-    public ConfigurationFileAttribute findById(int id){
+    public ConfigurationFilesAttributes findById(Long id){
         return getByKey(id);
     };
      
-    public ConfigurationFileAttribute findByName(String name){
+    public ConfigurationFilesAttributes findByName(String name){
         Criteria crit = createEntityCriteria();
         crit.add(Restrictions.eq("name", name));
-        return (ConfigurationFileAttribute) crit.uniqueResult();
+        return (ConfigurationFilesAttributes) crit.uniqueResult();
     };
     
     
-    public ConfigurationFileAttribute findByFileConfiguration(int idFc){
-        Criteria crit = createEntityCriteria();
-        crit.add(Restrictions.eq("confFile", idFc));
-        return (ConfigurationFileAttribute) crit.uniqueResult();
+    public List<ConfigurationFilesAttributes> findByFileConfiguration(Long idFc){
+        Criteria crit = createEntityCriteria().setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        crit.add(Restrictions.eq("configurationFileAttributeGroups.id", idFc));
+        return (List<ConfigurationFilesAttributes>) crit.list();
     };
     
     @SuppressWarnings("unchecked")
-    public List<ConfigurationFileAttribute> findAll(){
-        Criteria crit = createEntityCriteria();
+    public List<ConfigurationFilesAttributes> findAll(){
+        Criteria crit = createEntityCriteria().setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         crit.addOrder(Order.asc("name"));
-        return (List<ConfigurationFileAttribute>)crit.list();
+        return (List<ConfigurationFilesAttributes>)crit.list();
     }
+    
+    public void update(ConfigurationFilesAttributes cfa) {
+        update(cfa);
+    }
+    
+    public void delete(Long id){
+        ConfigurationFilesAttributes cfa = this.findById(id);
+        delete(cfa);
+    }
+    
 }

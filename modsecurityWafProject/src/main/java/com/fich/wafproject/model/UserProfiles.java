@@ -5,33 +5,30 @@
  */
 package com.fich.wafproject.model;
 
-import com.fich.wafproject.model.*;
-import com.fich.wafproject.model.User;
-import com.fich.wafproject.model.UserProfile;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
- * @author r3ng0
+ * @author joaquin
  */
 @Entity
-@Table(name = "USERS_USER_PROFILES", catalog = "waf_project", schema = "")
+@Table(name = "USER_PROFILES", catalog = "waf_project", schema = "")
 @NamedQueries({
-    @NamedQuery(name = "UsersUserProfiles.findAll", query = "SELECT u FROM UsersUserProfiles u")
-    , @NamedQuery(name = "UsersUserProfiles.findById", query = "SELECT u FROM UsersUserProfiles u WHERE u.id = :id")})
-public class UsersUserProfiles implements Serializable {
+    @NamedQuery(name = "UserProfiles.findAll", query = "SELECT u FROM UserProfiles u")
+    , @NamedQuery(name = "UserProfiles.findById", query = "SELECT u FROM UserProfiles u WHERE u.id = :id")
+    , @NamedQuery(name = "UserProfiles.findByType", query = "SELECT u FROM UserProfiles u WHERE u.type = :type")})
+public class UserProfiles implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,18 +36,22 @@ public class UsersUserProfiles implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private User userId;
-    @JoinColumn(name = "user_profile_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private UserProfile userProfileId;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
+    @Column(name = "type")
+    private String type;
 
-    public UsersUserProfiles() {
+    public UserProfiles() {
     }
 
-    public UsersUserProfiles(Long id) {
+    public UserProfiles(Long id) {
         this.id = id;
+    }
+
+    public UserProfiles(Long id, String type) {
+        this.id = id;
+        this.type = type;
     }
 
     public Long getId() {
@@ -61,20 +62,12 @@ public class UsersUserProfiles implements Serializable {
         this.id = id;
     }
 
-    public User getUserId() {
-        return userId;
+    public String getType() {
+        return type;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
-    }
-
-    public UserProfile getUserProfileId() {
-        return userProfileId;
-    }
-
-    public void setUserProfileId(UserProfile userProfileId) {
-        this.userProfileId = userProfileId;
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override
@@ -87,10 +80,10 @@ public class UsersUserProfiles implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof UsersUserProfiles)) {
+        if (!(object instanceof UserProfiles)) {
             return false;
         }
-        UsersUserProfiles other = (UsersUserProfiles) object;
+        UserProfiles other = (UserProfiles) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -99,7 +92,7 @@ public class UsersUserProfiles implements Serializable {
 
     @Override
     public String toString() {
-        return "com.fich.wafproject.model.UsersUserProfiles[ id=" + id + " ]";
+        return "com.fich.wafproject.model.UserProfiles[ id=" + id + " ]";
     }
     
 }

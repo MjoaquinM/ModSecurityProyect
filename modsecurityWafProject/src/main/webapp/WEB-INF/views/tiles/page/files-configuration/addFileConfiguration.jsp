@@ -2,17 +2,33 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h3>${title}</h3>
-    </div>
     <!-- /.panel-heading -->
-    <form:form method="POST" modelAttribute="configFiles" action="${action}" >
+    <form:form method="POST" modelAttribute="configFiles" action="${action}">
         <div class="panel-body">
             <div class="table-responsive">
                 <table class="table table-hover">
                     <tbody>
                         <tr>
                             <td>
+                                <div class="form-group col-md-12">
+                                    <label class="col-md-3 control-lable" for="pathName">File Path</label>
+                                    <div class="col-md-7">
+                                        <form:input type="text" path="pathName" id="pathName" class="form-control input-sm" />
+                                        <div class="has-error">
+                                            <form:errors path="pathName" class="help-inline"/>
+                                        </div>
+                                    </div>
+                                        <div class="col-md-1">
+                                        <a class="btn btn-primary" id="search-file-configuration-button">Check Path</a>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12 pone-aca-el-estado">
+                                </div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr id="nameRow">
+                            <td colspan="2">
                                 <div class="form-group col-md-12">
                                     <label class="col-md-3 control-lable" for="name">Name</label>
                                     <div class="col-md-7">
@@ -25,24 +41,11 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <div class="form-group col-md-12">
-                                    <label class="col-md-3 control-lable" for="path">File Path</label>
-                                    <div class="col-md-7">
-                                        <form:input type="text" path="path" id="path" class="form-control input-sm"/>
-                                        <div class="has-error">
-                                            <form:errors path="path" class="help-inline"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
+                            <td colspan="2">
                                 <div class="form-group col-md-12">
                                     <label class="col-md-3 control-lable" for="description">Description</label>
                                     <div class="col-md-7">
-                                        <form:input type="text" path="description" id="description" class="form-control input-sm"/>
+                                        <form:textarea path="description" id="description" class="form-control input-sm" rows="5" cols="30"/>
                                         <div class="has-error">
                                             <form:errors path="description" class="help-inline"/>
                                         </div>
@@ -51,21 +54,23 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td colspan="2">
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-3 control-lable" for="state">State</label>
+                                    <label class="col-md-3 control-lable" for="configurationFileStates">State</label>
                                     <div class="col-md-7">
-                                        <form:select path="state" multiple="false" class="form-control input-sm">
-                                            <form:option value="1" >Active</form:option>
-                                            <form:option value="0" >Disable</form:option>
+                                        <form:select path="configurationFileStates.id" multiple="false" class="form-control input-sm">
+                                            <c:forEach items="${configFilesStates}" var="cfs">
+                                                <form:option value="${cfs.id}" >${cfs.name}</form:option>
+                                            </c:forEach>
                                         </form:select>
                                         <div class="has-error">
-                                            <form:errors path="state" class="help-inline"/>
+                                            <form:errors path="configurationFileStates.id" class="help-inline"/>
                                         </div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
+                        <form:hidden path="id"></form:hidden>
                         <!-- /.panel-body -->
                     </tbody>
                 </table>
@@ -73,8 +78,9 @@
             <!-- /.table-responsive -->
         </div>
         <!-- /.panel-body -->
-        <form:hidden path="id"></form:hidden>
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        
+        <input id="token-form" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                        
 </form:form>
 </div>
 <!-- /.panel -->

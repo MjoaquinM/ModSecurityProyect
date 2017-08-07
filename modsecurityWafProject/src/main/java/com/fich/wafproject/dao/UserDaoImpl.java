@@ -13,49 +13,41 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
  
-import com.fich.wafproject.model.User;
+import com.fich.wafproject.model.Users;
 import java.util.List;
 import org.hibernate.criterion.Order;
  
 @Repository("userDao")
-public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
+public class UserDaoImpl extends AbstractDao<Long, Users> implements UserDao {
  
-    public void save(User user) {
+    public void save(Users user) {
         persist(user);
     }
     
-    public void update(User user) {
+    public void update(Users user) {
         update(user);
     }
     
-    public void delete(int id){
-        User user = this.findById(id);
+    public void delete(Long id){
+        Users user = this.findById(id);
         delete(user);
     }
      
-    public User findById(int id) {
+    public Users findById(Long id) {
         return getByKey(id);
     }
  
-    public User findByUserName(String user_name) {
-        System.out.println("1");
+    public Users findByUserName(String user_name) {
         Criteria crit = createEntityCriteria();
-        System.out.println("2");
-        crit.add(Restrictions.eq("user_name", user_name));
-        System.out.println("3");
-        System.out.println(crit.uniqueResult());
-        User u = (User) crit.uniqueResult();
-        System.out.println("4");
-        System.out.println(u);
-        //return (User) crit.uniqueResult();
-        return u;
+        crit.add(Restrictions.eq("userName", user_name));
+        return (Users) crit.uniqueResult();
     }
     
     @SuppressWarnings("unchecked")
-    public List<User> findAll(){
-        Criteria crit = createEntityCriteria();
-        crit.addOrder(Order.asc("user_name"));
-        return (List<User>)crit.list();
+    public List<Users> findAll(){
+        Criteria crit = createEntityCriteria().setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        crit.addOrder(Order.asc("userName"));
+        return (List<Users>)crit.list();
     }
     
 }

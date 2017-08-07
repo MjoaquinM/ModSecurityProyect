@@ -5,8 +5,6 @@
  */
 package com.fich.wafproject.model;
 
-import com.fich.wafproject.model.*;
-import com.fich.wafproject.model.ConfigurationFile;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -26,7 +24,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author r3ng0
+ * @author joaquin
  */
 @Entity
 @Table(name = "CONFIGURATION_FILE_STATES", catalog = "waf_project", schema = "")
@@ -53,7 +51,7 @@ public class ConfigurationFileStates implements Serializable {
     private String description;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "configurationFileStates", fetch = FetchType.LAZY)
-    private List<ConfigurationFile> configurationFileList;
+    private List<ConfigurationFiles> configurationFilesList;
 
     public ConfigurationFileStates() {
     }
@@ -91,12 +89,12 @@ public class ConfigurationFileStates implements Serializable {
         this.description = description;
     }
 
-    public List<ConfigurationFile> getConfigurationFileList() {
-        return configurationFileList;
+    public List<ConfigurationFiles> getConfigurationFilesList() {
+        return configurationFilesList;
     }
 
-    public void setConfigurationFileList(List<ConfigurationFile> configurationFileList) {
-        this.configurationFileList = configurationFileList;
+    public void setConfigurationFilesList(List<ConfigurationFiles> configurationFilesList) {
+        this.configurationFilesList = configurationFilesList;
     }
 
     @Override

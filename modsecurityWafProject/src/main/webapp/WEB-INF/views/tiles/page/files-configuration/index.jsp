@@ -40,26 +40,26 @@ Add file</a></h5>
                             <tbody>
                                 <c:forEach items="${configFiles}" var="configFile">
                                     <tr id="show-file-configuration-attributes-button" data-id="<c:out value="${configFile.id}"/>">
-                                        <td>
-                                            <c:out value="${configFile.name}"/>
-                                        </td>
-                                        <td>
-                                            <c:out value="${configFile.description}"/>
-                                        </td>
-                                        <td>
-                                            <c:out value="${configFile.path}"/>
-                                        </td>
-                                        <td>
-                                            <c:out value="${configFile.state}"/>
-                                        </td>
-                                        <td>
+                                            <td>
+                                                <c:out value="${configFile.name}"/>
+                                            </td>
+                                            <td>
+                                                <c:out value="${configFile.description}"/>
+                                            </td>
+                                            <td>
+                                                <c:out value="${configFile.pathName}"/>
+                                            </td>
+                                            <td>
+                                                <c:out value="${configFile.configurationFileStates.name}"/>
+                                            </td>
+                                            <td>
                                             <a href="#" class="btn btn-success" id="edit-file-configuration-button" data-action="edit" data-id="${configFile.id}">
-                                                <i class="fa fa-pencil" aria-hidden="true"></i>
-                                            </a>
-                                            <a class="btn btn-primary" id="remove-file-configuration-button" data-action="remove" data-id="${configFile.id}">
-                                                <i class="fa fa-times" aria-hidden="true"></i>
-                                            </a>
-                                        </td>
+                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                </a>
+                                                <a class="btn btn-danger" id="remove-file-configuration-button" data-action="remove" data-id="${configFile.id}">
+                                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                                </a>
+                                            </td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
@@ -80,22 +80,3 @@ Add file</a></h5>
 <form:form method="POST" action="deleteFileconfiguration" id="deleteFileconfiguration">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </form:form>
-
-<div class="modal fade" id="fileConfigurationModal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="fileConfigurationModalTitel"></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id="modalBodyFileConfiguration">
-          <img id="loading-image-modal" src="<c:url value='/static/img/loading.png'/>"></img>
-          <div id="fileConfigurationModalBody"></div>
-      </div>
-      <div class="modal-footer" id="fileConfigurationModalFooter">
-      </div>
-    </div>
-  </div>
-</div>

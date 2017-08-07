@@ -11,13 +11,13 @@ package com.fich.wafproject.service;
  */
 import java.util.List;
  
-import com.fich.wafproject.model.UserProfile;
+import com.fich.wafproject.model.UserProfiles;
  
 public interface UserProfileService {
  
-    List<UserProfile> findAll();
+    List<UserProfiles> findAll();
      
-    UserProfile findByType(String type);
+    UserProfiles findByType(String type);
      
-    UserProfile findById(int id);
+    UserProfiles findById(Long id);
 }

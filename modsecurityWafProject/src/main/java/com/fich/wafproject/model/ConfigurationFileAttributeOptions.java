@@ -5,8 +5,6 @@
  */
 package com.fich.wafproject.model;
 
-import com.fich.wafproject.model.*;
-import com.fich.wafproject.model.ConfigurationFileAttribute;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -25,7 +23,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author r3ng0
+ * @author joaquin
  */
 @Entity
 @Table(name = "CONFIGURATION_FILE_ATTRIBUTE_OPTIONS", catalog = "waf_project", schema = "")
@@ -50,9 +48,10 @@ public class ConfigurationFileAttributeOptions implements Serializable {
     @Size(max = 100)
     @Column(name = "description")
     private String description;
+    
     @JoinColumn(name = "configuration_files_attributes_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private ConfigurationFileAttribute configurationFilesAttributesId;
+    private ConfigurationFilesAttributes configurationFilesAttributes;
 
     public ConfigurationFileAttributeOptions() {
     }
@@ -90,12 +89,12 @@ public class ConfigurationFileAttributeOptions implements Serializable {
         this.description = description;
     }
 
-    public ConfigurationFileAttribute getConfigurationFilesAttributesId() {
-        return configurationFilesAttributesId;
+    public ConfigurationFilesAttributes getConfigurationFilesAttributes() {
+        return configurationFilesAttributes;
     }
 
-    public void setConfigurationFilesAttributesId(ConfigurationFileAttribute configurationFilesAttributesId) {
-        this.configurationFilesAttributesId = configurationFilesAttributesId;
+    public void setConfigurationFilesAttributes(ConfigurationFilesAttributes configurationFilesAttributes) {
+        this.configurationFilesAttributes = configurationFilesAttributes;
     }
 
     @Override

@@ -9,8 +9,9 @@
        <put-attribute name="title" value="" />  
        <put-attribute name="header" value="/WEB-INF/views/tiles/template/adminHeader.jsp" />  
        <put-attribute name="menu" value="/WEB-INF/views/tiles/template/adminSideMenu.jsp" />  
-       <put-attribute name="body" value="" />  
+       <put-attribute name="body" value="" />
        <put-attribute name="footer" value="/WEB-INF/views/tiles/template/adminFooter.jsp" />  
+       <put-attribute name="modal" value="" />
    </definition>  
    
    <!-- Login Layout -->
@@ -45,14 +46,18 @@
    
    <!-- Request Show Users List Page -> Controller Admin -->
    <definition name="listUsers" extends="admin-layout">  
-       <put-attribute name="title" value="Users List" />  
+       <put-attribute name="title" value="Users List" />
        <put-attribute name="body" value="/WEB-INF/views/tiles/page/admin/users/index.jsp" />
+       <put-attribute name="modal" value="/WEB-INF/views/tiles/template/modal.jsp" />
    </definition>
    
    <!-- Request add user form Page -> Controller Admin -->
    <definition name="addUserForm" template="/WEB-INF/views/tiles/page/admin/users/addUserForm.jsp">
    </definition>
    
+   <!-- Request add user form Page -> Controller Admin -->
+<!--   <definition name="miValor" template="/WEB-INF/views/tiles/page/admin/users/borrame.jsp">
+   </definition>-->
    
    <!-- Request Show Users History Page -> Controller Admin -->
    <definition name="historyUsers" extends="admin-layout">  
@@ -73,14 +78,16 @@
    
    <!-- Request Files Configuration -> Controller in Modsecurity.conf file -->
    <definition name="configurationFilesTemplate" extends="admin-layout">  
-       <put-attribute name="title" value="File Configuration" />  
+       <put-attribute name="title" value="File Configuration" />
        <put-attribute name="body" value="/WEB-INF/views/tiles/page/files-configuration/configurationFileTemplate.jsp" />
+       <put-attribute name="modal" value="/WEB-INF/views/tiles/template/modal.jsp" />
    </definition>
    
    <!-- Request Files Configuration -> Controller in Modsecurity.conf file -->
    <definition name="configurationFilesPage" extends="admin-layout">  
        <put-attribute name="title" value="File Configuration" />  
        <put-attribute name="body" value="/WEB-INF/views/tiles/page/files-configuration/index.jsp" />
+       <put-attribute name="modal" value="/WEB-INF/views/tiles/template/modal.jsp" />
    </definition>
    
    
@@ -94,6 +101,14 @@
    
    <!-- Request add configuration file form Page -> Controller Admin -->
    <definition name="addConfigurationFileForm" template="/WEB-INF/views/tiles/page/files-configuration/addFileConfiguration.jsp">
+   </definition>
+   
+   <!-- Request add configuration file attribute group form -> Controller Admin -->
+   <definition name="addFileConfigurationAttrGroupForm" template="/WEB-INF/views/tiles/page/files-configuration/fileConfigurationAttrGroupForm.jsp">
+   </definition>
+   
+   <!-- Request add configuration file attribute form -> Controller Admin -->
+   <definition name="addFileConfigurationAttrForm" template="/WEB-INF/views/tiles/page/files-configuration/fileConfigurationAttrForm.jsp">
    </definition>
    
    <!-- Request Show Modsecurity Parameters Configuration File Page -> Controller Admin -->

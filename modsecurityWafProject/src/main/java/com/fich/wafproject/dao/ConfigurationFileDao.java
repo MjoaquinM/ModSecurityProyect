@@ -5,7 +5,7 @@
  */
 package com.fich.wafproject.dao;
 
-import com.fich.wafproject.model.ConfigurationFile;
+import com.fich.wafproject.model.ConfigurationFiles;
 import java.util.List;
 
 /**
@@ -14,16 +14,16 @@ import java.util.List;
  */
 public interface ConfigurationFileDao {
     
-    List<ConfigurationFile> findAll();
+    List<ConfigurationFiles> findAll();
      
-    ConfigurationFile findByPath(String path);
+    ConfigurationFiles findByPath(String path);
      
-    ConfigurationFile findById(int id);
+    ConfigurationFiles findById(Long id);
     
-    ConfigurationFile findByName(String name);
+    ConfigurationFiles findByName(String name);
     
-    void save(ConfigurationFile cf);
+    void save(ConfigurationFiles cf);
     
-    void delete(int id);
+    void delete(Long id);
     
 }

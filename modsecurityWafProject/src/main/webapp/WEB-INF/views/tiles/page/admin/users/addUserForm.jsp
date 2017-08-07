@@ -4,9 +4,6 @@
 
 
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <h3>Add New User</h3>
-    </div>
     <!-- /.panel-heading -->
     <form:form method="POST" modelAttribute="user" action="${action}">
         <div class="panel-body">
@@ -16,11 +13,11 @@
                         <tr>
                             <td>
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-5 control-lable" for="ssoId">Alias/Nick</label>
+                                    <label class="col-md-5 control-lable" for="userName">Alias/Nick</label>
                                     <div class="col-md-7">
-                                        <form:input type="text" path="ssoId" id="ssoId" class="form-control input-sm"/>
+                                        <form:input type="text" path="userName" id="userName" class="form-control input-sm"/>
                                         <div class="has-error">
-                                            <form:errors path="ssoId" class="help-inline"/>
+                                            <form:errors path="userName" class="help-inline"/>
                                         </div>
                                     </div>
                                 </div>
@@ -83,17 +80,32 @@
                                 <div class="form-group col-md-12">
                                     <label class="col-md-5 control-lable" for="state">State</label>
                                     <div class="col-md-7">
-                                        <form:select path="state" multiple="false" class="form-control input-sm">
-                                            <form:option value="Active" >Active</form:option>
-                                            <form:option value="Disable" >Disable</form:option>
+                                        <form:select path="userStates.id" multiple="false" class="form-control input-sm">
+                                            <c:forEach items="${userStates}" var="us">
+                                                <form:option value="${us.id}" >${us.name}</form:option>
+                                            </c:forEach>
                                         </form:select>
                                         <div class="has-error">
-                                            <form:errors path="state" class="help-inline"/>
+                                            <form:errors path="userStates.id" class="help-inline"/>
                                         </div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
+                        <tr>
+                            <td>
+                                <div class="form-group col-md-12">
+                                    <label class="col-md-5 control-lable" for="state">Profiles</label>
+                                    <div class="col-md-7">
+                                        <form:select path="profiles" items="${roles}" multiple="true" itemValue="id" itemLabel="type" class="form-control input-sm"/>
+                                        <div class="has-error">
+                                            <form:errors path="profiles" class="help-inline"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        
                         <!-- /.panel-body -->
                     </tbody>
                 </table>

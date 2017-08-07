@@ -5,9 +5,6 @@
  */
 package com.fich.wafproject.model;
 
-import com.fich.wafproject.model.*;
-import com.fich.wafproject.model.ConfigurationFile;
-import com.fich.wafproject.model.ConfigurationFileAttribute;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -29,7 +26,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author r3ng0
+ * @author joaquin
  */
 @Entity
 @Table(name = "CONFIGURATION_FILE_ATTRIBUTE_GROUPS", catalog = "waf_project", schema = "")
@@ -48,17 +45,19 @@ public class ConfigurationFileAttributeGroups implements Serializable {
     private Long id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 30)
+    @Size(min = 1, max = 100)
     @Column(name = "name")
     private String name;
-    @Size(max = 100)
+    @Size(max = 200)
     @Column(name = "description")
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "configurationFileAttributeGroupsId", fetch = FetchType.LAZY)
-    private List<ConfigurationFileAttribute> configurationFileAttributeList;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "configurationFileAttributeGroups", fetch = FetchType.LAZY)
+    private List<ConfigurationFilesAttributes> configurationFilesAttributes;
+    
     @JoinColumn(name = "configuration_files_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private ConfigurationFile configurationFilesId;
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private ConfigurationFiles configurationFiles;
 
     public ConfigurationFileAttributeGroups() {
     }
@@ -96,20 +95,20 @@ public class ConfigurationFileAttributeGroups implements Serializable {
         this.description = description;
     }
 
-    public List<ConfigurationFileAttribute> getConfigurationFileAttributeList() {
-        return configurationFileAttributeList;
+    public List<ConfigurationFilesAttributes> getConfigurationFilesAttributes() {
+        return configurationFilesAttributes;
     }
 
-    public void setConfigurationFileAttributeList(List<ConfigurationFileAttribute> configurationFileAttributeList) {
-        this.configurationFileAttributeList = configurationFileAttributeList;
+    public void setConfigurationFilesAttributes(List<ConfigurationFilesAttributes> configurationFilesAttributes) {
+        this.configurationFilesAttributes = configurationFilesAttributes;
     }
 
-    public ConfigurationFile getConfigurationFilesId() {
-        return configurationFilesId;
+    public ConfigurationFiles getConfigurationFiles() {
+        return configurationFiles;
     }
 
-    public void setConfigurationFilesId(ConfigurationFile configurationFilesId) {
-        this.configurationFilesId = configurationFilesId;
+    public void setConfigurationFiles(ConfigurationFiles configurationFiles) {
+        this.configurationFiles = configurationFiles;
     }
 
     @Override

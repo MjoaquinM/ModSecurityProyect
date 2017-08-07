@@ -62,3 +62,18 @@ body, #mainWrapper, .form-control{
 a{
     cursor: pointer;
 }
+
+/*Attribute option form*/
+/*.options-row-header,.options-row-body{
+    display: none;
+}*/
+
+/*Side Menu*/
+.sidebar i.fa{
+    margin-right: 10px;
+}
+
+/*Configuration File form*/
+#nameRow{
+    pointer-events: none;
+}

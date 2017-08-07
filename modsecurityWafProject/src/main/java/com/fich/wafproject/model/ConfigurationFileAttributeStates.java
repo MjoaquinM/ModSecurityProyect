@@ -5,8 +5,6 @@
  */
 package com.fich.wafproject.model;
 
-import com.fich.wafproject.model.*;
-import com.fich.wafproject.model.ConfigurationFileAttribute;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -26,7 +24,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author r3ng0
+ * @author joaquin
  */
 @Entity
 @Table(name = "CONFIGURATION_FILE_ATTRIBUTE_STATES", catalog = "waf_project", schema = "")
@@ -50,9 +48,9 @@ public class ConfigurationFileAttributeStates implements Serializable {
     private String name;
     @Size(max = 100)
     @Column(name = "description")
-    private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "configurationFileAttributeStatesId", fetch = FetchType.LAZY)
-    private List<ConfigurationFileAttribute> configurationFileAttributeList;
+    private String description;                       
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "configurationFileAttributeStates", fetch = FetchType.LAZY)
+    private List<ConfigurationFilesAttributes> configurationFilesAttributesList;
 
     public ConfigurationFileAttributeStates() {
     }
@@ -90,12 +88,12 @@ public class ConfigurationFileAttributeStates implements Serializable {
         this.description = description;
     }
 
-    public List<ConfigurationFileAttribute> getConfigurationFileAttributeList() {
-        return configurationFileAttributeList;
+    public List<ConfigurationFilesAttributes> getConfigurationFilesAttributesList() {
+        return configurationFilesAttributesList;
     }
 
-    public void setConfigurationFileAttributeList(List<ConfigurationFileAttribute> configurationFileAttributeList) {
-        this.configurationFileAttributeList = configurationFileAttributeList;
+    public void setConfigurationFilesAttributesList(List<ConfigurationFilesAttributes> configurationFilesAttributesList) {
+        this.configurationFilesAttributesList = configurationFilesAttributesList;
     }
 
     @Override

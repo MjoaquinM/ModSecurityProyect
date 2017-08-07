@@ -3,14 +3,14 @@
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
                 <li>
-                    <a href="<c:url value="/admin" />"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i> Dashboard</a>
+                    <a href="<c:url value="/admin" />"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i>Dashboard</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i>Users Administration</a>
+                    <a href="#"><i class="fa fa-users fa-fw" aria-hidden="true"></i>Users Administration</a>
                 </li>
                 <li class="active">
                     <ul class="nav nav-second-level">
-                        <li> 
+                        <li>
                             <a href="<c:url value="/listUsers" />">User List</a>
                         </li>
                         <li>
@@ -23,7 +23,7 @@
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="<c:url value="/configurationFiles" />"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i>Manage Files Configuration</a>
+                    <a href="<c:url value="/configurationFiles" />"><i class="fa fa-file fa-fw" aria-hidden="true"></i>Manage Files Configuration</a>
                 </li>
                 <li class="active">
                     <ul class="nav nav-third-level collapse in" aria-expanded="true" style="">
@@ -39,7 +39,7 @@
                     <!-- /.nav-third-level -->
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i>Monitoring</a>
+                    <a href="#"><i class="fa fa-eye fa-fw" aria-hidden="true"></i>Monitoring</a>
                 </li>
                 <li class="active">
                     <ul class="nav nav-third-level collapse in" aria-expanded="true" style="">

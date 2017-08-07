@@ -47,8 +47,6 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
          
         Collection<? extends GrantedAuthority> authorities =  authentication.getAuthorities();
         
-        System.out.print("HOLAAAAAAAAAAAAAAAAAA");
-        
         List<String> roles = new ArrayList<String>();
  
         for (GrantedAuthority a : authorities) {

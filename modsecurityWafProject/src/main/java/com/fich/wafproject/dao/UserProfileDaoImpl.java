@@ -16,25 +16,25 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
  
-import com.fich.wafproject.model.UserProfile;
+import com.fich.wafproject.model.UserProfiles;
  
 @Repository("userProfileDao")
-public class UserProfileDaoImpl extends AbstractDao<Integer, UserProfile>implements UserProfileDao{
+public class UserProfileDaoImpl extends AbstractDao<Long, UserProfiles>implements UserProfileDao{
  
     @SuppressWarnings("unchecked")
-    public List<UserProfile> findAll(){
+    public List<UserProfiles> findAll(){
         Criteria crit = createEntityCriteria();
         crit.addOrder(Order.asc("type"));
-        return (List<UserProfile>)crit.list();
+        return (List<UserProfiles>)crit.list();
     }
      
-    public UserProfile findById(int id) {
+    public UserProfiles findById(Long id) {
         return getByKey(id);
     }
      
-    public UserProfile findByType(String type) {
+    public UserProfiles findByType(String type) {
         Criteria crit = createEntityCriteria();
         crit.add(Restrictions.eq("type", type));
-        return (UserProfile) crit.uniqueResult();
+        return (UserProfiles) crit.uniqueResult();
     }
 }

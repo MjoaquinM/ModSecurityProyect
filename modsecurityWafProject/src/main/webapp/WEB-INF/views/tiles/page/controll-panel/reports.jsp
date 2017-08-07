@@ -8,6 +8,6 @@
     </div>
     <!-- /.row -->
     <div class="row">
-        <h1>ACA VA LA CONFIGURACIÓN DE LAS REGLAS TIPO NA</h1>
+        <h1>ACA VA LA CONFIGURACIÓN DE LAS REGLAS</h1>
     </div>
 </div>

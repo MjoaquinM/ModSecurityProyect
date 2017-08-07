@@ -8,7 +8,7 @@
     </div>
     <!-- /.row -->
     <div class="row">
-        <h1>ACA VA EL HISTORIAL CRONOLÓGICO (¿?) TIPO NA</h1>
+        <h1>ACA VA EL HISTORIAL CRONOLÓGICO</h1>
     </div>
 </div>
    

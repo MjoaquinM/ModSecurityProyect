@@ -1,5 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page isELIgnored="false" %>
+
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
@@ -27,16 +31,16 @@
                     <tbody>
                         <c:forEach items="${users}" var="user">
                         <tr>
-                            <td> ${user.ssoId}</td>
+                            <td> ${user.userName}</td>
                             <td> ${user.firstName}</td>
                             <td> ${user.lastName}</td>
                             <td> ${user.email}</td>
-                            <td> ${user.state}</td>
-                            <td> 
+                            <td> ${user.userStates.name}</td>
+                            <td>
                                 <a href="#" class="btn btn-success" id="edit-user-button" data-action="edit" data-id="${user.id}">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                 </a>
-                                <a class="btn btn-primary" id="remove-user-button" data-action="remove" data-id="${user.id}">
+                                <a class="btn btn-danger" id="remove-user-button" data-action="remove" data-id="${user.id}">
                                     <i class="fa fa-times" aria-hidden="true"></i>
                                 </a>
                             </td>
@@ -52,23 +56,3 @@
 <form:form method="POST" action="deleteUser" id="delete-user-form">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 </form:form>
-
-<div class="modal fade" id="userModal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="userModalTitel"></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" id="modal-body-add-user">
-          <img id="loading-image-modal" src="<c:url value='/static/img/loading.png'/>"></img>
-          <div id="userModalBody"></div>
-      </div>
-      <div class="modal-footer" id="addUserModalFooter">
-          
-      </div>
-    </div>
-  </div>
-</div>
