@@ -36,10 +36,10 @@
                             <c:out value="${currentFile.configurationFileStates.name}"/>
                         </td>
                         <td>
-                            <a href="#" class="btn btn-success" id="edit-file-configuration-button" data-action="edit" data-id="${currentFile.id}" data-redirect-to="">
+                            <a href="#" class="btn btn-success" id="" data-action="edit" data-id="${currentFile.id}" data-redirect-to="">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                             </a>    
-                            <a href="<c:url value="/deleteFileconfiguration?id=${currentFile.id}" />" class="btn btn-danger" id="remove-config-file-button" data-action="remove">
+                            <a href="" class="btn btn-danger" id="" data-action="remove">
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </a>
                         </td>
