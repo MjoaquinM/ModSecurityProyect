@@ -3,9 +3,9 @@ package com.fich.wafproject.service;
 
 import com.fich.wafproject.dao.EventDao;
 import com.fich.wafproject.model.Event;
-import com.fich.wafproject.model.EventsRules;
-import com.fich.wafproject.model.Files;
-import com.fich.wafproject.model.Rules;
+import com.fich.wafproject.model.EventRule;
+import com.fich.wafproject.model.File;
+import com.fich.wafproject.model.Rule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ public class AuditLogServiceImpl implements AuditLogService {
         eventDao.saveEvent(event);
     }
      
-    public void saveAuditLog (Event event, EventsRules eventRule, Rules rule, Files file){
+    public void saveAuditLog (Event event, EventRule eventRule, Rule rule, File file){
         
     }
     

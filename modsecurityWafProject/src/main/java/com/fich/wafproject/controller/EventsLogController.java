@@ -1,11 +1,7 @@
 package com.fich.wafproject.controller;
 
 import com.mysql.jdbc.Connection;
-import com.fich.wafproject.model.Events;
 import com.fich.wafproject.model.Event;
-import com.fich.wafproject.model.EventsRules;
-import com.fich.wafproject.model.Files;
-import com.fich.wafproject.model.Rules;
 import com.fich.wafproject.model.EventRule;
 import com.fich.wafproject.model.File;
 import com.fich.wafproject.model.Rule;
@@ -379,6 +375,9 @@ public class EventsLogController {
     @RequestMapping(value = "/eventList/{pageNumber}", method = RequestMethod.GET)
     public String EventList(@PathVariable int pageNumber, ModelMap model) {
         List<Event> events = eventService.findAllEvents(pageNumber);
+        for (Event e : events){
+            System.out.println("ID Evento: " + e.getId());
+        }
         model.addAttribute("lst",events);
         model.addAttribute("pageNumber",pageNumber);
         System.out.println("PARAMETRO RECIBIDO: " + pageNumber);
