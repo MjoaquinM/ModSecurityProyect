@@ -35,6 +35,10 @@ public class ConfigurationFileAttributeGroupsServiceImpl implements Configuratio
     public void delete(Long cfagId) {
         dao.delete(cfagId);
     }
+    
+    public void deleteByEntity(ConfigurationFileAttributeGroups cfag){
+        dao.deleteByEntity(cfag);
+    }
 
     public ConfigurationFileAttributeGroups findById(Long id) {
         return dao.findById(id);

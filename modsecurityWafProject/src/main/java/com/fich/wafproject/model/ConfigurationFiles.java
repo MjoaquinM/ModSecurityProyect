@@ -23,6 +23,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -62,7 +64,8 @@ public class ConfigurationFiles implements Serializable {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private ConfigurationFileStates configurationFileStates;
     
-    @OneToMany(cascade = CascadeType.DETACH, mappedBy = "configurationFiles", fetch = FetchType.EAGER)
+//    @OneToMany(cascade = CascadeType.DETACH, mappedBy = "configurationFiles", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "configurationFiles", fetch = FetchType.EAGER)
     private List<ConfigurationFileAttributeGroups> configurationFileAttributeGroups;
 
     public ConfigurationFiles() {

@@ -353,6 +353,39 @@ $(document).ready(function () {
         $('#deleteAttrForm').submit();
     });
     
+    //This is to set current options on select attributes in configuration file template page
+    $('.file-config-page-select-attr').find('option').attr('selected',false);
+    $('.file-config-page-current-value-attr-label').each(function(){
+        var text = $(this).text();
+        $(this).parent().parent().find('.file-config-page-select-attr').find('option').each(function(){
+            if($(this).text()==text){
+                $(this).parent().val($(this).val());
+                return false;
+            }
+        });
+    });
+    
+    //When select option change -> update the hidden value attr input
+    $('.file-config-page-select-attr').on('change',function(){
+        $(this).parent().parent('tr').find('.file-config-page-current-value-attr').val($(this).find('option:selected').text());
+    });
+    
+    $('.file-config-page-text-number-attr').on('keyup click',function(){
+       $(this).parent().parent('tr').find('.file-config-page-current-value-attr').val($(this).val());
+    });
+    
+    //Apply configuration
+    $('#apply-configuration').on('click',function(){
+        
+        $('#configurationFrom').submit();
+    });
+    
+    
+    
+    
+    
+//    $('div:contains("test")');
+    
     /**
      * SPECIFIC CONFIGURATION FILE TEMPLATE - EDIT ATTRIBUTES END
      */

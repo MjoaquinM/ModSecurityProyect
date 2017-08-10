@@ -32,6 +32,10 @@ public class ConfigurationFileAttributeGroupsDaoImpl extends AbstractDao<Long, C
         ConfigurationFileAttributeGroups cfag = this.findById(cfagId);
         delete(cfag);
     }
+    
+    public void deleteByEntity(ConfigurationFileAttributeGroups cfag){
+        delete(cfag);
+    }
      
     public ConfigurationFileAttributeGroups findById(Long id) {
         return getByKey(id);

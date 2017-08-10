@@ -5,6 +5,7 @@
  */
 package com.fich.wafproject.dao;
 
+import com.fich.wafproject.model.ConfigurationFileAttributeGroups;
 import com.fich.wafproject.model.ConfigurationFilesAttributes;
 import java.util.List;
 import org.hibernate.Criteria;
@@ -35,7 +36,7 @@ public class ConfigurationFileAttributeDaoImpl extends AbstractDao<Long, Configu
     };
     
     
-    public List<ConfigurationFilesAttributes> findByFileConfiguration(Long idFc){
+    public List<ConfigurationFilesAttributes> findByFileConfigurationGroup(Long idFc){
         Criteria crit = createEntityCriteria().setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         crit.add(Restrictions.eq("configurationFileAttributeGroups.id", idFc));
         return (List<ConfigurationFilesAttributes>) crit.list();
@@ -55,6 +56,17 @@ public class ConfigurationFileAttributeDaoImpl extends AbstractDao<Long, Configu
     public void delete(Long id){
         ConfigurationFilesAttributes cfa = this.findById(id);
         delete(cfa);
+    }
+    
+    public void deleteByEntity(ConfigurationFilesAttributes cfa){
+        delete(cfa);
+    }
+    
+    public List<ConfigurationFilesAttributes> findByFileConfiguration(Long id) {
+        Criteria crit = this.createEntityCriteria();
+        crit.createAlias("configurationFileAttributeGroups", "cfag")
+                .add(Restrictions.eq("cfag.configurationFiles.id", id));
+        return (List<ConfigurationFilesAttributes>) crit.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
     }
     
 }

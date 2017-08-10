@@ -30,7 +30,6 @@ public class UserProfileServiceImpl implements UserProfileService{
     }
  
     public UserProfiles findByType(String type){
-        System.out.println("ESTOY EN LA LONA 1");
         return dao.findByType(type);
     }
  

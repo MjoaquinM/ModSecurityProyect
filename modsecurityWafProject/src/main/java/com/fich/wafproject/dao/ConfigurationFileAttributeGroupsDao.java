@@ -27,5 +27,7 @@ public interface ConfigurationFileAttributeGroupsDao {
     
     void delete(Long cfagId);
     
+    void deleteByEntity(ConfigurationFileAttributeGroups cfag);
+    
     List<ConfigurationFilesAttributes> getConfigurationFileAttributes(Long cfagId);
 }

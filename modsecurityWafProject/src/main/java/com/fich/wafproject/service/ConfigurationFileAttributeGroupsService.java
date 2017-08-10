@@ -21,6 +21,8 @@ public interface ConfigurationFileAttributeGroupsService {
     
     void delete (Long cfagId);
     
+    void deleteByEntity(ConfigurationFileAttributeGroups cfag);
+    
     ConfigurationFileAttributeGroups findById(Long id);
     
     ConfigurationFileAttributeGroups findByName(String name);

@@ -32,7 +32,7 @@ CREATE TABLE `CONFIGURATION_FILES` (
   UNIQUE KEY `configuration_file_unq` (`name`,`path_name`),
   KEY `configuration_files_fk_configuration_file_states` (`configuration_file_states_id`),
   CONSTRAINT `configuration_files_fk_configuration_file_states` FOREIGN KEY (`configuration_file_states_id`) REFERENCES `CONFIGURATION_FILE_STATES` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `CONFIGURATION_FILES` (
 
 LOCK TABLES `CONFIGURATION_FILES` WRITE;
 /*!40000 ALTER TABLE `CONFIGURATION_FILES` DISABLE KEYS */;
-INSERT INTO `CONFIGURATION_FILES` VALUES (1,'MyNewFile','/home/joaquin/Escritorio/file','This is a test file - 1. nada',1),(4,'modsecurity.conf','/etc/modsecurity/modsecurity.conf','This file contain configuration parameters of modsecurity waf.',1),(5,'modsecurity.conf-recommended','/etc/modsecurity/modsecurity.conf-recommended','asdfas',1);
+INSERT INTO `CONFIGURATION_FILES` VALUES (1,'MyNewFile','/home/joaquin/Escritorio/file','This is a test file - 1. nada',1),(4,'modsecurity.conf','/etc/modsecurity/modsecurity.conf','This file contain configuration parameters of modsecurity waf.',1),(5,'modsecurity.conf-recommended','/etc/modsecurity/modsecurity.conf-recommended','pone algo serio che',1);
 /*!40000 ALTER TABLE `CONFIGURATION_FILES` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -68,7 +68,7 @@ CREATE TABLE `CONFIGURATION_FILES_ATTRIBUTES` (
   CONSTRAINT `conf_files_attr_fk_conf_files_attr_type` FOREIGN KEY (`configuration_file_attribute_type_id`) REFERENCES `CONFIGURATION_FILE_ATTRIBUTE_TYPE` (`id`),
   CONSTRAINT `configuration_files_attributes_fk_cfag` FOREIGN KEY (`configuration_file_attribute_groups_id`) REFERENCES `CONFIGURATION_FILE_ATTRIBUTE_GROUPS` (`id`),
   CONSTRAINT `configuration_files_attributes_fk_cfas` FOREIGN KEY (`configuration_file_attribute_states_id`) REFERENCES `CONFIGURATION_FILE_ATTRIBUTE_STATES` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,7 +77,7 @@ CREATE TABLE `CONFIGURATION_FILES_ATTRIBUTES` (
 
 LOCK TABLES `CONFIGURATION_FILES_ATTRIBUTES` WRITE;
 /*!40000 ALTER TABLE `CONFIGURATION_FILES_ATTRIBUTES` DISABLE KEYS */;
-INSERT INTO `CONFIGURATION_FILES_ATTRIBUTES` VALUES (38,'SecRuleEngine','DetectionOnly','Enable ModSecurity, attaching it to every transaction. Use detection only to start with, because that minimises the chances of post-installation disruption',2,2,17),(39,'SecRequestBodyAccess','On','Allow ModSecurity to access request bodies. If you don\'t, ModSecurity won\'t be able to see any POST parameters, which opens a large security hole for attackers to exploit',2,2,18),(40,'SecRequestBodyLimit','13107200','Maximum request body size we will accept for buffering. If you support file uploads then the value given on the first line has to be as large as the largest file you are willing to accept',4,2,18),(41,'SecRequestBodyNoFilesLimit','131072','The second value refers to the size of data, with files excluded. You want to keep that value as low as practical',4,2,18),(42,'SecRequestBodyInMemoryLimit','131072','Store up to 128 KB of request body data in memory. When the multipart parser reachers this limit, it will start using your hard disk for storage. That is slow, but unavoidable',4,2,18),(43,'SecRequestBodyLimitAction','Reject','What do do if the request body size is above our configured limit. Keep in mind that this setting will automatically be set to ProcessPartial when SecRuleEngine is set to DetectionOnly mode in order to minimize disruptions when initially deploying ModSecurity',3,2,18),(44,'SecPcreMatchLimit','1000','PCRE Tuning We want to avoid a potential RegEx DoS condition',4,2,18),(45,'SecPcreMatchLimitRecursion','1000','PCRE Tuning We want to avoid a potential RegEx DoS condition',4,2,18),(46,'SecResponseBodyAccess','On','Allow ModSecurity to access response bodies. \r\nYou should have this directive enabled in order to identify errors and data leakage issues.\r\nDo keep in mind that enabling this directive does increases both memory consumption and response latency',2,2,19),(47,'SecResponseBodyMimeType','text/plain','Which response MIME types do you want to inspect? You should adjust the configuration below to catch documents but avoid static files (e.g., images and archives).',3,2,19),(48,'SecResponseBodyLimit','524288','Buffer response bodies of up to 512 KB in length',4,2,19),(49,'SecResponseBodyLimitAction','ProcessPartial','What happens when we encounter a response body larger than the configured limit? By default, we process what we have and let the rest through.\r\nThat\'s somewhat less secure, but does not break any legitimate pages',3,2,19),(51,'SecTmpDir','/tmp/','The location where ModSecurity stores temporary files (for example, when it needs to handle a file upload that is larger than the configured limit).\r\nThis default setting is chosen due to all systems have /tmp available however, this is less than ideal. It is recommended that you specify a location that\'s private.',1,2,20),(52,'SecDataDir','/tmp/','The location where ModSecurity will keep its persistent data.  This default setting is chosen due to all systems have /tmp available however, it too should be updated to a place that other users can\'t access',1,2,20),(53,'SecUploadDir','/opt/modsecurity/var/upload/','The location where ModSecurity stores intercepted uploaded files. This location must be private to ModSecurity. You don\'t want other users on the server to access the files, do you?',1,2,21),(54,'SecUploadKeepFiles','RelevantOnly','By default, only keep the files that were determined to be unusual in some way (by an external inspection script). For this to work you will also need at least one file inspection rule',2,2,21),(55,'SecUploadFileMode','0600','Uploaded files are by default created with permissions that do not allow any other user to access them. You may need to relax that if you want to interface ModSecurity to an external program (e.g., an anti-virus).',4,2,21),(56,'SecDebugLog','/opt/modsecurity/var/log/debug.log','The default debug log configuration is to duplicate the error, warning and notice messages from the error log',1,1,22),(57,'SecDebugLogLevel','3','The default debug log configuration is to duplicate the error, warning and notice messages from the error log',4,1,22),(58,'SecAuditEngine','RelevantOnly','Log the transactions that are marked by a rule, as well as those that trigger a server error (determined by a 5xx or 4xx, excluding 404,  level response status codes).',2,2,23),(59,'SecAuditLogRelevantStatus','\"^(?:5|4(?!04))\"','Log the transactions that are marked by a rule, as well as those that trigger a server error (determined by a 5xx or 4xx, excluding 404, level response status codes)',1,2,23),(60,'SecAuditLogParts','ABIJDEFHZ','Log everything we know about a transaction',1,2,23),(61,'SecAuditLogType','Serial','Use a single file for logging. This is much easier to look at, but assumes that you will use the audit log only ocassionally',2,2,23),(62,'SecAuditLog','/var/log/apache2/modsec_audit.log','Use a single file for logging. This is much easier to look at, but assumes that you will use the audit log only ocassionally',1,2,23),(63,'SecAuditLogStorageDir','/opt/modsecurity/var/audit/','Specify the path for concurrent audit logging',1,1,23),(64,'SecArgumentSeparator','&','Use the most commonly used application/x-www-form-urlencoded parameter separator. There\'s probably only one application somewhere that uses something else so don\'t expect to change this value',1,2,24),(65,'SecCookieFormat','0','Settle on version 0 (zero) cookies, as that is what most applications use. Using an incorrect cookie version may open your installation to evasion attacks (against the rules that examine named cookies)',4,2,24),(66,'SecUnicodeMapFile','unicode.mapping 20127','Specify your Unicode Code Point. This mapping is used by the t:urlDecodeUni transformation function to properly map encoded data to your language. Properly setting these directives helps to reduce false positives and negatives.',1,2,24),(67,'SecStatusEngine','On','Improve the quality of ModSecurity by sharing information about your current ModSecurity version and dependencies versions. The following information will be shared: ModSecurity version, Web Server version, APR version, PCRE version, Lua version, Libxml2 version, Anonymous unique id for host.',2,2,24),(68,'Test attribute 1','Opt 1 - Test attribute 1','Test attribute 1 - Description',2,2,25);
+INSERT INTO `CONFIGURATION_FILES_ATTRIBUTES` VALUES (38,'SecRuleEngine','Off',NULL,2,1,17),(39,'SecRequestBodyAccess','On',NULL,2,2,18),(40,'SecRequestBodyLimit','13107200',NULL,4,2,18),(41,'SecRequestBodyNoFilesLimit','131072',NULL,4,2,18),(42,'SecRequestBodyInMemoryLimit','131072',NULL,4,2,18),(43,'SecRequestBodyLimitAction','ProcessPartial',NULL,3,2,18),(44,'SecPcreMatchLimit','1000',NULL,4,2,18),(45,'SecPcreMatchLimitRecursion','1000',NULL,4,2,18),(46,'SecResponseBodyAccess','On',NULL,2,2,19),(47,'SecResponseBodyMimeType','text/plain',NULL,3,2,19),(48,'SecResponseBodyLimit','524288',NULL,4,2,19),(49,'SecResponseBodyLimitAction','ProcessPartial',NULL,3,2,19),(51,'SecTmpDir','/tmp/',NULL,1,2,20),(52,'SecDataDir','/tmp/',NULL,1,2,20),(53,'SecUploadDir','/opt/modsecurity/var/upload/',NULL,1,2,21),(54,'SecUploadKeepFiles','RelevantOnly',NULL,2,2,21),(55,'SecUploadFileMode','0600',NULL,4,2,21),(56,'SecDebugLog','/opt/modsecurity/var/log/debug.log',NULL,1,1,22),(57,'SecDebugLogLevel','3',NULL,4,1,22),(58,'SecAuditEngine','RelevantOnly',NULL,2,2,23),(59,'SecAuditLogRelevantStatus','\"^(?:5|4(?!04))\"',NULL,1,2,23),(60,'SecAuditLogParts','ABIJDEFHZ',NULL,1,2,23),(61,'SecAuditLogType','Serial',NULL,2,2,23),(62,'SecAuditLog','/var/log/apache2/modsec_audit.log',NULL,1,2,23),(63,'SecAuditLogStorageDir','/opt/modsecurity/var/audit/',NULL,1,1,23),(64,'SecArgumentSeparator','&',NULL,1,2,24),(65,'SecCookieFormat','0',NULL,4,2,24),(66,'SecUnicodeMapFile','unicode.mapping 20127',NULL,1,2,24),(67,'SecStatusEngine','On',NULL,2,2,24),(76,'attr 1','opt 1','This is option 1',3,2,27),(77,'attr 2','83787324','This is option 2',4,2,27);
 /*!40000 ALTER TABLE `CONFIGURATION_FILES_ATTRIBUTES` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +97,7 @@ CREATE TABLE `CONFIGURATION_FILE_ATTRIBUTE_GROUPS` (
   UNIQUE KEY `configuration_file_attribute_groups_unq` (`name`,`configuration_files_id`),
   KEY `configuration_file_attribute_groups_fk_configuration_files` (`configuration_files_id`),
   CONSTRAINT `configuration_file_attribute_groups_fk_configuration_files` FOREIGN KEY (`configuration_files_id`) REFERENCES `CONFIGURATION_FILES` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,7 +106,7 @@ CREATE TABLE `CONFIGURATION_FILE_ATTRIBUTE_GROUPS` (
 
 LOCK TABLES `CONFIGURATION_FILE_ATTRIBUTE_GROUPS` WRITE;
 /*!40000 ALTER TABLE `CONFIGURATION_FILE_ATTRIBUTE_GROUPS` DISABLE KEYS */;
-INSERT INTO `CONFIGURATION_FILE_ATTRIBUTE_GROUPS` VALUES (17,'Rule engine initialization','Rule engine initialization - Description',4),(18,'Request body handling','Request body handling - Description',4),(19,'Response body handling','Response body handling - Desc',4),(20,'Filesystem configuration','Filesystem configuration - Description',4),(21,'File uploads handling configuration','File uploads handling configuration - Description',4),(22,'Debug log configuration','Debug log configuration - Description',4),(23,'Audit log configuration','Audit log configuration - Description',4),(24,'Miscellaneous','Miscellaneous - Description',4),(25,'Group test 1','Group test 1 - Description',1);
+INSERT INTO `CONFIGURATION_FILE_ATTRIBUTE_GROUPS` VALUES (17,'Rule engine initialization','Rule engine initialization - Description',4),(18,'Request body handling','Request body handling - Description',4),(19,'Response body handling','Response body handling - Desc',4),(20,'Filesystem configuration','Filesystem configuration - Description',4),(21,'File uploads handling configuration','File uploads handling configuration - Description',4),(22,'Debug log configuration','Debug log configuration - Description',4),(23,'Audit log configuration','Audit log configuration - Description',4),(24,'Miscellaneous','Miscellaneous - Description',4),(27,'Group 1','This is the first group',1);
 /*!40000 ALTER TABLE `CONFIGURATION_FILE_ATTRIBUTE_GROUPS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -126,7 +126,7 @@ CREATE TABLE `CONFIGURATION_FILE_ATTRIBUTE_OPTIONS` (
   UNIQUE KEY `configuration_file_attribute_options_unq` (`name`,`configuration_files_attributes_id`),
   KEY `configuration_file_attribute_options_fk_cfa` (`configuration_files_attributes_id`),
   CONSTRAINT `configuration_file_attribute_options_fk_cfa` FOREIGN KEY (`configuration_files_attributes_id`) REFERENCES `CONFIGURATION_FILES_ATTRIBUTES` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -135,7 +135,7 @@ CREATE TABLE `CONFIGURATION_FILE_ATTRIBUTE_OPTIONS` (
 
 LOCK TABLES `CONFIGURATION_FILE_ATTRIBUTE_OPTIONS` WRITE;
 /*!40000 ALTER TABLE `CONFIGURATION_FILE_ATTRIBUTE_OPTIONS` DISABLE KEYS */;
-INSERT INTO `CONFIGURATION_FILE_ATTRIBUTE_OPTIONS` VALUES (1,'On',NULL,38),(2,'Off',NULL,38),(3,'DetectionOnly',NULL,38),(4,'On',NULL,39),(5,'Off',NULL,39),(6,'Reject',NULL,43),(7,'ProcessPartial',NULL,43),(8,'On',NULL,46),(9,'Off',NULL,46),(10,'text/plain',NULL,47),(11,'text/html',NULL,47),(12,'text/xml',NULL,47),(15,'ProcessPartial',NULL,49),(16,'Rject',NULL,49),(17,'RelevantOnly',NULL,54),(18,'RelevantOnly',NULL,58),(19,'Serial',NULL,61),(20,'On',NULL,67),(21,'Off',NULL,67),(22,'Opt 1 - Test attribute 1',NULL,68),(23,'Opt 2 - Test attribute 1',NULL,68);
+INSERT INTO `CONFIGURATION_FILE_ATTRIBUTE_OPTIONS` VALUES (4,'On',NULL,39),(5,'Off',NULL,39),(6,'Reject',NULL,43),(7,'ProcessPartial',NULL,43),(8,'On',NULL,46),(9,'Off',NULL,46),(10,'text/plain',NULL,47),(11,'text/html',NULL,47),(12,'text/xml',NULL,47),(15,'ProcessPartial',NULL,49),(16,'Rject',NULL,49),(17,'RelevantOnly',NULL,54),(18,'RelevantOnly',NULL,58),(19,'Serial',NULL,61),(20,'On',NULL,67),(21,'Off',NULL,67),(32,'On',NULL,38),(33,'Off',NULL,38),(34,'DetectionOnly',NULL,38),(37,'opt 1',NULL,76),(38,'opt 2',NULL,76);
 /*!40000 ALTER TABLE `CONFIGURATION_FILE_ATTRIBUTE_OPTIONS` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -338,4 +338,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-08-07 10:43:37
+-- Dump completed on 2017-08-09 21:13:55

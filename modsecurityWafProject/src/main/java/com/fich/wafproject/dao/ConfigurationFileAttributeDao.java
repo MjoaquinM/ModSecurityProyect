@@ -20,7 +20,11 @@ public interface ConfigurationFileAttributeDao {
     
     void delete(Long id);
     
-    List<ConfigurationFilesAttributes> findByFileConfiguration(Long idFc);
+    void deleteByEntity(ConfigurationFilesAttributes cfa);
+    
+    List<ConfigurationFilesAttributes> findByFileConfigurationGroup(Long idFc);
+    
+    public List<ConfigurationFilesAttributes> findByFileConfiguration(Long id);
      
     ConfigurationFilesAttributes findByName(String name);
     

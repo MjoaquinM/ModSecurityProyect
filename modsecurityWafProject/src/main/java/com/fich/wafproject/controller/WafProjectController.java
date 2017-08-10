@@ -274,19 +274,15 @@ public class WafProjectController {
     public String configurationPageTemplate(ModelMap model, @RequestParam("currentFile") String currentFile) {
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
         ConfigurationFiles currentConfigFile = configurationFileService.findByName(currentFile);
+        currentConfigFile = configurationFileService.findById(currentConfigFile.getId());
         
-        List<ConfigurationFileAttributeGroups> cfags = currentConfigFile.getConfigurationFileAttributeGroups();
-        List<List<ConfigurationFilesAttributes>> cfaEachGroup = new ArrayList<List<ConfigurationFilesAttributes>>();
-        for(ConfigurationFileAttributeGroups cfag : cfags){
-            cfaEachGroup.add(configurationFileAttributeService.findByFileConfiguration(cfag.getId()));
-        }
         /*<Build data modal>*/
         model.addAttribute("idModal", "fileConfigurationTemplateModal");
         /*<Build data modal - end>*/
         model.addAttribute("configFiles",configurationFilesAll);
         model.addAttribute("user",getPrincipal());
         model.addAttribute("currentFile",currentConfigFile);
-        model.addAttribute("allFileAttributes",cfaEachGroup);
+//        model.addAttribute("allFileAttributes",cfaEachGroup);
         return "configurationFilesTemplate";
     }
     
@@ -299,17 +295,13 @@ public class WafProjectController {
         if (cfagId != -1){
             cfag = configurationFileAttributeGroupsService.findById(cfagId);
         }
-        boolean flagRender = true;
         ConfigurationFiles currentConfigFile = new ConfigurationFiles();
         if (cfId != -1){
             currentConfigFile = configurationFileService.findById(cfId);
             cfag.setConfigurationFiles(currentConfigFile);
-        }else{
-            flagRender = false;
         }
         model.addAttribute("currentConfigFile",cfId);
         model.addAttribute("action","manageFileConfigurationAttrGroup");
-        model.addAttribute("isDrawable",flagRender);
         model.addAttribute("configFileAttrGroup",cfag);
         return "addFileConfigurationAttrGroupForm";
     }
@@ -345,7 +337,7 @@ public class WafProjectController {
         List<List<ConfigurationFilesAttributes>> cfaEachGroup = new ArrayList<List<ConfigurationFilesAttributes>>();
         
         for(ConfigurationFileAttributeGroups cfagg : cfags){
-            cfaEachGroup.add(configurationFileAttributeService.findByFileConfiguration(cfagg.getId()));
+            cfaEachGroup.add(configurationFileAttributeService.findByFileConfigurationGroup(cfagg.getId()));
         }
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
         /*<Build data modal>*/
@@ -363,21 +355,16 @@ public class WafProjectController {
      */
     @RequestMapping(value = "/deleteFileConfigurationAttrGroup", method = RequestMethod.POST)
     public String deleteFileConfigurationAttrGroup(ModelMap model, @RequestParam("cfag-id") Long id) {
-        Long ccf = configurationFileAttributeGroupsService.findById(id).getConfigurationFiles().getId();
-        configurationFileAttributeGroupsService.delete(id);
-        ConfigurationFiles currentConfigFile = configurationFileService.findById(ccf);
+        ConfigurationFileAttributeGroups cfag = configurationFileAttributeGroupsService.findById(id);
+        ConfigurationFiles currentConfigFile = cfag.getConfigurationFiles();
+        currentConfigFile.getConfigurationFileAttributeGroups().remove(cfag);
+        configurationFileAttributeGroupsService.deleteByEntity(cfag);
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();        
-        List<ConfigurationFileAttributeGroups> cfags = currentConfigFile.getConfigurationFileAttributeGroups();
-        List<List<ConfigurationFilesAttributes>> cfaEachGroup = new ArrayList<List<ConfigurationFilesAttributes>>();
-        for(ConfigurationFileAttributeGroups cfag : cfags){
-            cfaEachGroup.add(configurationFileAttributeService.findByFileConfiguration(cfag.getId()));
-        }
         
         /*<Build data modal>*/
         model.addAttribute("idModal", "fileConfigurationTemplateModal");
         /*<Build data modal - end>*/
         
-        model.addAttribute("allFileAttributes",cfaEachGroup);
         model.addAttribute("configFiles",configurationFilesAll);
         model.addAttribute("user",getPrincipal());
         model.addAttribute("currentFile",currentConfigFile);
@@ -413,12 +400,6 @@ public class WafProjectController {
     @RequestMapping(value = "/saveNewFileConfigurationAttr", method = RequestMethod.POST)
     public String saveNewFileConfigurationAttr(@Valid ConfigurationFilesAttributes cfa,
             BindingResult result, ModelMap model, @RequestParam("currentConfigFile") Long cfId){
-//        System.out.println(cfa.getConfigurationFileAttributeGroups());
-//        System.out.println(cfa.getConfigurationFileAttributeStates());
-//        System.out.println(cfa.getConfigurationFileAttributeType());
-//        System.out.println(cfa.getDescription());
-//        System.out.println(cfa.getName());
-//        System.out.println(cfa.getValue());
         if (result.hasErrors()) {
             for (Object object : result.getAllErrors()) {
                 if(object instanceof FieldError) {
@@ -450,7 +431,7 @@ public class WafProjectController {
         List<ConfigurationFileAttributeGroups> cfags = currentConfigFile.getConfigurationFileAttributeGroups();
         List<List<ConfigurationFilesAttributes>> cfaEachGroup = new ArrayList<List<ConfigurationFilesAttributes>>();
         for(ConfigurationFileAttributeGroups cfag : cfags){
-            cfaEachGroup.add(configurationFileAttributeService.findByFileConfiguration(cfag.getId()));
+            cfaEachGroup.add(configurationFileAttributeService.findByFileConfigurationGroup(cfag.getId()));
         }
         
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
@@ -469,21 +450,17 @@ public class WafProjectController {
      */
     @RequestMapping(value = "/deleteFileconfigurationAttr")//, method = RequestMethod.POST)
     public String deleteFileconfigurationAttr(ModelMap model, @RequestParam("id") Long id) {
-        ConfigurationFiles currentConfigFile = configurationFileAttributeService.findById(id).getConfigurationFileAttributeGroups().getConfigurationFiles();
-        configurationFileAttributeService.delete(id);
+        ConfigurationFilesAttributes cfaToDelete = configurationFileAttributeService.findById(id);
+        ConfigurationFileAttributeGroups cfag = cfaToDelete.getConfigurationFileAttributeGroups();
+        cfag.getConfigurationFilesAttributes().remove(cfaToDelete);
+        configurationFileAttributeService.deleteByEntity(cfaToDelete);
         List<ConfigurationFiles> cfs = configurationFileService.findAll();
-        List<ConfigurationFileAttributeGroups> cfags = currentConfigFile.getConfigurationFileAttributeGroups();
-        List<List<ConfigurationFilesAttributes>> cfaEachGroup = new ArrayList<List<ConfigurationFilesAttributes>>();
-        for(ConfigurationFileAttributeGroups cfag : cfags){
-            cfaEachGroup.add(configurationFileAttributeService.findByFileConfiguration(cfag.getId()));
-        }
         /*<Build data modal>*/
         model.addAttribute("idModal", "fileConfigurationTemplateModal");
         /*<Build data modal - end>*/
         model.addAttribute("configFiles",cfs);
         model.addAttribute("user",getPrincipal());
-        model.addAttribute("currentFile",currentConfigFile);
-        model.addAttribute("allFileAttributes",cfaEachGroup);
+        model.addAttribute("currentFile",cfag.getConfigurationFiles());
         return "configurationFilesTemplate";
     }
     
@@ -514,12 +491,10 @@ public class WafProjectController {
             ls.add("error");
             e.printStackTrace();
         }
-
         return ls;
     }
     
     /******************************Files Configuration Module - END*********************************/
-    
     
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(ModelMap model) {
