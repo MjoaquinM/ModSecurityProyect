@@ -11,7 +11,7 @@
                 <li class="active">
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="<c:url value="/listUsers" />">User List</a>
+                            <a href="<c:url value="/users/list" />">User List</a>
                         </li>
                         <li>
                             <a href="<c:url value="/historyUsers" />">User History</a>

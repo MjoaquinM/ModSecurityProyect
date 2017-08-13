@@ -2,6 +2,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div id="page-wrapper">
+    <c:choose>
+        <c:when test="${not empty message!=''}">
+            <div class="alert alert-${messageClass}">
+                ${message}
+            </div>
+        </c:when>
+    </c:choose>
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">${currentFile.name}</h1>
@@ -39,7 +46,7 @@
                             ${currentFile.configurationFileAttributeGroups[0].configurationFilesAttributes[1].configurationFileAttributeOptions[0].name}
                         </td>
                         <td>
-                            <a href="#" class="btn btn-success" id="" data-action="edit" data-id="${currentFile.id}" data-redirect-to="">
+                            <a href="#" class="btn btn-success" id="edit-file-configuration-button" data-action="edit" data-id="${currentFile.id}" data-redirect-to="confFileTemp">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                             </a>    
                             <a href="" class="btn btn-danger" id="" data-action="remove">

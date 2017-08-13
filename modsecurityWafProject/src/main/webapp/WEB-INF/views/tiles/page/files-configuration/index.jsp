@@ -3,12 +3,19 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@page import="java.util.List"%>
 <div id="page-wrapper">
+    <c:choose>
+        <c:when test="${not empty message!=''}">
+            <div class="alert alert-${messageClass}">
+                ${message}
+            </div>
+        </c:when>
+    </c:choose>
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Manage Configuration Files</h1>
         </div>
         <!-- /.col-lg-12 -->
-    </div>
+    </div>    
     <div class="row">
         <!-- List of files configuration --->
         <div class="col-lg-12">
@@ -20,7 +27,7 @@
                         </div>
                         <div class="col-lg-4">
                             <h5><a href="#" id="add-file-configuration-button" ><i class="fa fa-plus" aria-hidden="true"></i>
-Add file</a></h5>
+                                    Add file</a></h5>
                         </div>
                     </div>
                 </div>
@@ -40,26 +47,26 @@ Add file</a></h5>
                             <tbody>
                                 <c:forEach items="${configFiles}" var="configFile">
                                     <tr id="show-file-configuration-attributes-button" data-id="<c:out value="${configFile.id}"/>">
-                                            <td>
-                                                <c:out value="${configFile.name}"/>
-                                            </td>
-                                            <td>
-                                                <c:out value="${configFile.description}"/>
-                                            </td>
-                                            <td>
-                                                <c:out value="${configFile.pathName}"/>
-                                            </td>
-                                            <td>
-                                                <c:out value="${configFile.configurationFileStates.name}"/>
-                                            </td>
-                                            <td>
+                                        <td>
+                                            <c:out value="${configFile.name}"/>
+                                        </td>
+                                        <td>
+                                            <c:out value="${configFile.description}"/>
+                                        </td>
+                                        <td>
+                                            <c:out value="${configFile.pathName}"/>
+                                        </td>
+                                        <td>
+                                            <c:out value="${configFile.configurationFileStates.name}"/>
+                                        </td>
+                                        <td>
                                             <a href="#" class="btn btn-success" id="edit-file-configuration-button" data-action="edit" data-id="${configFile.id}">
-                                                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                </a>
-                                                <a class="btn btn-danger" id="remove-file-configuration-button" data-action="remove" data-id="${configFile.id}">
-                                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                                </a>
-                                            </td>
+                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                            </a>
+                                            <a class="btn btn-danger" id="remove-file-configuration-button" data-action="remove" data-id="${configFile.id}">
+                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                            </a>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                             </tbody>
@@ -71,7 +78,7 @@ Add file</a></h5>
             </div>
             <!-- /.panel -->
         </div>
-        
+
         <!-- Right view -->
         <div class="col-lg-8" id="right-column-configuration-file-page"></div>
     </div>

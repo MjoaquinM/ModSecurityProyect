@@ -34,6 +34,7 @@ $(document).ready(function () {
         if (!id) {
             id = -1;
         }
+        alert(action+" - "+id);
         /*<PREPARE MODAL>*/
         var modalFooter = "";
         switch (action) {
@@ -78,13 +79,17 @@ $(document).ready(function () {
             });
         }
         /*<SHOW MODAL>*/
-        $('#fileConfigurationModal').modal('show');
+        if($(this).data('redirect-to')){
+            $('#fileConfigurationTemplateModal').modal('show');
+        }else{
+            $('#fileConfigurationModal').modal('show');
+        }
+        
     });
     
     //Validate FILE
     function validateFileConfiguration(path){
         $.ajax({
-//            dataType : 'json',
             method : "POST",
             url : "checkFile",
             timeout : 100000,
@@ -380,12 +385,6 @@ $(document).ready(function () {
         $('#configurationFrom').submit();
     });
     
-    
-    
-    
-    
-//    $('div:contains("test")');
-    
     /**
      * SPECIFIC CONFIGURATION FILE TEMPLATE - EDIT ATTRIBUTES END
      */
@@ -420,13 +419,13 @@ $(document).ready(function () {
                 modalTitle = 'Edit User';
                 modalFooter = '<button type="button" class="btn btn-primary" id="addUser">Save</button>';
                 data = {id: id};
-                url = 'addUserForm';
+                url = 'addUser';
                 break;
             default:
                 modalTitle = 'Add User';
                 modalFooter = '<button type="button" class="btn btn-primary" id="addUser">Add</button>';
                 data = {id: id};
-                url = 'addUserForm';
+                url = 'addUser';
         }
         modalFooter += '<button type="button" class="btn btn-secondary" data-dismiss="modal" id="userModalCancel">Cancel</button>';
         $('#generic-modal-container').find('.modal-title').html(modalTitle);
@@ -441,7 +440,8 @@ $(document).ready(function () {
                 data: data
             }).done(function (response) {
                 $('#generic-modal-container').find('.modal-body').html(response);
-            }).fail(function () {
+            }).fail(function (e) {
+                console.log(e);
                 $('#generic-modal-container').find('.modal-body').html('An error has occurred.');
             });
         }
@@ -474,7 +474,7 @@ $(document).ready(function () {
 
         $('#userModal').find('form').submit();
 
-    })
+    });
 
     $('#generic-modal-container').on('click', '#removeUser', function () {
         $('#delete-user-form').append('<input type="text" name="id" value="' + $(this).data("id") + '" />');
