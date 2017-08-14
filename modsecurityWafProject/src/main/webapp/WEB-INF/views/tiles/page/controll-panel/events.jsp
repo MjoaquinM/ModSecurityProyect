@@ -31,7 +31,7 @@
                         <td>${e.clientPort}</td>
                         <td>${e.serverIp}</td>
                         <td>${e.serverPort}</td>
-                        <td>VER Q ONDA</td>
+                        <td>${e.eventRuleList[0].ruleId.fileId.fileName}</td>
                         <td>
                             <a href="get">${e.transactionId}</a>
                         </td>

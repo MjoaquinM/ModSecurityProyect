@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -142,7 +143,7 @@ public class Event implements Serializable {
     @Size(max = 255)
     @Column(name = "protocol")
     private String protocol;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "transactionId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "transactionId", fetch=FetchType.EAGER)
     private List<EventRule> eventRuleList;
 
     public Event() {

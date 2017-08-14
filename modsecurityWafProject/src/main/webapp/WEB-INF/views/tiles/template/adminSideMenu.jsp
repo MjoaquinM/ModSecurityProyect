@@ -50,7 +50,7 @@
                             <a href="<c:url value="/reports" />">Generate Report</a>
                         </li>
                         <li>
-                            <a href="<c:url value="/events" />">List Events</a>
+                            <a href="<c:url value="/eventList/1" />">List Events</a>
                         </li>
                     </ul>
                     <!-- /.nav-third-level -->
