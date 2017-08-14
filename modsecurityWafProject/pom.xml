@@ -20,6 +20,7 @@
         <hibernate.version>4.3.6.Final</hibernate.version>
         <mysql.connector.version>5.1.31</mysql.connector.version>
         <apachetiles.version>3.0.5</apachetiles.version>
+        <jasperReport.version>5.2.0</jasperReport.version>
     </properties>
     
     <dependencies>
@@ -163,6 +164,12 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
+        </dependency>
+        <!-- JASPER REPORTS -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>${jasperReport.version}</version>
         </dependency>
     </dependencies>
 

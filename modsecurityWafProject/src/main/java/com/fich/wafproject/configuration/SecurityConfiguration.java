@@ -55,7 +55,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
       http.authorizeRequests()
-        .antMatchers("/admin-test").permitAll()
+        .antMatchers("/admin-test","/EventList","/jasperHTML","/jasperPDF","/jasperXLS","/put").permitAll()
         .antMatchers("/", "/home").access("hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')")
 //        .antMatchers("/admin/**").access("hasRole('ADMIN')")
         .antMatchers("/admin/**").permitAll()

@@ -1,14 +1,22 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Users List</h1>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=UTF-8">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <title>Listado de Empresas</title>
+    </head>
+    <body>
+        <div class="row">
+            <div class="col-lg-12">
+                <h3 class="page-header">Listado de Provincias
+                    <a href="<c:url value="provinciaCreate.htm" />" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Agregar</a>
+                    <button type="button" id="add-prov-button" class="btn btn-primary" data-action="addUser" data-toggle="modal">Add</button>
+                </h3>
+            </div>
+
         </div>
-        <!-- /.col-lg-12 -->
-    </div>
-    <!-- /.row -->
-    <div class="row">
-        <h1>ACA VAN LOS EVENTOS/ALERTAS</h1>
         <table class="table table-bordered table-striped table-hover">
             <thead>
                 <tr>
@@ -50,5 +58,20 @@
                 </li>
             </ul>
         </nav>
-    </div>
-</div>
+        <a href="index.htm">Volver a index</a>
+
+        <div class="modal" id="modal-event">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div id="modal-event-header" class="modal-header">
+                    </div>
+                    <div id="modal-event-body" class="modal-body">
+                    </div>
+                    <div id="modal-event-footer" class="modal-footer">                
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>
