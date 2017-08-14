@@ -5,6 +5,13 @@
 <%@ page isELIgnored="false" %>
 
 <div id="page-wrapper">
+    <c:choose>
+        <c:when test="${not empty message!=''}">
+            <div class="alert alert-${messageClass}">
+                ${message}
+            </div>
+        </c:when>
+    </c:choose>
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Manage Users</h1>

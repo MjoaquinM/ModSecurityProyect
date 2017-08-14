@@ -34,6 +34,7 @@ $(document).ready(function () {
         if (!id) {
             id = -1;
         }
+        alert(action+" - "+id);
         /*<PREPARE MODAL>*/
         var modalFooter = "";
         switch (action) {
@@ -78,13 +79,17 @@ $(document).ready(function () {
             });
         }
         /*<SHOW MODAL>*/
-        $('#fileConfigurationModal').modal('show');
+        if($(this).data('redirect-to')){
+            $('#fileConfigurationTemplateModal').modal('show');
+        }else{
+            $('#fileConfigurationModal').modal('show');
+        }
+        
     });
     
     //Validate FILE
     function validateFileConfiguration(path){
         $.ajax({
-//            dataType : 'json',
             method : "POST",
             url : "checkFile",
             timeout : 100000,
@@ -353,6 +358,33 @@ $(document).ready(function () {
         $('#deleteAttrForm').submit();
     });
     
+    //This is to set current options on select attributes in configuration file template page
+    $('.file-config-page-select-attr').find('option').attr('selected',false);
+    $('.file-config-page-current-value-attr-label').each(function(){
+        var text = $(this).text();
+        $(this).parent().parent().find('.file-config-page-select-attr').find('option').each(function(){
+            if($(this).text()==text){
+                $(this).parent().val($(this).val());
+                return false;
+            }
+        });
+    });
+    
+    //When select option change -> update the hidden value attr input
+    $('.file-config-page-select-attr').on('change',function(){
+        $(this).parent().parent('tr').find('.file-config-page-current-value-attr').val($(this).find('option:selected').text());
+    });
+    
+    $('.file-config-page-text-number-attr').on('keyup click',function(){
+       $(this).parent().parent('tr').find('.file-config-page-current-value-attr').val($(this).val());
+    });
+    
+    //Apply configuration
+    $('#apply-configuration').on('click',function(){
+        
+        $('#configurationFrom').submit();
+    });
+    
     /**
      * SPECIFIC CONFIGURATION FILE TEMPLATE - EDIT ATTRIBUTES END
      */
@@ -387,13 +419,13 @@ $(document).ready(function () {
                 modalTitle = 'Edit User';
                 modalFooter = '<button type="button" class="btn btn-primary" id="addUser">Save</button>';
                 data = {id: id};
-                url = 'addUserForm';
+                url = 'addUser';
                 break;
             default:
                 modalTitle = 'Add User';
                 modalFooter = '<button type="button" class="btn btn-primary" id="addUser">Add</button>';
                 data = {id: id};
-                url = 'addUserForm';
+                url = 'addUser';
         }
         modalFooter += '<button type="button" class="btn btn-secondary" data-dismiss="modal" id="userModalCancel">Cancel</button>';
         $('#generic-modal-container').find('.modal-title').html(modalTitle);
@@ -408,7 +440,8 @@ $(document).ready(function () {
                 data: data
             }).done(function (response) {
                 $('#generic-modal-container').find('.modal-body').html(response);
-            }).fail(function () {
+            }).fail(function (e) {
+                console.log(e);
                 $('#generic-modal-container').find('.modal-body').html('An error has occurred.');
             });
         }
@@ -441,7 +474,7 @@ $(document).ready(function () {
 
         $('#userModal').find('form').submit();
 
-    })
+    });
 
     $('#generic-modal-container').on('click', '#removeUser', function () {
         $('#delete-user-form').append('<input type="text" name="id" value="' + $(this).data("id") + '" />');

@@ -93,9 +93,10 @@ public class WafProjectController {
     
     /******************************User Module*********************************/
     
-    @RequestMapping(value = "/listUsers", method = RequestMethod.GET)
-    public String userListPage(ModelMap model) {
+    @RequestMapping(value = "/users/list", method = RequestMethod.GET)
+    public String userListPage(ModelMap model, String message) {
         List<Users> users = userService.findAll();
+        List<ConfigurationFiles> cf = configurationFileService.findAll();
         if (flagDebug){
             System.out.println("Listing users...");
         }
@@ -103,7 +104,15 @@ public class WafProjectController {
         model.addAttribute("idModal", "userModal");
         /*<Build data modal - end>*/
         model.addAttribute("users", users);
+        model.addAttribute("configFiles", cf);
+        
         model.addAttribute("user", getPrincipal());
+        model.addAttribute("message", message);
+//        switch (status){
+//            case "delete":
+//                model.addAttribute("messageClass","danger");
+//            break;
+//        }
         return "listUsers";
     }
     
@@ -123,19 +132,19 @@ public class WafProjectController {
     /**
      * Get add user form
      */
-    @RequestMapping(value = "/addUserForm", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/addUser", method = RequestMethod.GET)
     public String getAddUserForm(ModelMap model, @RequestParam("id") Long id) {
         Users user = new Users();
         List<UserStates> userStates = userStatesService.findAll();
         String actionMessage = "";
         if (id != -1){
             user = userService.findById(id);
+            model.addAttribute("messageType", "User "+user.getUserName()+" wass succefully updated.");
             actionMessage = "--- Editing User Form: "+user.getUserName();
         }else{
             actionMessage = "--- Creating User Form";
         }
         if(flagDebug) System.out.println(actionMessage);
-        
         model.addAttribute("user", user);
         model.addAttribute("userStates", userStates);
         model.addAttribute("action","saveNewUser");
@@ -145,24 +154,24 @@ public class WafProjectController {
     /**
      * Delete a user
      */
-    @RequestMapping(value = "/deleteUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/deleteUser", method = RequestMethod.POST)
     public String deleteUser(ModelMap model, @RequestParam("id") Long id) {
-        
-        userService.delete(id);
-        
-        List<Users> users = userService.findAll();
-        /*<Build data modal>*/
-        model.addAttribute("idModal", "userModal");
-        /*<Build data modal - end>*/
-        model.addAttribute("users", users);
-        model.addAttribute("user", getPrincipal());
-        return "listUsers";
+        String name = userService.findById(id).getUserName();
+        String message = "User "+name+" was succefully eliminated.";
+        try{
+            model.addAttribute("messageClass","success");
+            userService.delete(id);
+        }catch(Exception e){
+            model.addAttribute("messageClass","danger");
+            return this.userListPage(model,"There was an error deleting user "+name+".");
+        }
+        return this.userListPage(model,message);
     }
     
     /**
      * Save new user or update one
      */
-    @RequestMapping(value = "/saveNewUser", method = RequestMethod.POST)
+    @RequestMapping(value = "users/saveNewUser", method = RequestMethod.POST)
     public String saveNewUser(@Valid Users user,
             BindingResult result, ModelMap model) {
         String messageSatus = "User "+user.getFirstName()+", "+user.getLastName()+" was succefully added to the system.";
@@ -177,17 +186,17 @@ public class WafProjectController {
                     System.out.println(objectError.getCode());
                 }
             }
-            messageSatus = "There was an error.";
         }else{
-            userService.save(user);
+            try{
+                userService.save(user);
+                model.addAttribute("messageClass","success");
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+                model.addAttribute("messageClass","danger");
+                return this.userListPage(model,"There was an error saving the user.");
+            }
         }
-        List<Users> users = userService.findAll();
-        /*<Build data modal>*/
-        model.addAttribute("idModal", "userModal");
-        /*<Build data modal - end>*/
-        model.addAttribute("users", users);
-        model.addAttribute("user", getPrincipal());
-        return "listUsers";
+        return this.userListPage(model,"User was saved successfully.");
     }
     
     /******************************User Module - END*********************************/
@@ -227,15 +236,17 @@ public class WafProjectController {
                 }
             }
         }else{
-            configurationFileService.save(cf);
-        }
-        List<ConfigurationFiles> cfs = configurationFileService.findAll();
-        /*<Build data modal>*/
-        model.addAttribute("idModal", "fileConfigurationModal");
-        /*<Build data modal - end>*/
-        model.addAttribute("configFiles", cfs);
-        model.addAttribute("user", getPrincipal());
-        return "configurationFilesPage";
+            try{
+                configurationFileService.save(cf);
+                model.addAttribute("messageClass","success");
+                model.addAttribute("message","File configuration "+cf.getName()+" was succefully saved.");
+            }catch(Exception e){
+                model.addAttribute("message","There was an error saving file configuration "+cf.getName()+".");
+                model.addAttribute("messageClass","danger");
+            }
+            
+        }        
+        return this.configurationFilesList(model);
     }
     
     /**
@@ -243,22 +254,24 @@ public class WafProjectController {
      */
     @RequestMapping(value = "/deleteFileconfiguration")//, method = RequestMethod.POST)
     public String deleteFileconfiguration(ModelMap model, @RequestParam("id") Long id) {
-        configurationFileService.delete(id);        
-        List<ConfigurationFiles> cfs = configurationFileService.findAll();
-        /*<Build data modal>*/
-        model.addAttribute("idModal", "fileConfigurationModal");
-        /*<Build data modal - end>*/
-        model.addAttribute("configFiles", cfs);
-        model.addAttribute("user", getPrincipal());
-        return "configurationFilesPage";
+        String message = "File Configuration "+configurationFileService.findById(id).getName()+" was succefully deleted.";
+        try{
+            model.addAttribute("messageClass","success");
+            configurationFileService.delete(id);
+        }catch(Exception e){
+            model.addAttribute("messageClass","error");
+            message = "There was an error deleting "+configurationFileService.findById(id).getName()+" configuration file.";
+        }
+        model.addAttribute("message",message);
+        return this.configurationFilesList(model);
     }
+    
     /**
      * Configuration Files Page
     **/
     @RequestMapping(value = { "/configurationFiles" }, method = RequestMethod.GET)
-    public String modSecFileConfig(ModelMap model) {
+    public String configurationFilesList(ModelMap model) {
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
-        
         /*<Build data modal>*/
         model.addAttribute("idModal", "fileConfigurationModal");
         /*<Build data modal - end>*/
@@ -274,19 +287,14 @@ public class WafProjectController {
     public String configurationPageTemplate(ModelMap model, @RequestParam("currentFile") String currentFile) {
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
         ConfigurationFiles currentConfigFile = configurationFileService.findByName(currentFile);
-        
-        List<ConfigurationFileAttributeGroups> cfags = currentConfigFile.getConfigurationFileAttributeGroups();
-        List<List<ConfigurationFilesAttributes>> cfaEachGroup = new ArrayList<List<ConfigurationFilesAttributes>>();
-        for(ConfigurationFileAttributeGroups cfag : cfags){
-            cfaEachGroup.add(configurationFileAttributeService.findByFileConfiguration(cfag.getId()));
-        }
+        currentConfigFile = configurationFileService.findById(currentConfigFile.getId());
         /*<Build data modal>*/
         model.addAttribute("idModal", "fileConfigurationTemplateModal");
         /*<Build data modal - end>*/
         model.addAttribute("configFiles",configurationFilesAll);
         model.addAttribute("user",getPrincipal());
         model.addAttribute("currentFile",currentConfigFile);
-        model.addAttribute("allFileAttributes",cfaEachGroup);
+//        model.addAttribute("allFileAttributes",cfaEachGroup);
         return "configurationFilesTemplate";
     }
     
@@ -299,17 +307,13 @@ public class WafProjectController {
         if (cfagId != -1){
             cfag = configurationFileAttributeGroupsService.findById(cfagId);
         }
-        boolean flagRender = true;
         ConfigurationFiles currentConfigFile = new ConfigurationFiles();
         if (cfId != -1){
             currentConfigFile = configurationFileService.findById(cfId);
             cfag.setConfigurationFiles(currentConfigFile);
-        }else{
-            flagRender = false;
         }
         model.addAttribute("currentConfigFile",cfId);
         model.addAttribute("action","manageFileConfigurationAttrGroup");
-        model.addAttribute("isDrawable",flagRender);
         model.addAttribute("configFileAttrGroup",cfag);
         return "addFileConfigurationAttrGroupForm";
     }
@@ -332,30 +336,17 @@ public class WafProjectController {
                 }
             }
         }else{
-            switch (action) {
-                case "edit":
-                case "add":
-                    configurationFileAttributeGroupsService.save(cfag);
-                break;
-                default:
+            try{
+                configurationFileAttributeGroupsService.save(cfag);
+                model.addAttribute("message","Attribute Group "+cfag.getName()+" was succefully saved.");
+                model.addAttribute("messageClass","success");
+            }catch(Exception e){
+                model.addAttribute("message","There was an error saving the file configuration.");
+                model.addAttribute("messageClass","danger");
             }
         }
-        ConfigurationFiles currentConfigFile = configurationFileService.findById(cfag.getConfigurationFiles().getId());
-        List<ConfigurationFileAttributeGroups> cfags = currentConfigFile.getConfigurationFileAttributeGroups();
-        List<List<ConfigurationFilesAttributes>> cfaEachGroup = new ArrayList<List<ConfigurationFilesAttributes>>();
-        
-        for(ConfigurationFileAttributeGroups cfagg : cfags){
-            cfaEachGroup.add(configurationFileAttributeService.findByFileConfiguration(cfagg.getId()));
-        }
-        List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
-        /*<Build data modal>*/
-        model.addAttribute("idModal", "fileConfigurationTemplateModal");
-        /*<Build data modal - end>*/
-        model.addAttribute("allFileAttributes",cfaEachGroup);
-        model.addAttribute("configFiles",configurationFilesAll);
-        model.addAttribute("user",getPrincipal());
-        model.addAttribute("currentFile",currentConfigFile);
-        return "configurationFilesTemplate";
+        String currentConfigFile = configurationFileService.findById(cfag.getConfigurationFiles().getId()).getName();
+        return this.configurationPageTemplate(model,currentConfigFile);
     }
     
     /**
@@ -363,25 +354,21 @@ public class WafProjectController {
      */
     @RequestMapping(value = "/deleteFileConfigurationAttrGroup", method = RequestMethod.POST)
     public String deleteFileConfigurationAttrGroup(ModelMap model, @RequestParam("cfag-id") Long id) {
-        Long ccf = configurationFileAttributeGroupsService.findById(id).getConfigurationFiles().getId();
-        configurationFileAttributeGroupsService.delete(id);
-        ConfigurationFiles currentConfigFile = configurationFileService.findById(ccf);
-        List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();        
-        List<ConfigurationFileAttributeGroups> cfags = currentConfigFile.getConfigurationFileAttributeGroups();
-        List<List<ConfigurationFilesAttributes>> cfaEachGroup = new ArrayList<List<ConfigurationFilesAttributes>>();
-        for(ConfigurationFileAttributeGroups cfag : cfags){
-            cfaEachGroup.add(configurationFileAttributeService.findByFileConfiguration(cfag.getId()));
+        ConfigurationFileAttributeGroups cfag = configurationFileAttributeGroupsService.findById(id);
+        ConfigurationFiles currentConfigFile = cfag.getConfigurationFiles();
+        currentConfigFile.getConfigurationFileAttributeGroups().remove(cfag);
+        
+        try{
+            configurationFileAttributeGroupsService.deleteByEntity(cfag);
+            model.addAttribute("message","Attribute Group "+cfag.getName()+" was succefully deleted.");
+            model.addAttribute("messageClass","success");
+        }catch(Exception e){
+            model.addAttribute("message","There was an error deleting the attribute Group "+cfag.getName()+".");
+            model.addAttribute("messageClass","danger");
         }
         
-        /*<Build data modal>*/
-        model.addAttribute("idModal", "fileConfigurationTemplateModal");
-        /*<Build data modal - end>*/
         
-        model.addAttribute("allFileAttributes",cfaEachGroup);
-        model.addAttribute("configFiles",configurationFilesAll);
-        model.addAttribute("user",getPrincipal());
-        model.addAttribute("currentFile",currentConfigFile);
-        return "configurationFilesTemplate";
+        return this.configurationPageTemplate(model,currentConfigFile.getName());
     }
     
     /**
@@ -413,12 +400,6 @@ public class WafProjectController {
     @RequestMapping(value = "/saveNewFileConfigurationAttr", method = RequestMethod.POST)
     public String saveNewFileConfigurationAttr(@Valid ConfigurationFilesAttributes cfa,
             BindingResult result, ModelMap model, @RequestParam("currentConfigFile") Long cfId){
-//        System.out.println(cfa.getConfigurationFileAttributeGroups());
-//        System.out.println(cfa.getConfigurationFileAttributeStates());
-//        System.out.println(cfa.getConfigurationFileAttributeType());
-//        System.out.println(cfa.getDescription());
-//        System.out.println(cfa.getName());
-//        System.out.println(cfa.getValue());
         if (result.hasErrors()) {
             for (Object object : result.getAllErrors()) {
                 if(object instanceof FieldError) {
@@ -431,37 +412,28 @@ public class WafProjectController {
                 }
             }
         }else{
-            List<ConfigurationFileAttributeOptions> opts = cfa.getConfigurationFileAttributeOptions();
-            cfa.setConfigurationFileAttributeOptions(new ArrayList<ConfigurationFileAttributeOptions>());
-            configurationFileAttributeService.save(cfa);
-            if(cfa.getId() != null){
-                //Editing attribute
-                configurationFileAttributeOptionsService.deletOptsByFile(cfa.getId());
-                if (opts != null && opts.size() > 0) {
-                    for(ConfigurationFileAttributeOptions opt : opts){
-                        opt.setConfigurationFilesAttributes(cfa);
-                        configurationFileAttributeOptionsService.save(opt);
+            try{
+                model.addAttribute("message","Configuration Attribute "+cfa.getName()+" was succefully saved.");
+                model.addAttribute("messageClass","success");
+                List<ConfigurationFileAttributeOptions> opts = cfa.getConfigurationFileAttributeOptions();
+                cfa.setConfigurationFileAttributeOptions(new ArrayList<ConfigurationFileAttributeOptions>());
+                configurationFileAttributeService.save(cfa);
+                if(cfa.getId() != null){
+                    //Editing attribute
+                    configurationFileAttributeOptionsService.deletOptsByFile(cfa.getId());
+                    if (opts != null && opts.size() > 0) {
+                        for(ConfigurationFileAttributeOptions opt : opts){
+                            opt.setConfigurationFilesAttributes(cfa);
+                            configurationFileAttributeOptionsService.save(opt);
+                        }
                     }
                 }
+            }catch(Exception e){
+                model.addAttribute("message","There was an error saving configuration attribute "+cfa.getName()+".");
+                model.addAttribute("messageClass","danger");
             }
         }
-        
-        ConfigurationFiles currentConfigFile = configurationFileService.findById(cfId);
-        List<ConfigurationFileAttributeGroups> cfags = currentConfigFile.getConfigurationFileAttributeGroups();
-        List<List<ConfigurationFilesAttributes>> cfaEachGroup = new ArrayList<List<ConfigurationFilesAttributes>>();
-        for(ConfigurationFileAttributeGroups cfag : cfags){
-            cfaEachGroup.add(configurationFileAttributeService.findByFileConfiguration(cfag.getId()));
-        }
-        
-        List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
-        /*<Build data modal>*/
-        model.addAttribute("idModal", "fileConfigurationTemplateModal");
-        /*<Build data modal - end>*/
-        model.addAttribute("allFileAttributes",cfaEachGroup);
-        model.addAttribute("configFiles",configurationFilesAll);
-        model.addAttribute("user",getPrincipal());
-        model.addAttribute("currentFile",currentConfigFile);
-        return "configurationFilesTemplate";
+        return this.configurationPageTemplate(model,configurationFileService.findById(cfId).getName());
     }
     
     /**
@@ -469,22 +441,18 @@ public class WafProjectController {
      */
     @RequestMapping(value = "/deleteFileconfigurationAttr")//, method = RequestMethod.POST)
     public String deleteFileconfigurationAttr(ModelMap model, @RequestParam("id") Long id) {
-        ConfigurationFiles currentConfigFile = configurationFileAttributeService.findById(id).getConfigurationFileAttributeGroups().getConfigurationFiles();
-        configurationFileAttributeService.delete(id);
-        List<ConfigurationFiles> cfs = configurationFileService.findAll();
-        List<ConfigurationFileAttributeGroups> cfags = currentConfigFile.getConfigurationFileAttributeGroups();
-        List<List<ConfigurationFilesAttributes>> cfaEachGroup = new ArrayList<List<ConfigurationFilesAttributes>>();
-        for(ConfigurationFileAttributeGroups cfag : cfags){
-            cfaEachGroup.add(configurationFileAttributeService.findByFileConfiguration(cfag.getId()));
+        ConfigurationFilesAttributes cfaToDelete = configurationFileAttributeService.findById(id);
+        ConfigurationFileAttributeGroups cfag = cfaToDelete.getConfigurationFileAttributeGroups();
+        cfag.getConfigurationFilesAttributes().remove(cfaToDelete);
+        try{
+            model.addAttribute("message","Configuration attribute "+cfaToDelete.getName()+" was succefully deleted.");
+            model.addAttribute("messageClass","success");
+            configurationFileAttributeService.deleteByEntity(cfaToDelete);
+        }catch(Exception e){
+            model.addAttribute("message","There was an error deleting configuration attribute "+cfaToDelete.getName()+".");
+            model.addAttribute("messageClass","danger");
         }
-        /*<Build data modal>*/
-        model.addAttribute("idModal", "fileConfigurationTemplateModal");
-        /*<Build data modal - end>*/
-        model.addAttribute("configFiles",cfs);
-        model.addAttribute("user",getPrincipal());
-        model.addAttribute("currentFile",currentConfigFile);
-        model.addAttribute("allFileAttributes",cfaEachGroup);
-        return "configurationFilesTemplate";
+        return this.configurationPageTemplate(model,cfag.getConfigurationFiles().getName());
     }
     
     /**
@@ -514,12 +482,10 @@ public class WafProjectController {
             ls.add("error");
             e.printStackTrace();
         }
-
         return ls;
     }
     
     /******************************Files Configuration Module - END*********************************/
-    
     
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(ModelMap model) {

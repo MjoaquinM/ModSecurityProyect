@@ -43,12 +43,20 @@ public class ConfigurationFileAttributeServiceImpl implements ConfigurationFileA
         dao.update(cfa);
     }
 
-    public List<ConfigurationFilesAttributes> findByFileConfiguration(Long idFc) {
-        return dao.findByFileConfiguration(idFc);
+    public List<ConfigurationFilesAttributes> findByFileConfigurationGroup(Long idFcg) {
+        return dao.findByFileConfigurationGroup(idFcg);
+    }
+    
+    public List<ConfigurationFilesAttributes> findByFileConfiguration(Long id) {
+        return dao.findByFileConfiguration(id);
     }
     
     public void delete(Long id){
         dao.delete(id);
+    }
+    
+    public void deleteByEntity(ConfigurationFilesAttributes cfa){
+        dao.deleteByEntity(cfa);
     }
     
 }

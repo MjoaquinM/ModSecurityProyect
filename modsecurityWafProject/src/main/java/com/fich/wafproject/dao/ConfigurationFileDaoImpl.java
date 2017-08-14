@@ -8,6 +8,7 @@ package com.fich.wafproject.dao;
 import com.fich.wafproject.model.ConfigurationFiles;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -36,7 +37,10 @@ public class ConfigurationFileDaoImpl extends AbstractDao<Long, ConfigurationFil
 
     
     public ConfigurationFiles findById(Long id) {
-        return getByKey(id);
+        Criteria criteria = this.createEntityCriteria();
+        criteria.add(Restrictions.eq("id", id));
+//                .setFetchMode("configurationFileAttributeGroups", FetchMode.JOIN);
+        return (ConfigurationFiles) criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).uniqueResult();
     }
 
     

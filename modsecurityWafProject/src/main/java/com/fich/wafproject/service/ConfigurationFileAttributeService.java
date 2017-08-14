@@ -21,12 +21,16 @@ public interface ConfigurationFileAttributeService {
     
     void delete(Long id);
     
+    void deleteByEntity(ConfigurationFilesAttributes cfa);
+    
     void save(ConfigurationFilesAttributes cfa);
     
     void update(ConfigurationFilesAttributes cfa);
     
     ConfigurationFilesAttributes findByName(String name);
     
-    List<ConfigurationFilesAttributes> findByFileConfiguration(Long idFc);
+    List<ConfigurationFilesAttributes> findByFileConfigurationGroup(Long idFcg);
+    
+    public List<ConfigurationFilesAttributes> findByFileConfiguration(Long id);
     
 }

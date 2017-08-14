@@ -5,6 +5,7 @@
  */
 package com.fich.wafproject.controller;
 
+import com.fich.wafproject.model.ConfigurationFileAttributeGroups;
 import com.fich.wafproject.model.ConfigurationFiles;
 import com.fich.wafproject.model.ConfigurationFilesAttributes;
 import java.util.List;
@@ -33,12 +34,14 @@ import com.fich.wafproject.service.UserService;
 import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 //import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -60,52 +63,68 @@ public class ModsecurityController {
     public String modSecConfigReqBody(ModelMap model) {
         return "reqBodyConfig";
     }
-    
-//    @RequestMapping(value = "/applyRequestBodyHandlingChanges", method = RequestMethod.POST)
-//    public String applyReqBodyChanges() throws IOException, InterruptedException {
-//        String cadena, arch = "";
-//        FileReader fr = new FileReader("/etc/modsecurity/modsecurity.conf");
-//        BufferedReader br = new BufferedReader(fr);
-//        File f;
-//        f = new File("/home/r3ng0/Desktop/modsecurity.conf");
-//        try {
-//            FileWriter w = new FileWriter(f);
-//            BufferedWriter bw = new BufferedWriter(w);
-//            PrintWriter wr = new PrintWriter(bw);
-//
-//            while ((cadena = br.readLine()) != null) { 
-//                System.out.println(cadena);
-//                if (!cadena.isEmpty()) {
-//                    if (cadena.charAt(0) != '#') {
-//                        
-//                        if (cadena.contains("SecRuleEngine")) {
-////                            cadena = "SecRuleEngine " + SecRuleEngine;
-//                        }
-//                    }
-//                }
-////                wr.append(cadena + "\n");
-////                arch = arch + cadena + "<br/>";
-//            }
-//            wr.close();
-//            bw.close();
-//
-//        } catch (IOException e) {
-//            System.out.println(e);
-//        };
-//        br.close();
-//        
-//        String cmd = "pkexec sudo /etc/init.d/apache2 reload";
-//        //Runtime run = Runtime.getRuntime();
-//        //Process pr = run.exec(cmd);
-//        //pr.waitFor();
-//        //BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-//        /*String line = "";
-//        while ((line = buf.readLine()) != null) {
-//            System.out.println(line);
-//        }*/
-//
-//        return "/modsecurity/request-body-handling";
-//    }
+
+    @RequestMapping(value = "/applyRequestBodyHandlingChanges", method = RequestMethod.POST)
+    public String applyReqBodyChanges(@Valid ConfigurationFiles ccf,
+            BindingResult result, ModelMap model) throws IOException, InterruptedException {
+        configurationFileService.save(ccf);
+        ccf=configurationFileService.findById(ccf.getId());
+        List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
+        List<ConfigurationFilesAttributes> attrs = configurationFileAttributeService.findByFileConfiguration(ccf.getId());
+        try {
+            String line = "";
+            FileReader fr = new FileReader(ccf.getPathName());
+            BufferedReader br = new BufferedReader(fr);
+            java.io.File f = new java.io.File("/tmp/modsecurity.conf"); //ARGUMENT MUST BE A GOBAL VARIABLE
+            FileWriter w = new FileWriter(f);
+            BufferedWriter bw = new BufferedWriter(w);
+            PrintWriter wr = new PrintWriter(bw);
+            while ((line = br.readLine()) != null) {
+                if (!line.isEmpty()) {
+                    for(ConfigurationFilesAttributes cfa : attrs){
+                        if(line.charAt(0)!='#' && cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED") && line.contains(cfa.getName())){
+                            line = cfa.getName()+" "+cfa.getValue();
+                            break;
+                        }
+                    }
+                }
+                wr.append(line + "\n");
+            }
+            wr.close();
+            bw.close();
+            br.close();
+            
+            String cmd = " pkexec sudo mv /tmp/modsecurity.conf /etc/modsecurity/modsecurity.conf";// && /etc/init.d/apache2 reload";
+            Runtime run = Runtime.getRuntime();
+            Process pr = run.exec(cmd);
+            pr.waitFor();
+            BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            line = "";
+            while ((line = buf.readLine()) != null) {
+//                System.out.println(line);
+            }
+            cmd = " pkexec sudo /etc/init.d/apache2 reload";
+            run = Runtime.getRuntime();
+            pr = run.exec(cmd);
+            pr.waitFor();
+            buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            line = "";
+            while ((line = buf.readLine()) != null) {
+                System.out.println(line);
+            }
+            
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        
+        /*<Build data modal>*/
+        model.addAttribute("idModal", "fileConfigurationTemplateModal");
+        /*<Build data modal - end>*/
+        model.addAttribute("configFiles",configurationFilesAll);
+        model.addAttribute("user",getPrincipal());
+        model.addAttribute("currentFile",ccf);
+        return "configurationFilesTemplate";
+    }
     
     private String getPrincipal(){
         String userName = null;

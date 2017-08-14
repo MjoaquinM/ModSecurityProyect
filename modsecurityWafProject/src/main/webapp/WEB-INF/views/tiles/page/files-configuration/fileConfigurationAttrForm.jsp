@@ -61,11 +61,7 @@
                                 <div class="form-group col-md-12">
                                     <label class="col-md-5 control-lable" for="state">State</label>
                                     <div class="col-md-7">
-                                        <form:select path="configurationFileAttributeStates.id" multiple="false" class="form-control input-sm">
-                                            <c:forEach items="${cfaStates}" var="cfaState">
-                                                <form:option value="${cfaState.id}" >${cfaState.name}</form:option>
-                                            </c:forEach>
-                                        </form:select>
+                                        <form:select path="configurationFileAttributeStates.id" items="${cfaStates}" multiple="false" itemValue="id" itemLabel="name" class="form-control input-sm"/>
                                         <div class="has-error">
                                             <form:errors path="configurationFileAttributeStates.id" class="help-inline"/>
                                         </div>
@@ -78,11 +74,7 @@
                                 <div class="form-group col-md-12">
                                     <label class="col-md-5 control-lable" for="type">Type</label>
                                     <div class="col-md-7">
-                                        <form:select path="configurationFileAttributeType.id" multiple="false" class="form-control input-sm">
-                                            <c:forEach items="${cfaTypes}" var="cfaType">
-                                                <form:option value="${cfaType.id}" >${cfaType.name}</form:option>
-                                            </c:forEach>
-                                        </form:select>
+                                        <form:select path="configurationFileAttributeType.id" items="${cfaTypes}" multiple="false" itemValue="id" itemLabel="name" class="form-control input-sm"/>
                                         <div class="has-error">
                                             <form:errors path="configurationFileAttributeType.id" class="help-inline"/>
                                         </div>

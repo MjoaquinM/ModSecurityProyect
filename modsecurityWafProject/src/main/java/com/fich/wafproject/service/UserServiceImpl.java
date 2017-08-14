@@ -16,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
  
 import com.fich.wafproject.dao.UserDao;
 import com.fich.wafproject.model.Users;
+import java.io.IOException;
 import java.util.List;
+import org.springframework.dao.DataIntegrityViolationException;
  
 @Service("userService")
 @Transactional
@@ -28,7 +30,7 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private PasswordEncoder passwordEncoder;
     
-    public void save(Users user){
+    public void save(Users user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         dao.save(user);
     }

@@ -6,7 +6,9 @@
 package com.fich.wafproject.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,6 +25,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -52,7 +56,8 @@ public class ConfigurationFileAttributeGroups implements Serializable {
     @Column(name = "description")
     private String description;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "configurationFileAttributeGroups", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "configurationFileAttributeGroups", fetch = FetchType.EAGER)
+    @Fetch (FetchMode.SELECT)
     private List<ConfigurationFilesAttributes> configurationFilesAttributes;
     
     @JoinColumn(name = "configuration_files_id", referencedColumnName = "id")
@@ -101,6 +106,10 @@ public class ConfigurationFileAttributeGroups implements Serializable {
 
     public void setConfigurationFilesAttributes(List<ConfigurationFilesAttributes> configurationFilesAttributes) {
         this.configurationFilesAttributes = configurationFilesAttributes;
+    }
+    
+    public List<ConfigurationFilesAttributes> getConfigurationFilesAttributesAsList(){
+        return new ArrayList<ConfigurationFilesAttributes>(this.configurationFilesAttributes);
     }
 
     public ConfigurationFiles getConfigurationFiles() {
