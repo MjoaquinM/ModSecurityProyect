@@ -82,7 +82,7 @@ public class ModsecurityController {
             while ((line = br.readLine()) != null) {
                 if (!line.isEmpty()) {
                     for(ConfigurationFilesAttributes cfa : attrs){
-                        if(line.charAt(0)!='#' && cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED") && line.contains(cfa.getName())){
+                        if(line.charAt(0)!='#' && !cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED") && line.contains(cfa.getName())){
                             line = cfa.getName()+" "+cfa.getValue();
                             break;
                         }
@@ -94,7 +94,7 @@ public class ModsecurityController {
             bw.close();
             br.close();
             
-            String cmd = " pkexec sudo mv /tmp/modsecurity.conf /etc/modsecurity/modsecurity.conf";// && /etc/init.d/apache2 reload";
+            String cmd = " pkexec sudo mv /tmp/modsecurity.conf "+ccf.getPathName();//+" && /etc/init.d/apache2 reload";
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(cmd);
             pr.waitFor();

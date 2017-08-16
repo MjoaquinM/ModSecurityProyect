@@ -10,5 +10,7 @@ public interface EventDao {
     Event findByTransactionId(String transactionId);
     
     List<Event> findAllEvent(int pageNumber);
+    
+    Event findById(Integer id);
      
 }
