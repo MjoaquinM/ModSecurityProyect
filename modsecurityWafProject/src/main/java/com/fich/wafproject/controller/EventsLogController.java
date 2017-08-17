@@ -371,14 +371,23 @@ public class EventsLogController {
 
     @RequestMapping(value = "/eventList/{pageNumber}", method = RequestMethod.GET)
     public String EventList(@PathVariable int pageNumber, ModelMap model) {
+        if(pageNumber<1){
+            pageNumber=1;
+        }
         List<Event> events = eventService.findAllEvents(pageNumber);
-        for (Event e : events){
-            System.out.println("ID Evento: " + e.getId());
+//        System.out.println("PARAMETROS QUE SE VAN A MANDAR1111: " + events);
+//        for (Event e : events){
+//            System.out.println("ID Evento: " + e.getId());
+//        }
+        if(events.size() == 0){
+            pageNumber = pageNumber-1;
+            events = eventService.findAllEvents(pageNumber);
         }
         model.addAttribute("lst",events);
         model.addAttribute("pageNumber",pageNumber);
-        System.out.println("PARAMETRO RECIBIDO: " + pageNumber);
-        System.out.println("PARAMETROS QUE SE VAN A MANDAR: " + events);
+//        System.out.println("CANTIDAD: "+events.size());
+//        System.out.println("PARAMETRO RECIBIDO: " + pageNumber);
+//        System.out.println("PARAMETROS QUE SE VAN A MANDAR: " + events);
         return "events";
     }
     
