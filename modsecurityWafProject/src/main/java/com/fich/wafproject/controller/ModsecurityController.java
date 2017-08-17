@@ -66,7 +66,7 @@ public class ModsecurityController {
 
     @RequestMapping(value = "/applyRequestBodyHandlingChanges", method = RequestMethod.POST)
     public String applyReqBodyChanges(@Valid ConfigurationFiles ccf,
-            BindingResult result, ModelMap model) throws IOException, InterruptedException {
+            BindingResult result, ModelMap model) throws IOException, InterruptedException, Exception {
         configurationFileService.save(ccf);
         ccf=configurationFileService.findById(ccf.getId());
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
@@ -80,9 +80,10 @@ public class ModsecurityController {
             BufferedWriter bw = new BufferedWriter(w);
             PrintWriter wr = new PrintWriter(bw);
             while ((line = br.readLine()) != null) {
+                System.out.println("LINEA: " + line);
                 if (!line.isEmpty()) {
                     for(ConfigurationFilesAttributes cfa : attrs){
-                        if(line.charAt(0)!='#' && cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED") && line.contains(cfa.getName())){
+                        if(line.charAt(0)!='#' && !cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED") && line.contains(cfa.getName())){
                             line = cfa.getName()+" "+cfa.getValue();
                             break;
                         }
@@ -94,19 +95,24 @@ public class ModsecurityController {
             bw.close();
             br.close();
             
-            String cmd = " pkexec sudo mv /tmp/modsecurity.conf /etc/modsecurity/modsecurity.conf";// && /etc/init.d/apache2 reload";
+            String cmd = "pkexec sudo mv /tmp/modsecurity.conf /etc/modsecurity-2.9.2/modsecurity.conf";
+//            String cmd = "pkexec sudo sh -c \"mv /tmp/modsecurity.conf /etc/modsecurity-2.9.2/modsecurity.conf && /etc/init.d/apache2 reload\"";
+            System.out.println("COMANDO QUE VOY A EJECUTAAAAAAAARRRRRRRRRR: " + cmd);
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(cmd);
             pr.waitFor();
             BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
             line = "";
+            System.out.println("ESTA ES LA SALIDAAAAAAAAAAAAAAAA:");
             while ((line = buf.readLine()) != null) {
-//                System.out.println(line);
+                System.out.println(line);
             }
             cmd = " pkexec sudo /etc/init.d/apache2 reload";
+            System.out.println("COMANDO QUE VOY A EJECUTAAAAAAAARRRRRRRRRR: " + cmd);
             run = Runtime.getRuntime();
             pr = run.exec(cmd);
             pr.waitFor();
+//            pr.wait(10000);
             buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
             line = "";
             while ((line = buf.readLine()) != null) {
@@ -114,7 +120,8 @@ public class ModsecurityController {
             }
             
         } catch (IOException e) {
-            System.out.println(e);
+//            System.out.println(e);
+            throw new Exception(e);
         }
         
         /*<Build data modal>*/

@@ -5,7 +5,6 @@ import com.fich.wafproject.model.Event;
 import com.fich.wafproject.model.EventRule;
 import com.fich.wafproject.model.File;
 import com.fich.wafproject.model.Rule;
-import com.fich.wafproject.service.AuditLogService;
 import com.fich.wafproject.service.EventService;
 import com.fich.wafproject.service.EventRuleService;
 import com.fich.wafproject.service.FileService;
@@ -93,8 +92,6 @@ public class EventsLogController {
     }
 
     @Autowired
-    AuditLogService auditLogService;
-    @Autowired
     EventService eventService;
     @Autowired
     FileService fileService;
@@ -102,7 +99,7 @@ public class EventsLogController {
     RuleService ruleService;
     @Autowired
     EventRuleService eventRuleService;
-
+    
     @RequestMapping(value = "/put", method = RequestMethod.PUT)
     public String sayHelloAgainPut(HttpServletRequest request,
             ModelMap model,
