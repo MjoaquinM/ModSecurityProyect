@@ -52,7 +52,7 @@ public class ConfigurationFilesAttributes implements Serializable {
     @Size(max = 100)
     @Column(name = "value")
     private String value;
-    @Size(max = 600)
+    @Size(max = 2000)
     @Column(name = "description")
     private String description;
     

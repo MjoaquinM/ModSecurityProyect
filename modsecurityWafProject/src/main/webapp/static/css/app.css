@@ -77,3 +77,13 @@ a{
 #nameRow{
     pointer-events: none;
 }
+
+/*Rules Management*/
+.parameter-container{
+    height: 300px;
+    overflow: scroll;
+}
+
+.parameter-item:hover{
+    cursor: pointer;
+}

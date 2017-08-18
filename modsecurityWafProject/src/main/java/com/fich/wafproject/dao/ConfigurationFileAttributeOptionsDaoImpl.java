@@ -50,6 +50,7 @@ public class ConfigurationFileAttributeOptionsDaoImpl extends AbstractDao<Long, 
     public List<ConfigurationFileAttributeOptions> findByCfAttr(Long cfaId) {
         Criteria crit = createEntityCriteria().setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         crit.add(Restrictions.eq("configurationFilesAttributes.id", cfaId));
+        crit.addOrder(Order.asc("group"));
         return (List<ConfigurationFileAttributeOptions>)crit.list();
     }
     

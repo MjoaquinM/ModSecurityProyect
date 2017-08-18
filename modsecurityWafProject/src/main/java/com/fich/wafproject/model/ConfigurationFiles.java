@@ -48,7 +48,7 @@ public class ConfigurationFiles implements Serializable {
     private Long id;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 30)
+    @Size(min = 1, max = 300)
     @Column(name = "name")
     private String name;
     @Basic(optional = false)
@@ -56,7 +56,7 @@ public class ConfigurationFiles implements Serializable {
     @Size(min = 1, max = 200)
     @Column(name = "path_name")
     private String pathName;
-    @Size(max = 100)
+    @Size(max = 2000)
     @Column(name = "description")
     private String description;
     

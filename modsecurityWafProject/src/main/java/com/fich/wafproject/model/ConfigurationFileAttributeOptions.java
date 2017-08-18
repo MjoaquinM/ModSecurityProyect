@@ -48,10 +48,21 @@ public class ConfigurationFileAttributeOptions implements Serializable {
     @Size(max = 100)
     @Column(name = "description")
     private String description;
+    @Basic(optional = false)
+    @Column(name = "group_option")
+    private Integer group;
     
     @JoinColumn(name = "configuration_files_attributes_id", referencedColumnName = "id")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ConfigurationFilesAttributes configurationFilesAttributes;
+    
+    public void setGroup(Integer group){
+        this.group=group;
+    }
+    
+    public Integer getGroup(){
+        return this.group;
+    }
 
     public ConfigurationFileAttributeOptions() {
     }

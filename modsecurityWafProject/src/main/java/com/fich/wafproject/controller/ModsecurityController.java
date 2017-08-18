@@ -75,16 +75,21 @@ public class ModsecurityController {
             String line = "";
             FileReader fr = new FileReader(ccf.getPathName());
             BufferedReader br = new BufferedReader(fr);
-            java.io.File f = new java.io.File("/tmp/modsecurity.conf"); //ARGUMENT MUST BE A GOBAL VARIABLE
+            java.io.File f = new java.io.File("/tmp/"+ccf.getName()); //ARGUMENT MUST BE A GOBAL VARIABLE
             FileWriter w = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(w);
             PrintWriter wr = new PrintWriter(bw);
             while ((line = br.readLine()) != null) {
                 if (!line.isEmpty()) {
                     for(ConfigurationFilesAttributes cfa : attrs){
-                        if(line.charAt(0)!='#' && !cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED") && line.contains(cfa.getName())){
-                            line = cfa.getName()+" "+cfa.getValue();
-                            break;
+                        
+                        if (line.contains(cfa.getName())){
+                            line = line.replaceAll("#", "");
+                            if(cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED")){
+                                line = "# "+line;
+                            }else{
+                                line = cfa.getName()+" "+cfa.getValue();
+                            }
                         }
                     }
                 }
@@ -94,7 +99,7 @@ public class ModsecurityController {
             bw.close();
             br.close();
             
-            String cmd = " pkexec sudo mv /tmp/modsecurity.conf "+ccf.getPathName();//+" && /etc/init.d/apache2 reload";
+            String cmd = " pkexec sudo mv /tmp/"+ccf.getName()+" "+ccf.getPathName();//+" && /etc/init.d/apache2 reload";
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(cmd);
             pr.waitFor();

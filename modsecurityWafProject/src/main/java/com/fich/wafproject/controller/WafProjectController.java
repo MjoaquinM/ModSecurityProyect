@@ -46,8 +46,12 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.fich.wafproject.service.ConfigurationFileAttributeService;
 import com.fich.wafproject.service.ConfigurationFileAttributeOptionsService;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import org.springframework.web.bind.annotation.ResponseBody;
  
 @Controller
@@ -522,9 +526,36 @@ public class WafProjectController {
     }
     
     @RequestMapping(value = "/rulesConf", method = RequestMethod.GET)
-    public String rulesConfigurationPage(ModelMap model) {        
-        //model.addAttribute("users", userService.findAll());
+    public String rulesConfigurationPage(ModelMap model) {
+        List<String> ls = new ArrayList<String>();
+        try{
+            String path = "/usr/share/modsecurity-crs/rules/";
+            Process p = Runtime.getRuntime().exec("ls "+path);
+            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String line = null;
+            Integer count = 0;
+            System.out.println("IMPRIMIENDO CARAJO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            while ((line = in.readLine()) != null) {
+                if(line.contains("REQUEST") || line.contains("RESPONSE")){
+                    ls.add(line);
+                }
+                count = count+1;
+            }
+        }catch(IOException e){
+            ls.add("error");
+            e.printStackTrace();
+        }
+        
+        ConfigurationFilesAttributes cf = configurationFileAttributeService.findByName("SecRuleRemoveById");
+        
+            List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
+        /*<Build data modal>*/
+        model.addAttribute("idModal", "rulesFileConfigurationModal");
+        /*<Build data modal - end>*/
+        model.addAttribute("fileAttribute",cf);
+        model.addAttribute("configFiles",configurationFilesAll);
         model.addAttribute("user", getPrincipal());
+        model.addAttribute("list", ls);
         return "rulesConf";
     }
     
@@ -635,6 +666,64 @@ public class WafProjectController {
     @ModelAttribute("roles")
     public List<UserProfiles> initializeProfiles() {
         return userProfileService.findAll();
+    }
+    
+    @RequestMapping(value = "/blockRules", method = RequestMethod.POST)
+    public String blockRules(@Valid ConfigurationFilesAttributes cfa,
+            BindingResult result, ModelMap model) throws IOException, InterruptedException {
+        String value = cfa.getValue();
+        cfa = configurationFileAttributeService.findById(cfa.getId());
+        cfa.setValue(value);
+        configurationFileAttributeService.save(cfa);
+        try {
+            String line = "";
+            FileReader fr = new FileReader(cfa.getConfigurationFileAttributeGroups().getConfigurationFiles().getPathName());
+            BufferedReader br = new BufferedReader(fr);
+            java.io.File f = new java.io.File("/tmp/"+cfa.getConfigurationFileAttributeGroups().getConfigurationFiles().getName()); //ARGUMENT MUST BE A GOBAL VARIABLE
+            FileWriter w = new FileWriter(f);
+            BufferedWriter bw = new BufferedWriter(w);
+            PrintWriter wr = new PrintWriter(bw);
+            while ((line = br.readLine()) != null) {
+                if (!line.isEmpty()) {    
+                    if (line.contains(cfa.getName())){
+                        line = line.replaceAll("#", "");
+                        if(cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED")){
+                            line = "# "+line;
+                        }else{
+                            line = cfa.getName()+" "+cfa.getValue();
+                        }
+                    }
+                }
+                wr.append(line + "\n");
+            }
+            wr.close();
+            bw.close();
+            br.close();
+            
+            String cmd = " pkexec sudo mv /tmp/"+cfa.getConfigurationFileAttributeGroups().getConfigurationFiles().getName()+" "+cfa.getConfigurationFileAttributeGroups().getConfigurationFiles().getPathName();
+            Runtime run = Runtime.getRuntime();
+            Process pr = run.exec(cmd);
+            pr.waitFor();
+            BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            line = "";
+            while ((line = buf.readLine()) != null) {
+//                System.out.println(line);
+            }
+            cmd = " pkexec sudo /etc/init.d/apache2 reload";
+            run = Runtime.getRuntime();
+            pr = run.exec(cmd);
+            pr.waitFor();
+            buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            line = "";
+            while ((line = buf.readLine()) != null) {
+                System.out.println(line);
+            }
+            
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        
+        return this.rulesConfigurationPage(model);
     }
  
 }

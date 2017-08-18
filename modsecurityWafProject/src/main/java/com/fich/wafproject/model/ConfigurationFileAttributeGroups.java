@@ -52,7 +52,7 @@ public class ConfigurationFileAttributeGroups implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "name")
     private String name;
-    @Size(max = 200)
+    @Size(max = 2000)
     @Column(name = "description")
     private String description;
     

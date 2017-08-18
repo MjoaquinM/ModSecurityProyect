@@ -34,7 +34,7 @@ $(document).ready(function () {
         if (!id) {
             id = -1;
         }
-        alert(action+" - "+id);
+        
         /*<PREPARE MODAL>*/
         var modalFooter = "";
         switch (action) {
@@ -273,18 +273,29 @@ $(document).ready(function () {
                 $('#generic-modal-container').find('.type-row').find('select').on('change',function(){
                     var currentValue = $(this).val();
                     var text = $(this).find('[value='+currentValue+']').text();
-                    if(text.toString().indexOf('select')>=0){
-                        $('#value').attr('disabled',true);
-                        $('#generic-modal-container').find('.options-row-header').removeClass('hidden');
-                        var nOptions = $('#generic-modal-container').find('.options-row').length;
-                        var htmlBlock = '<tr class="options-row added"><td><input id="configurationFileAttributeOptions'+(nOptions)+'.name" name="configurationFileAttributeOptions['+(nOptions)+'].name" class="form-control input-sm attr-opt" value="" type="text"><div class="has-error"></div></td><td><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><input type="radio" name="radio-options" class="radio-options"></td></tr>';
-                        $(this).closest('tbody').append(htmlBlock);
-                        $('.radio-options').trigger('click');
-                    }else{
+                    if(text.toString().indexOf('group')>=0){
                         $('#generic-modal-container').find('.options-row-header').addClass('hidden');
                         $('#value').attr('readonly',false);
                         $('#value').attr('disabled',false);
+                        
+                        $('.option-groups-row-header').removeClass('hidden');
+                        
                         $('#generic-modal-container').find('.options-row').remove();
+                        
+                    }else{
+                        if(text.toString().indexOf('select')>=0){
+                            $('#value').attr('disabled',true);
+                            $('#generic-modal-container').find('.options-row-header').removeClass('hidden');
+                            var nOptions = $('#generic-modal-container').find('.options-row').length;
+                            var htmlBlock = '<tr class="options-row added"><td><input id="configurationFileAttributeOptions'+(nOptions)+'.name" name="configurationFileAttributeOptions['+(nOptions)+'].name" class="form-control input-sm attr-opt" value="" type="text"><div class="has-error"></div></td><td><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><input type="radio" name="radio-options" class="radio-options"></td></tr>';
+                            $(this).closest('tbody').append(htmlBlock);
+                            $('.radio-options').trigger('click');
+                        }else{
+                            $('#generic-modal-container').find('.options-row-header').addClass('hidden');
+                            $('#value').attr('readonly',false);
+                            $('#value').attr('disabled',false);
+                            $('#generic-modal-container').find('.options-row').remove();
+                        }
                     }
                 });
             }).fail(function () {
@@ -299,12 +310,12 @@ $(document).ready(function () {
         $('#fileConfigurationTemplateModal').find('form').validate({
             rules: {
                 name: "required",
-                description: "required",
+//                description: "required",
                 value: "required",
             },
             messages: {
                 name: "Please enter a name",
-                description: "Please enter a description",
+//                description: "Please enter a description",
                 value: "Plese set a value",
             }
         });
@@ -372,7 +383,12 @@ $(document).ready(function () {
     
     //When select option change -> update the hidden value attr input
     $('.file-config-page-select-attr').on('change',function(){
-        $(this).parent().parent('tr').find('.file-config-page-current-value-attr').val($(this).find('option:selected').text());
+        var values = '';
+        $(this).find('option:selected').each(function(){
+            values += $(this).text()+',';
+        });
+        values = values.slice(0,-1);
+        $(this).parent().parent('tr').find('.file-config-page-current-value-attr').val(values);
     });
     
     $('.file-config-page-text-number-attr').on('keyup click',function(){
@@ -482,4 +498,41 @@ $(document).ready(function () {
     });
 
     /************************MANAGE USERS END****************************/
+    
+    /************************MANAGE RULES ****************************/
+    $('.parameter-item').on('click',function(){
+        var name = $(this).text().replace('REQUEST-','').trim();
+        name = name.substring(0,name.indexOf('-'));
+        name = name+"000-"+name+"999";
+        if ($(this).hasClass('alert-warning')){
+            $(this).removeClass('alert-warning');
+            var finalValue = $('.final-value').val();
+            finalValue = finalValue.replace(name,'');
+            if(finalValue[0]==','){
+                finalValue = finalValue.substring(1,finalValue.length);
+            }
+            if(finalValue[finalValue.length-1]==','){
+                finalValue = finalValue.substring(0,finalValue.length-1);
+            }
+            $('.final-value').val(finalValue);
+//            alert($('.final-value').val());
+        }else{
+            $(this).addClass('alert-warning');
+            if($('.final-value').val()!=''){
+                $('.final-value').val($('.final-value').val()+","+name);
+            }else{
+                $('.final-value').val(name);
+            }    
+//            alert($(this).text().substring(2,$(this).text().indexOf('-')));
+        }
+    });
+    
+    $('#block-rules-button').on('click',function(){
+        
+        $('#blockRules').submit();
+    });
+    
+    /************************MANAGE RULES END****************************/
+    
+    
 })
