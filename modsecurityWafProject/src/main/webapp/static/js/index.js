@@ -482,4 +482,61 @@ $(document).ready(function () {
     });
 
     /************************MANAGE USERS END****************************/
+    
+    /************************MANAGE EVENTS****************************/
+    $('#show-event-details').on('click', function () {
+        console.log("ENTRO A SHOW EVENT DETAILS");
+        /*<VARIABLES>*/
+        var modalTitle = 'Event Details';
+            var action = $(this).data('action');
+        var data = {};
+        var url = '';
+        var id = $(this).data('id');
+        if (!id) {
+            id = -1;
+        }
+        /*<PREPARE MODAL>*/
+        var modalFooter = "";
+        switch (action) {
+            case 'remove':
+                modalTitle = 'Remove User';
+                url = 'removeUser';
+                modalFooter = '<button type="button" class="btn btn-primary" id="removeUser" data-id="' + id + '">Delete</button>';
+                break;
+            case 'edit':
+                modalTitle = 'Edit User';
+                modalFooter = '<button type="button" class="btn btn-primary" id="addUser">Save</button>';
+                data = {id: id};
+                url = 'addUser';
+                break;
+            default:
+                modalTitle = 'Add User';
+                modalFooter = '<button type="button" class="btn btn-primary" id="addUser">Add</button>';
+                data = {id: id};
+                url = 'addUser';
+        }
+        modalFooter += '<button type="button" class="btn btn-secondary" data-dismiss="modal" id="userModalCancel">Cancel</button>';
+        $('#generic-modal-container').find('.modal-title').html(modalTitle);
+        $('#generic-modal-container').find('.modal-footer').html(modalFooter);
+        data = {transactionId: 'hola'};
+        if (url == 'removeUser') {
+            $('#generic-modal-container').find('.modal-body').html('<p> Confirm remove selected user? </p>');
+        } else {
+            console.log("ESTA POR MANDAR EN DATA: ", data);
+            $.ajax({
+                url: 'eventDetailsForm',
+                method: 'GET',
+                dataType: 'html',
+                data: data
+            }).done(function (response) {
+                $('#generic-modal-container').find('.modal-body').html(response);
+            }).fail(function (e) {
+                console.log(e);
+                $('#generic-modal-container').find('.modal-body').html('An error has occurred.');
+            });
+        }
+        /*<SHOW MODAL>*/
+        $('#eventModal').modal('show');
+    });
+    /************************MANAGE EVENTS END****************************/
 })

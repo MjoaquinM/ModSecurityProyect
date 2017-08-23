@@ -80,7 +80,8 @@ public class ModsecurityController {
             bw.close();
             br.close();
             
-            String cmd = " pkexec sudo mv /tmp/modsecurity.conf "+ccf.getPathName();//+" && /etc/init.d/apache2 reload";
+//            String cmd = " pkexec sudo mv /tmp/modsecurity.conf "+ccf.getPathName();//+" && /etc/init.d/apache2 reload";
+            String cmd = " pkexec sudo /home/martin/execme.sh";
 
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(cmd);
@@ -91,11 +92,11 @@ public class ModsecurityController {
             while ((line = buf.readLine()) != null) {
                 System.out.println(line);
             }
-            cmd = " pkexec sudo /etc/init.d/apache2 reload";
-            System.out.println("COMANDO QUE VOY A EJECUTAAAAAAAARRRRRRRRRR: " + cmd);
-            run = Runtime.getRuntime();
-            pr = run.exec(cmd);
-            pr.waitFor();
+//            cmd = " pkexec sudo /etc/init.d/apache2 reload";
+//            System.out.println("COMANDO QUE VOY A EJECUTAAAAAAAARRRRRRRRRR: " + cmd);
+//            run = Runtime.getRuntime();
+//            pr = run.exec(cmd);
+//            pr.waitFor();
 //            pr.wait(10000);
             buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
             line = "";

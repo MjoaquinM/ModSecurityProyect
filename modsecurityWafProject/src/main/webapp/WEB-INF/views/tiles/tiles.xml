@@ -152,9 +152,13 @@
    </definition>
    
     <!-- Request Show Reports Main Page -> Controller Admin -->
-   <definition name="events" extends="admin-layout">  
+   <definition name="eventsList" extends="admin-layout">  
        <put-attribute name="title" value="Events" />  
-       <put-attribute name="body" value="/WEB-INF/views/tiles/page/controll-panel/events.jsp" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/controll-panel/events.jsp" />
+       <put-attribute name="modal" value="/WEB-INF/views/tiles/template/modal.jsp" />  
+   </definition>
+   
+   <definition name="eventDetailsForm" template="/WEB-INF/views/tiles/page/events/eventDetailsForm.jsp">
    </definition>
    
    <!--****************** CONTROL PANEL MODULE - END ******************-->
@@ -167,6 +171,5 @@
    <!--BORRAMEEEEEEEEEEE--> 
    <definition name="newuser" template="/WEB-INF/views/tiles/page/newuser.jsp">
    </definition>
-    
      
 </tiles-definitions>

@@ -36,6 +36,10 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.JDBCConnectionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -43,54 +47,67 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
 @RequestMapping("/")
 public class EventsLogController {
     
-    //CAMBIAR EN LA DB DATEEVENT!!!!! ES UN VARCHAR Y DEBERIA SER DATEEEEEEEEEEEEEEEEE
+    @RequestMapping(value = "/jasperDownloadPDF", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> jasperDownloadPDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException {
+        
+        Connection conexion;
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        conexion = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/waf_project", "root", "mcardoso27");
+
+        Map parameters = new HashMap();
+        //A nuestro informe de prueba le vamos a enviar la fecha de hoy
+        parameters.put("fechainicio", new Date());
+        
+        JasperReport jasperReport;
+        jasperReport= (JasperReport) JRLoader.loadObject("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper");
+        
+        byte[] fichero = JasperRunManager.runReportToPdf("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper", parameters, conexion);
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+        String filename = "output.pdf";
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
+        return response;
+        
+    }
     
-    @RequestMapping(value = "/jasperPDF", method = RequestMethod.GET)
-    public String sayHelloJasperPDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException {
-        System.out.println("ENTRO AL GET HELLOAGAIN");
-        return "jasperPDF";
+    @RequestMapping(value = "/jasperInlinePDF", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> jasperInlinePDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException {
+        System.out.println("ENTRO AL JASPER INLINE");        
+    
+        Connection conexion;
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        conexion = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/waf_project", "root", "mcardoso27");
+
+        Map parameters = new HashMap();
+        //A nuestro informe de prueba le vamos a enviar la fecha de hoy
+        parameters.put("fechainicio", new Date());
+        
+        JasperReport jasperReport;
+        jasperReport= (JasperReport) JRLoader.loadObject("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/GraphReport.jasper");
+        
+        byte[] fichero = JasperRunManager.runReportToPdf("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/GraphReport.jasper", parameters, conexion);
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+        String filename = "output.pdf";
+        headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
+        System.out.println("RESPONSE ENTITY: " + response.getHeaders());
+        return response;
     }
     
-    @RequestMapping(value = "/jasperXLS", method = RequestMethod.GET)
-    public String sayHelloJasperXLS(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException {
-        System.out.println("ENTRO AL GET HELLOAGAIN");
-        return "jasperXLS";
-    }
-    
-    @RequestMapping(value = "/jasperHTML", method = RequestMethod.GET)
-    public String sayHelloJasperHTML(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException {
-        System.out.println("ENTRO AL GET HELLOAGAIN");
-        return "jasperHTML";
-    }
-
-    //El value es el RequestMapping de la clase ("/")
-    @RequestMapping(method = RequestMethod.GET)
-    public String sayHello(ModelMap model) {
-        model.addAttribute("greeting", "Se llamo desde el GET RAIZ");
-        System.out.println("ENTRO AL GET RAIZ '/'");
-        return "welcome";
-    }
-
-    @RequestMapping(value = "/get", method = RequestMethod.GET)
-    public String sayHelloAgain(ModelMap model) {
-        model.addAttribute("greeting", "Se llamo desde el GET /get");
-        System.out.println("ENTRO AL GET HELLOAGAIN");
-        return "welcome";
-    }
-
-    @RequestMapping(value = "/post", method = RequestMethod.POST)
-    public String sayHelloAgainPost(ModelMap model) {
-        model.addAttribute("greeting", "Se llamo desde un POST");
-        System.out.println("ENTRO AL POST");
-        return "welcome";
-    }
-
+//********************************************  PARSER  ********************************//
     @Autowired
     EventService eventService;
     @Autowired
@@ -375,125 +392,35 @@ public class EventsLogController {
             pageNumber=1;
         }
         List<Event> events = eventService.findAllEvents(pageNumber);
-//        System.out.println("PARAMETROS QUE SE VAN A MANDAR1111: " + events);
-//        for (Event e : events){
-//            System.out.println("ID Evento: " + e.getId());
-//        }
         if(events.size() == 0){
             pageNumber = pageNumber-1;
             events = eventService.findAllEvents(pageNumber);
         }
         model.addAttribute("lst",events);
         model.addAttribute("pageNumber",pageNumber);
-//        System.out.println("CANTIDAD: "+events.size());
-//        System.out.println("PARAMETRO RECIBIDO: " + pageNumber);
-//        System.out.println("PARAMETROS QUE SE VAN A MANDAR: " + events);
-        return "events";
+        model.addAttribute("idModal", "eventModal");
+        return "eventsList";
     }
     
-//    //HIBERNATEEEEE
-//    @Autowired
-//    EmployeeService service;
-//
-//    @Autowired
-//    MessageSource messageSource;
-//
-//    /*
-//	 * This method will list all existing employees.
-//     */
-//    @RequestMapping(value = "/list", method = RequestMethod.GET)
-//    public String listEmployees(ModelMap model) {
-//
-//        List<Employee> employees = service.findAllEmployees();
-//        model.addAttribute("employees", employees);
-//        return "allemployees";
-//    }
-//
-//    /*
-//	 * This method will provide the medium to add a new employee.
-//     */
-//    @RequestMapping(value = {"/new"}, method = RequestMethod.GET)
-//    public String newEmployee(ModelMap model) {
-//        Employee employee = new Employee();
-//        model.addAttribute("employee", employee);
-//        model.addAttribute("edit", false);
-//        return "registration";
-//    }
-//
-//    /*
-//	 * This method will be called on form submission, handling POST request for
-//	 * saving employee in database. It also validates the user input
-//     */
-//    @RequestMapping(value = {"/new"}, method = RequestMethod.POST)
-//    public String saveEmployee(@Valid Employee employee, BindingResult result,
-//            ModelMap model) {
-//
-//        if (result.hasErrors()) {
-//            return "registration";
+     @RequestMapping(value = "/eventList/eventDetailsForm", method = RequestMethod.GET)
+    public String getAddUserForm(ModelMap model, @RequestParam("transactionId") String transactionId) {
+        System.out.println("ENTRO A DETAILS FORM: " + transactionId);
+        model.addAttribute("idModal", "eventModal");
+//        Users user = new Users();
+//        List<UserStates> userStates = userStatesService.findAll();
+//        String actionMessage = "";
+//        if (id != -1){
+//            user = userService.findById(id);
+//            model.addAttribute("messageType", "User "+user.getUserName()+" wass succefully updated.");
+//            actionMessage = "--- Editing User Form: "+user.getUserName();
+//        }else{
+//            actionMessage = "--- Creating User Form";
 //        }
-//
-//        /*
-//		 * Preferred way to achieve uniqueness of field [ssn] should be implementing custom @Unique annotation 
-//		 * and applying it on field [ssn] of Model class [Employee].
-//		 * 
-//		 * Below mentioned peace of code [if block] is to demonstrate that you can fill custom errors outside the validation
-//		 * framework as well while still using internationalized messages.
-//		 * 
-//         */
-//        if (!service.isEmployeeSsnUnique(employee.getId(), employee.getSsn())) {
-//            FieldError ssnError = new FieldError("employee", "ssn", messageSource.getMessage("non.unique.ssn", new String[]{employee.getSsn()}, Locale.getDefault()));
-//            result.addError(ssnError);
-//            return "registration";
-//        }
-//
-//        service.saveEmployee(employee);
-//
-//        model.addAttribute("success", "Employee " + employee.getName() + " registered successfully");
-//        return "success";
-//    }
-//
-//
-//    /*
-//	 * This method will provide the medium to update an existing employee.
-//     */
-//    @RequestMapping(value = {"/edit-{ssn}-employee"}, method = RequestMethod.GET)
-//    public String editEmployee(@PathVariable String ssn, ModelMap model) {
-//        Employee employee = service.findEmployeeBySsn(ssn);
-//        model.addAttribute("employee", employee);
-//        model.addAttribute("edit", true);
-//        return "registration";
-//    }
-//
-//    /*
-//	 * This method will be called on form submission, handling POST request for
-//	 * updating employee in database. It also validates the user input
-//     */
-//    @RequestMapping(value = {"/edit-{ssn}-employee"}, method = RequestMethod.POST)
-//    public String updateEmployee(@Valid Employee employee, BindingResult result,
-//            ModelMap model, @PathVariable String ssn) {
-//
-//        if (result.hasErrors()) {
-//            return "registration";
-//        }
-//
-//        if (!service.isEmployeeSsnUnique(employee.getId(), employee.getSsn())) {
-//            FieldError ssnError = new FieldError("employee", "ssn", messageSource.getMessage("non.unique.ssn", new String[]{employee.getSsn()}, Locale.getDefault()));
-//            result.addError(ssnError);
-//            return "registration";
-//        }
-//
-//        service.updateEmployee(employee);
-//
-//        model.addAttribute("success", "Employee " + employee.getName() + " updated successfully");
-//        return "success";
-//    }
-//
-//    /*
-//	 * This method will delete an employee by it's SSN value.
-//     */
-//    @RequestMapping(value = {"/delete-{ssn}-employee"}, method = RequestMethod.GET)
-//    public String deleteEmployee(@PathVariable String ssn) {
-//        service.deleteEmployeeBySsn(ssn);
-//        return "redirect:/list";
-//    }
+//        if(flagDebug) System.out.println(actionMessage);
+//        model.addAttribute("user", user);
+//        model.addAttribute("userStates", userStates);
+//        model.addAttribute("action","saveNewUser");
+        return "eventDetailsForm";
+    }
+    
 }
