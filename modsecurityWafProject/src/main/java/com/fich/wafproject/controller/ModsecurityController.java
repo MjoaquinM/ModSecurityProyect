@@ -105,18 +105,12 @@ public class ModsecurityController {
             pr.waitFor();
             BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
             line = "";
-            while ((line = buf.readLine()) != null) {
-//                System.out.println(line);
-            }
             cmd = " pkexec sudo /etc/init.d/apache2 reload";
             run = Runtime.getRuntime();
             pr = run.exec(cmd);
             pr.waitFor();
             buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
             line = "";
-            while ((line = buf.readLine()) != null) {
-                System.out.println(line);
-            }
             
         } catch (IOException e) {
             System.out.println(e);

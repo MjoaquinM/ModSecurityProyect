@@ -8,6 +8,8 @@ import com.fich.wafproject.model.ConfigurationFileAttributeType;
 import com.fich.wafproject.model.ConfigurationFileStates;
 import com.fich.wafproject.model.ConfigurationFiles;
 import com.fich.wafproject.model.ConfigurationFilesAttributes;
+import com.fich.wafproject.model.EventRule;
+import com.fich.wafproject.model.Rule;
 import java.util.List;
  
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +47,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import com.fich.wafproject.service.ConfigurationFileAttributeService;
 import com.fich.wafproject.service.ConfigurationFileAttributeOptionsService;
+import com.fich.wafproject.service.EventRuleService;
+import com.fich.wafproject.service.RuleService;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -53,6 +57,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
  
 @Controller
 @RequestMapping("/")
@@ -89,6 +96,11 @@ public class WafProjectController {
     @Autowired
     ConfigurationFileAttributeOptionsService configurationFileAttributeOptionsService;
     
+    @Autowired
+    EventRuleService eventRuleService;
+    
+    @Autowired
+    RuleService ruleService;
     
     private boolean flagDebug = true;
 
@@ -228,7 +240,7 @@ public class WafProjectController {
      */
     @RequestMapping(value = "/saveNewFileConfiguration", method = RequestMethod.POST)
     public String saveNewFileConfiguration(@Valid ConfigurationFiles cf,
-            BindingResult result, ModelMap model) {
+            BindingResult result, ModelMap model, @RequestParam("redirectTo") String redirect) {
         if (result.hasErrors()) {
             for (Object object : result.getAllErrors()) {
                 if(object instanceof FieldError) {
@@ -249,8 +261,12 @@ public class WafProjectController {
                 model.addAttribute("messageClass","danger");
             }
             
-        }        
-        return this.configurationFilesList(model);
+        }
+        if (redirect.equals("configFileTemplate")){
+            return this.configurationPageTemplate(model,cf.getName());
+        }else{
+            return this.configurationFilesList(model);
+        }
     }
     
     /**
@@ -472,7 +488,6 @@ public class WafProjectController {
             String line = null;
             Integer count = 0;
             while ((line = in.readLine()) != null) {
-                System.out.println(line);
                 ls.add(line);
                 count = count+1;
             }
@@ -481,7 +496,6 @@ public class WafProjectController {
             }else{
                 ls.add(0,"empty");
             }
-            System.out.println(count);
         }catch(IOException e){
             ls.add("error");
             e.printStackTrace();
@@ -527,19 +541,53 @@ public class WafProjectController {
     
     @RequestMapping(value = "/rulesConf", method = RequestMethod.GET)
     public String rulesConfigurationPage(ModelMap model) {
+        
         List<String> ls = new ArrayList<String>();
+        List<Boolean> lsState = new ArrayList<Boolean>();
+        List<Boolean> lsStateIds = new ArrayList<Boolean>();
+        List<Rule> ruleIds = new ArrayList<Rule>();
+        List<String> ruleFiles = new ArrayList<String>();
+        String value = configurationFileAttributeService.findByName("SecRuleRemoveById").getValue();//VIEW THIS -> HARDCODE
+        String[] values = value.split(",");
+        List<Rule> rules = ruleService.findAll();
         try{
             String path = "/usr/share/modsecurity-crs/rules/";
             Process p = Runtime.getRuntime().exec("ls "+path);
             BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String line = null;
+            String line = null, fileToLine = "";
             Integer count = 0;
-            System.out.println("IMPRIMIENDO CARAJO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            
+//            for(String val: values){
+//                System.out.println(val.substring(0, 3));
+//            }
+            
             while ((line = in.readLine()) != null) {
                 if(line.contains("REQUEST") || line.contains("RESPONSE")){
+//                    ls.add(line);
+                    boolean flag = false, flagIds = false;
+                    for(String val: values){
+                        if(val.length()>=4 && line.contains(val.substring(0, 3)) && val.contains("-")){
+                            flag = true;
+                            ruleFiles.add(val);
+                            break;
+                        }
+                    }
+                    lsState.add(flag);
                     ls.add(line);
+                    fileToLine += line;
                 }
                 count = count+1;
+            }
+            
+            for(Rule rule : rules){
+                boolean flag = false;
+                for(String val: values){
+                    if( val.equals(rule.getRuleId())){
+                        flag = true;
+                        break;
+                    }
+                }
+                lsStateIds.add(flag);
             }
         }catch(IOException e){
             ls.add("error");
@@ -547,8 +595,7 @@ public class WafProjectController {
         }
         
         ConfigurationFilesAttributes cf = configurationFileAttributeService.findByName("SecRuleRemoveById");
-        
-            List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
+        List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
         /*<Build data modal>*/
         model.addAttribute("idModal", "rulesFileConfigurationModal");
         /*<Build data modal - end>*/
@@ -556,6 +603,11 @@ public class WafProjectController {
         model.addAttribute("configFiles",configurationFilesAll);
         model.addAttribute("user", getPrincipal());
         model.addAttribute("list", ls);
+        model.addAttribute("states", lsState);
+        model.addAttribute("values", ruleFiles);
+        model.addAttribute("statesIds", lsStateIds);
+        model.addAttribute("rules", rules);
+        
         return "rulesConf";
     }
     
@@ -706,23 +758,15 @@ public class WafProjectController {
             pr.waitFor();
             BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
             line = "";
-            while ((line = buf.readLine()) != null) {
-//                System.out.println(line);
-            }
             cmd = " pkexec sudo /etc/init.d/apache2 reload";
             run = Runtime.getRuntime();
             pr = run.exec(cmd);
             pr.waitFor();
             buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
             line = "";
-            while ((line = buf.readLine()) != null) {
-                System.out.println(line);
-            }
-            
         } catch (IOException e) {
             System.out.println(e);
         }
-        
         return this.rulesConfigurationPage(model);
     }
  

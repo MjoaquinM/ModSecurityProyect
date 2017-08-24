@@ -33,7 +33,7 @@
                             </li>
                         </c:forEach>
                         <li>
-                            <a href="<c:url value="/rulesConf" />">Rules</a>
+                            <a href="<c:url value="/rulesConf" />">Manage Rules</a>
                         </li>
                     </ul>
                     <!-- /.nav-third-level -->

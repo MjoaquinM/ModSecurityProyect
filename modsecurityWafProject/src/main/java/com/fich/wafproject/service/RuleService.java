@@ -1,6 +1,7 @@
 package com.fich.wafproject.service;
  
 import com.fich.wafproject.model.Rule;
+import java.util.List;
  
 public interface RuleService {
      
@@ -8,4 +9,5 @@ public interface RuleService {
     
     Rule findByRuleId(String ruleId);
      
+    List<Rule> findAll();
 }

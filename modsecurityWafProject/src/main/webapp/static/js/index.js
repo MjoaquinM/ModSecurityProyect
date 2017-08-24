@@ -68,11 +68,11 @@ $(document).ready(function () {
                 data: data
             }).done(function (response) {
                 $('#generic-modal-container').find('.modal-body').html(response);
-                $('#file-selector').on('change',function(){
-                    
-                });
+//                $('#file-selector').on('change',function(){
+//                    
+//                });
                 $('#search-file-configuration-button').on('click',function(){
-                    validateFileConfiguration($('#pathName').val());
+                    validateFileConfiguration($('#generic-modal-container').find('#pathName').val());
                 });
             }).fail(function () {
                 $('#generic-modal-container').find('.modal-body').html('<p>An error has occurred. </p>');
@@ -119,20 +119,28 @@ $(document).ready(function () {
     });
 
     $('#fileConfigurationModal').on('click', '#addFileConfiguration', function () {
-        $('#fileConfigurationModal').find('form').validate({
+        editConfigFile('configFileList');
+    });
+    
+    $('#fileConfigurationTemplateModal').on('click','#addFileConfiguration',function(){
+        editConfigFile('configFileTemplate');
+    });
+    
+    function editConfigFile(redirectTo){
+        $('#fileConfigurationModal,#fileConfigurationTemplateModal').find('form').validate({
             rules: {
-//                name: "required",
                 pathName: "required"
             },
             messages: {
-//                name: "Please enter a name",
                 pathName: "Please enter a valid file path"
             }
         });
         if($('#name').val()!=''){
-            $('#fileConfigurationModal').find('form').submit();
+            var form = $('#fileConfigurationModal,#fileConfigurationTemplateModal').find('form');
+            form.append('<input type="hidden" value="'+redirectTo+'" name=redirectTo />')
+            form.submit();
         }
-    })
+    };
 
     $('body').on('click', '#removeFileConfiguration', function () {
         $('#deleteFileconfiguration').append('<input type="text" name="id" value="' + $(this).data("id") + '" />');
@@ -501,10 +509,16 @@ $(document).ready(function () {
     
     /************************MANAGE RULES ****************************/
     $('.parameter-item').on('click',function(){
+//        alert($(this).text().trim(' '));
         var name = $(this).text().replace('REQUEST-','').trim();
+        name = name.replace('RESPONSE-','').trim();
+//        alert(name);
         name = name.substring(0,name.indexOf('-'));
+//        alert(name);
         name = name+"000-"+name+"999";
+//        alert(name);
         if ($(this).hasClass('alert-warning')){
+            $('#'+name).remove();
             $(this).removeClass('alert-warning');
             var finalValue = $('.final-value').val();
             finalValue = finalValue.replace(name,'');
@@ -515,20 +529,50 @@ $(document).ready(function () {
                 finalValue = finalValue.substring(0,finalValue.length-1);
             }
             $('.final-value').val(finalValue);
-//            alert($('.final-value').val());
+            
         }else{
             $(this).addClass('alert-warning');
             if($('.final-value').val()!=''){
                 $('.final-value').val($('.final-value').val()+","+name);
             }else{
                 $('.final-value').val(name);
-            }    
+            }
+            $('.blocked-container').append('<div id="'+name +'" class="blocked-item">'+name+'</div>');
 //            alert($(this).text().substring(2,$(this).text().indexOf('-')));
         }
+//        alert($('.final-value').val());
     });
     
-    $('#block-rules-button').on('click',function(){
+    $('.id-parameter-item').on('click',function(){
+        var finalValue = $('.final-value').val();
         
+        if ($(this).hasClass('alert-warning')){
+            $('#id-blocked-container').find('#'+$(this).html().trim(' ')).remove();
+            $(this).removeClass('alert-warning');
+//            $('.final-value').val($('.final-value').val().replace($(this).html().trim(' '),'').trim(','));
+            finalValue = finalValue.replace($(this).html().trim(),'');
+        }else{
+            $(this).addClass('alert-warning');
+            $('#id-blocked-container').append('<div id="'+$(this).html().trim()+'" class="blocked-item">'+$(this).html().trim()+'</div>');
+//            $('.final-value').val(($('.final-value').val()+','+$(this).html().trim(' ')).trim(','));
+            finalValue = finalValue+','+$(this).html().trim();
+        }
+        
+        if(finalValue[0]==','){
+            finalValue = finalValue.substring(1,finalValue.length);
+        }
+        if(finalValue[finalValue.length-1]==','){
+            finalValue = finalValue.substring(0,finalValue.length-1);
+        }
+        
+        finalValue = finalValue.replace(',,',',');
+        
+        $('.final-value').val(finalValue);
+//        alert(finalValue);
+
+    });
+    
+    $('.block-rules-button').on('click',function(){
         $('#blockRules').submit();
     });
     

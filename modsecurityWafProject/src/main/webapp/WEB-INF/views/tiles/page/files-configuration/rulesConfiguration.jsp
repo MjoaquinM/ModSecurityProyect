@@ -18,26 +18,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row">
-                        <h1>${file.name}</h1>
-                    </div>
-                    <div class="row">
                         <div class="col-lg-4">
-                            <h4>Block Rules by</h4>
-                        </div>
-                        <div class="col-lg-4">
-                            <select>
-                                <option>Attack</option>
-                                <option>Id</option>
-                                <option>Tags</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <h5>
-                                <button type="button" class="btn btn-success" id="block-rules-button">
-                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                    Apply Configuration
-                                </button>
-                            </h5>
+                            <h3>Block Rules by</h3>
                         </div>
                     </div>
                 </div>
@@ -47,7 +29,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
+                                    <th colspan="3">Attack</th>
 <!--                                    <th>Description</th>
                                     <th>Path</th>
                                     <th>State</th>
@@ -55,31 +37,131 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <form:form id="blockRules" method="POST" modelAttribute="fileAttribute" action="blockRules">
+                                
                                 <tr>
                                     <td>
-                                        value:
+                                        Rules Files
                                     </td>
-                                    <td class="final-value">
-                                        <form:input path="value" cssClass="final-value" readonly="true" ></form:input>
+                                    <td>
+                                        Blocked
                                     </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
                                     <td>
                                         <div class="parameter-container">
                                         <c:forEach items="${list}" var="item" varStatus="loop">
-                                            <div class="parameter-item">
+                                            <c:choose>
+                                                <c:when test="${states[loop.index]==true}">
+                                                    <div class="parameter-item alert-warning">
+                                                        ${item}
+                                                    </div>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <div class="parameter-item">
+                                                        ${item}
+                                                    </div>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="blocked-container">
+                                        <c:forEach items="${values}" var="item" varStatus="loop">
+                                            <div id="${item}" class="blocked-item">
                                                 ${item}
                                             </div>
-                                        </c:forEach>    
+                                        </c:forEach>
+                                        </div>
+                                    </td>
+                                    <td class="action-container">
+                                        <div class="col-md-4">
+                                            <h5>
+                                                <button type="button" class="btn btn-success block-rules-button">
+                                                    Apply Configuration
+                                                </button>
+                                            </h5>
                                         </div>
                                     </td>
                                 </tr>
-                                <form:hidden path="id"></form:hidden>
-                                </form:form>
                             </tbody>
                         </table>
                     </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th colspan="3">Rule Id's</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        Id
+                                    </td>
+                                    <td>
+                                        Blocked
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="parameter-container">
+                                        <c:forEach items="${rules}" var="item" varStatus="loop">
+                                            <c:choose>
+                                                <c:when test="${statesIds[loop.index]==true}">
+                                                    <div class="id-parameter-item alert-warning">
+                                                        ${item.ruleId}
+                                                    </div>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <div class="id-parameter-item">
+                                                        ${item.ruleId}
+                                                    </div>
+                                                </c:otherwise>
+                                            </c:choose>
+<!--                                            <div class="parameter-item">CHANGE
+                                            </div>-->
+                                        </c:forEach>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div id="id-blocked-container">
+                                        <c:forEach items="${rules}" var="item" varStatus="loop">
+                                            <c:choose>
+                                                <c:when test="${statesIds[loop.index]==true}">
+                                                    <div id="${item.ruleId}" class="id-blocked-item">
+                                                        ${item.ruleId}
+                                                    </div>
+                                                </c:when>
+                                            </c:choose>
+                                        </c:forEach>
+                                        </div>
+                                    </td>
+                                    <td class="action-container">
+                                        <div class="col-md-4">
+                                            <h5>
+                                                <button type="button" class="btn btn-success block-rules-button">
+                                                    Apply Configuration
+                                                </button>
+                                            </h5>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
+    <form:form id="blockRules" method="POST" modelAttribute="fileAttribute" action="blockRules">
+        <form:hidden path="value" cssClass="final-value" readonly="true" />
+        <form:hidden path="id"></form:hidden>
+    </form:form>
 </div>

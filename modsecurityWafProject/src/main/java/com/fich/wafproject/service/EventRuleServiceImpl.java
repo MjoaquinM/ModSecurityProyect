@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
  
 import com.fich.wafproject.dao.EventRuleDao;
 import com.fich.wafproject.model.EventRule;
+import java.util.List;
  
 @Service("eventRuleService")
 @Transactional
@@ -17,6 +18,10 @@ public class EventRuleServiceImpl implements EventRuleService {
     @Override
     public void saveEventRule(EventRule eventRule) {
         dao.saveEventRule(eventRule);
+    }
+
+    public List<EventRule> findAll() {
+        return dao.findAll();
     }
      
 }

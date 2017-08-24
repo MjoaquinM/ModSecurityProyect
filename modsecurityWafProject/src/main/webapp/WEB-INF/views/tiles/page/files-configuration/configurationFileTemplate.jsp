@@ -18,7 +18,7 @@
 
     <div class="panel-body">
         <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -43,13 +43,10 @@
                             <c:out value="${currentFile.configurationFileStates.name}"/>
                         </td>
                         <td>
-                            ${currentFile.configurationFileAttributeGroups[0].configurationFilesAttributes[1].configurationFileAttributeOptions[0].name}
-                        </td>
-                        <td>
                             <a href="#" class="btn btn-success" id="edit-file-configuration-button" data-action="edit" data-id="${currentFile.id}" data-redirect-to="confFileTemp">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                             </a>    
-                            <a href="" class="btn btn-danger" id="" data-action="remove">
+                            <a href="" class="btn btn-danger" id="remove-file-configuration-button" data-action="remove">
                                 <i class="fa fa-times" aria-hidden="true"></i>
                             </a>
                         </td>
@@ -65,7 +62,7 @@
             <div class="panel-heading">
                 <div class="row">
                     <div class="col-md-6">
-                        <h4>Configuration Parameters</h4>
+                        <h3>Configuration Parameters</h3>
                     </div>
                     <div class="col-md-2">
                         <h5>
@@ -86,108 +83,106 @@
                     </div>
                 </div>
             </div>
-            <div class="panel-body">
+            <div class="panel-body">                                
+            <c:forEach items="${currentFile.configurationFileAttributeGroups}" var="group" varStatus="loopGroup">
                 <div class="table-responsive">
                     <table class="table table-striped">
-                        <tbody>
-                            <c:forEach items="${currentFile.configurationFileAttributeGroups}" var="group" varStatus="loopGroup">
-                                <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].id" />
-                                <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].description" />
-                                <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].name" />
-                                <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].configurationFiles.id" />
-                            <thead>
-                                <tr>
-                            <div class="col-lg-8">
-                                <th>${group.name}</th>
-                            </div>
-                            <div class="col-lg-4">
-                                <th>
-                                    <a href="#" class="file-attribute-button"  data-config-file-id="${currentFile.id}" data-config-file-attr-group-id="${group.id}" data-action="add">
-                                        <i class="fa fa-plus" aria-hidden="true"></i>
-                                        Add Attribute
-                                    </a>
-                                </th>
+                    <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].id" />
+                    <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].description" />
+                    <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].name" />
+                    <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].configurationFiles.id" />
+                    <thead>
+                        <tr class="label-default tmpl-page-group-header">
+                            <th colspan="5">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h4>${group.name}</h4>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <a  style="float:right;" href="#" class="file-attribute-button btn btn-primary"  data-config-file-id="${currentFile.id}" data-config-file-attr-group-id="${group.id}" data-action="add">
+                                            <i class="fa fa-plus" aria-hidden="true"></i>
+                                            Add Attribute
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6 tmpl-page-delete-edit-group-buttons">
+                                        <button type="button" class="btn btn-success attribute-group" data-action="edit" data-config-file-group-id="${group.id}" data-config-file-id="${currentFile.id}" >
+                                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger attribute-group" data-action="remove" data-config-file-group-id="${group.id}" data-config-file-id="${currentFile.id}" >
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach items="${group.configurationFilesAttributes}" var="attr" varStatus="loopAttr">
+                            <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].id" />
+                            <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].name" />
+                            <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeType.id" />
+                            <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeStates.id" />
+                            <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeGroups.id" />
+                            <tr>
                                 <td>
-                                    <button type="button" class="btn btn-success attribute-group" data-action="edit" data-config-file-group-id="${group.id}" data-config-file-id="${currentFile.id}" >
+                                    <c:out value="${attr.name}"/>
+                                </td>
+                                <td>
+                                    <label class="file-config-page-current-value-attr-label">${attr.value}</label>
+                                    <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].value" cssClass="file-config-page-current-value-attr" />
+                                </td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${attr.configurationFileAttributeType.name == 'single-select'}">
+                                            <form:select path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeOptions" items="${attr.configurationFileAttributeOptions}" multiple="false" itemValue="id" itemLabel="name" cssClass="file-config-page-select-attr" />
+                                        </c:when>
+                                        <c:when test="${attr.configurationFileAttributeType.name == 'multiple-select'}">
+                                            <form:select path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeOptions" items="${attr.configurationFileAttributeOptions}" multiple="true" itemValue="id" itemLabel="name" cssClass="file-config-page-select-attr" />
+                                        </c:when>                                        
+
+                                        <c:when test="${attr.configurationFileAttributeType.name == 'numeric-input'}">
+                                            <input type="number" value="${attr.value}" class="file-config-page-text-number-attr">
+                                        </c:when>
+                                        <c:when test="${attr.configurationFileAttributeType.name == 'input-text'}">
+                                            <input type="text" value="${attr.value}" class="file-config-page-text-number-attr">
+                                        </c:when>
+                                        <c:otherwise>
+                                            Option Undefined    
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-success file-attribute-button" data-action="edit" data-config-file-id="${currentFile.id}" data-config-file-attr-group-id="${group.id}" data-config-file-attr-id="${attr.id}" data-config-file-attr-name="${attr.name}" >
                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                     </button>
-                                    <button type="button" class="btn btn-danger attribute-group" data-action="remove" data-config-file-group-id="${group.id}" data-config-file-id="${currentFile.id}" >
+                                    <button type="button" class="btn btn-danger file-attribute-button" data-action="remove" data-config-file-attr-id="${attr.id}" data-config-file-attr-name="${attr.name}" >
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </button>
                                 </td>
-                            </div>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${attr.configurationFileAttributeStates.name == 'LOCKED'}">
+                                            <div class="alert alert-danger cfa-state">LOCKED</div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="alert alert-success cfa-state">CONFIGURABLE</div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
                             </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach items="${group.configurationFilesAttributes}" var="attr" varStatus="loopAttr">
-                                    <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].id" />
-                                    <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].name" />
-                                    <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeType.id" />
-                                    <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeStates.id" />
-                                    <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeGroups.id" />
-                                    <tr>
-                                        <td>
-                                            <c:out value="${attr.name}"/>
-                                        </td>
-                                        <td>
-                                            <label class="file-config-page-current-value-attr-label">${attr.value}</label>
-                                            <form:hidden path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].value" cssClass="file-config-page-current-value-attr" />
-                                        </td>
-                                        <td>
-                                            <c:choose>
-                                                <c:when test="${attr.configurationFileAttributeType.name == 'single-select'}">
-                                                    <form:select path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeOptions" items="${attr.configurationFileAttributeOptions}" multiple="false" itemValue="id" itemLabel="name" cssClass="file-config-page-select-attr" />
-                                                </c:when>
-                                                <c:when test="${attr.configurationFileAttributeType.name == 'multiple-select'}">
-                                                    <form:select path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeOptions" items="${attr.configurationFileAttributeOptions}" multiple="true" itemValue="id" itemLabel="name" cssClass="file-config-page-select-attr" />
-                                                </c:when>                                        
-
-                                                <c:when test="${attr.configurationFileAttributeType.name == 'numeric-input'}">
-                                                    <input type="number" value="${attr.value}" class="file-config-page-text-number-attr">
-                                                </c:when>
-                                                <c:when test="${attr.configurationFileAttributeType.name == 'input-text'}">
-                                                    <input type="text" value="${attr.value}" class="file-config-page-text-number-attr">
-                                                </c:when>
-                                                <c:otherwise>
-                                                    Option Undefined    
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-success file-attribute-button" data-action="edit" data-config-file-id="${currentFile.id}" data-config-file-attr-group-id="${group.id}" data-config-file-attr-id="${attr.id}" data-config-file-attr-name="${attr.name}" >
-                                                <i class="fa fa-pencil" aria-hidden="true"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-danger file-attribute-button" data-action="remove" data-config-file-attr-id="${attr.id}" data-config-file-attr-name="${attr.name}" >
-                                                <i class="fa fa-times" aria-hidden="true"></i>
-                                            </button>
-                                        </td>
-                                        <td>
-                                            <c:choose>
-                                                <c:when test="${attr.configurationFileAttributeStates.name == 'LOCKED'}">
-                                                    <div class="alert alert-danger">LOCKED</div>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <div class="alert alert-success">CONFIGURABLE</div>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
                         </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-
-                <form:hidden path="id"></form:hidden>
-                <form:hidden path="name"></form:hidden>
-                <form:hidden path="pathName"></form:hidden>
-                <form:hidden path="description"></form:hidden>
-                <form:hidden path="configurationFileStates.id"></form:hidden>
-                </div>
-        </form:form>
-        <form:form id="deleteAttrForm" method="POST" action="deleteFileconfigurationAttr"></form:form>
-        <form:form id="deleteAttrGroupForm" method="POST" action="deleteFileConfigurationAttrGroup"></form:form>
+                    </tbody>
+                </table>
+            </div>
+            </c:forEach>
+        </div>
+        <form:hidden path="id"></form:hidden>
+        <form:hidden path="name"></form:hidden>
+        <form:hidden path="pathName"></form:hidden>
+        <form:hidden path="description"></form:hidden>
+        <form:hidden path="configurationFileStates.id"></form:hidden>
     </div>
+    </form:form>
+    <form:form id="deleteAttrForm" method="POST" action="deleteFileconfigurationAttr"></form:form>
+    <form:form id="deleteAttrGroupForm" method="POST" action="deleteFileConfigurationAttrGroup"></form:form>
+</div>
