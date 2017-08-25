@@ -31,7 +31,7 @@
                             <td>${e.serverPort}</td>
                             <td>${e.eventRuleList[0].ruleId.fileId.fileName}</td>
                             <td>
-                                <a id="show-event-details" data-action="showEvent" data-id="${e.transactionId}">
+                                <a class="show-event-details" data-action="showEvent" data-id="${e.transactionId}">
                                     ${e.transactionId}
                                 </a>
                             </td>

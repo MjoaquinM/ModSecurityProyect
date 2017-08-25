@@ -392,7 +392,7 @@ public class EventsLogController {
             pageNumber=1;
         }
         List<Event> events = eventService.findAllEvents(pageNumber);
-        if(events.size() == 0){
+        if(events.isEmpty()){
             pageNumber = pageNumber-1;
             events = eventService.findAllEvents(pageNumber);
         }
@@ -406,20 +406,19 @@ public class EventsLogController {
     public String getAddUserForm(ModelMap model, @RequestParam("transactionId") String transactionId) {
         System.out.println("ENTRO A DETAILS FORM: " + transactionId);
         model.addAttribute("idModal", "eventModal");
-//        Users user = new Users();
-//        List<UserStates> userStates = userStatesService.findAll();
-//        String actionMessage = "";
-//        if (id != -1){
-//            user = userService.findById(id);
-//            model.addAttribute("messageType", "User "+user.getUserName()+" wass succefully updated.");
-//            actionMessage = "--- Editing User Form: "+user.getUserName();
-//        }else{
-//            actionMessage = "--- Creating User Form";
-//        }
-//        if(flagDebug) System.out.println(actionMessage);
-//        model.addAttribute("user", user);
-//        model.addAttribute("userStates", userStates);
-//        model.addAttribute("action","saveNewUser");
+        
+        Event event = eventService.findByTransactionId(transactionId);
+        List<EventRule> eventRules = event.getEventRuleList();
+        List<Rule> rules = new ArrayList<>();
+        List<File> files = new ArrayList<>();
+        
+        for (EventRule er : eventRules){
+            rules.add(er.getRuleId());
+            files.add(er.getRuleId().getFileId());
+        }
+        model.addAttribute("event",event);
+        model.addAttribute("rules",rules);
+        model.addAttribute("files",files);
         return "eventDetailsForm";
     }
     

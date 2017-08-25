@@ -4,7 +4,7 @@
 
 
 <div class="panel panel-default">
-    <!-- /.panel-heading -->
+    <!-- /.panel-heading -->    
     <form:form method="POST" modelAttribute="user" action="${action}">
         <div class="panel-body">
             <div class="table-responsive">
