@@ -10,26 +10,28 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Date</th>
                         <th>SourceIP</th>
                         <th>SourcePort</th>
                         <th>DestinationIP</th>
                         <th>DestinationPort</th>
-                        <th>ClassAtack</th>
+                        <th>Method</th>
+                        <th>Service</th>
+                        <th>Protocol</th>
                         <th>Details</th>
                     </tr>
                 </thead>
                 <tbody>
                     <c:forEach items="${lst}" var="e">
                         <tr>
-                            <td>${e.id}</td>
                             <td>${e.dateEvent}</td>
                             <td>${e.clientIp}</td>
                             <td>${e.clientPort}</td>
                             <td>${e.serverIp}</td>
                             <td>${e.serverPort}</td>
-                            <td>${e.eventRuleList[0].ruleId.fileId.fileName}</td>
+                            <th>${e.method}</th>
+                            <th>${e.destinationPage}</th>
+                            <th>${e.protocol}</th>
                             <td>
                                 <a class="show-event-details" data-action="showEvent" data-id="${e.transactionId}">
                                     ${e.transactionId}

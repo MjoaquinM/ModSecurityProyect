@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -207,10 +209,10 @@ public class EventsLogController {
             event.setClientPort(MapPartA.get("clientPort"));
             event.setServerIp(MapPartA.get("serverIp"));
             event.setServerPort(MapPartA.get("serverPort"));
-
+            
             event.setMethod(MapPartB.get("method"));
-            event.setMethod(MapPartB.get("destinationPage"));
-            event.setMethod(MapPartB.get("protocol"));
+            event.setDestinationPage(MapPartB.get("destinationPage"));
+            event.setProtocol(MapPartB.get("protocol"));
 
             System.out.println("ANTES DE GUARDAR EL EVENTO ID: " + event.getId());
             try {
@@ -237,12 +239,17 @@ public class EventsLogController {
                 }
                 
                 String ruleId = MapPartH.get("id").get(i);
+                System.out.println("VA A BUSCAR POR EL RULEID: " + ruleId);
                 Rule ruleExists = ruleService.findByRuleId(ruleId);
+                System.out.println("RuleExists? " + ruleExists == null);
                 if (ruleExists == null) {
                     rule.setFileId(file);
                     rule.setRuleId(MapPartH.get("id").get(i));
                     rule.setMessage(MapPartH.get("msg").get(i));
                     rule.setSeverity(MapPartH.get("severity").get(i));
+                    System.out.println("BEFORE EXPLOTION");
+                    System.out.println("Id: " + rule.getId());
+                    System.out.println("ruleId: " + rule.getRuleId());
                     ruleService.saveRule(rule);
                 }else{
                     rule = ruleExists;
@@ -257,21 +264,26 @@ public class EventsLogController {
                 //LIMPIO LAS VARIABLES
                 file.setFilePath("");
                 file.setFileName("");
+                file.setId(null);
                 rule.setRuleId("");
                 rule.setMessage("");
                 rule.setSeverity("");
                 rule.setFileId(file);
+                rule.setId(null);
                 eventRule.setRuleId(rule);
                 eventRule.setId(null);
             }
 
             System.out.println("TERMINO DE GUARDAR TODOOOOOOO");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+            System.out.println(dateFormat.format(date));
 
 //            writer.close();
         } catch (IOException e) {
             System.out.println("¡¡¡¡¡¡¡  NO SE PUDO ESCRIBIR  !!!!");
         }
-        return "welcome";
+        return "login";
     }
 
     private HashMap<String, String> analizerPartA(String str) {
@@ -304,6 +316,9 @@ public class EventsLogController {
         //De la primer linea guardo metodo y direcccion de destino 
         String[] current_info = info[1].split(" ");
         System.out.println("current_info: " + current_info);
+//        System.out.println("method: " + current_info[0]);
+//        System.out.println("destinationPage: " + current_info[1]);
+//        System.out.println("protocol: " + current_info[2]);
         result.put("method", current_info[0]);
         result.put("destinationPage", current_info[1]);
         result.put("protocol", current_info[2]);
@@ -345,6 +360,7 @@ public class EventsLogController {
                     String auxRev = aux.substring(0, aux.indexOf("/"));
                     sb = new StringBuilder(auxRev);
                     fileNameAux = sb.reverse().toString();
+                    fileNameAux = fileNameAux.substring(0, fileNameAux.indexOf("."));
                     fileName.add(fileNameAux);
 
                 } else {
@@ -418,7 +434,7 @@ public class EventsLogController {
         }
         model.addAttribute("event",event);
         model.addAttribute("rules",rules);
-        model.addAttribute("files",files);
+        model.addAttribute("files   ",files);
         return "eventDetailsForm";
     }
     
