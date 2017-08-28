@@ -22,7 +22,7 @@
                                         <a class="btn btn-primary" id="search-file-configuration-button">Check Path</a>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-12 pone-aca-el-estado">
+                                <div class="form-group col-md-12 path-file-state">
                                 </div>
                             </td>
                             <td></td>
@@ -69,6 +69,8 @@
                                     </div>
                                 </div>
                             </td>
+                        </tr>
+                        <tr class="alert-path-status">
                         </tr>
                         <form:hidden path="id"></form:hidden>
                         <!-- /.panel-body -->

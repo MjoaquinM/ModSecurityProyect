@@ -114,7 +114,12 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
-                            </tr>                            
+                            </tr>
+                            <tr>
+                                <td>
+                                <form:textarea type="text" path="configurationFileAttributeOptions[${loop.index}].description" class="form-control input-sm" rows="2" cols="30"/>
+                                </td>
+                            </tr>
                         </c:forEach>
                         
                         <!-- /.panel-body -->

@@ -45,7 +45,7 @@ public class ConfigurationFileAttributeOptions implements Serializable {
     @Size(min = 1, max = 30)
     @Column(name = "name")
     private String name;
-    @Size(max = 100)
+    @Size(max = 1000)
     @Column(name = "description")
     private String description;
     @Basic(optional = false)

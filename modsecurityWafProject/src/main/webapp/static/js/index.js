@@ -3,6 +3,14 @@
  \*------------------------------------*/
 
 $(document).ready(function () {
+    //POPOVER ATTRIBUTE DESCRIPTION
+    $('[data-toggle="popover"]').popover({ container: 'body'});
+    $('.attribute-description').click(function(e) {
+        e.preventDefault();
+    });
+    
+    $('.message-status-container > div').fadeOut(7000);
+    
     /************************LOGIN PAGE****************************/
 
     //Center login form
@@ -34,7 +42,6 @@ $(document).ready(function () {
         if (!id) {
             id = -1;
         }
-        
         /*<PREPARE MODAL>*/
         var modalFooter = "";
         switch (action) {
@@ -59,7 +66,7 @@ $(document).ready(function () {
         $('#generic-modal-container').find('.modal-footer').html(modalFooter);
         $('#generic-modal-container').find('.modal-title').html(modalTitle);
         if (url == 'removeFileConfiguration') {
-            $('#generic-modal-container').find('.modal-body').html('<p> Confirm remove selected configuration file? </p>');
+            $('#generic-modal-container').find('.modal-body').html('<p> Confirm remove selected configuration file?</p>');
         } else {
             $.ajax({
                 url: url,
@@ -79,12 +86,11 @@ $(document).ready(function () {
             });
         }
         /*<SHOW MODAL>*/
-        if($(this).data('redirect-to')){
+        if($('#generic-modal-container').find('#fileConfigurationTemplateModal').length==1){
             $('#fileConfigurationTemplateModal').modal('show');
         }else{
             $('#fileConfigurationModal').modal('show');
         }
-        
     });
     
     //Validate FILE
@@ -108,7 +114,9 @@ $(document).ready(function () {
                 messageStatus = 'Can\'t find file';
             }
             var html = '<div class="alert alert-'+typeAlert+' notice-login-page" ><p style="margin-left: auto; margin-right: auto">'+messageStatus+'</p></div>';
-            $('.pone-aca-el-estado').html(html);
+            html += (typeAlert == 'success') ? '<input type="hidden" id="file-path-status" value="true" />' : '<input type="hidden" id="file-path-status" value="false" />';
+            
+            $('.path-file-state').html(html);
         }).fail(function(e){
             console.log('Error',e);
         });
@@ -135,10 +143,14 @@ $(document).ready(function () {
                 pathName: "Please enter a valid file path"
             }
         });
-        if($('#name').val()!=''){
+        if($('#name').val()!='' && $('#file-path-status').val()=='true'){
             var form = $('#fileConfigurationModal,#fileConfigurationTemplateModal').find('form');
             form.append('<input type="hidden" value="'+redirectTo+'" name=redirectTo />')
             form.submit();
+        }else{
+            if($('#file-path-status').length==0 || $('#file-path-status').val()=='false'){
+                $('.path-file-state').html('<div class="alert alert-danger notice-login-page" ><p style="margin-left: auto; margin-right: auto">Please, verify the path file.</p></div><input type="hidden" id="file-path-status" value="false" />');
+            }
         }
     };
 
@@ -285,17 +297,15 @@ $(document).ready(function () {
                         $('#generic-modal-container').find('.options-row-header').addClass('hidden');
                         $('#value').attr('readonly',false);
                         $('#value').attr('disabled',false);
-                        
                         $('.option-groups-row-header').removeClass('hidden');
-                        
                         $('#generic-modal-container').find('.options-row').remove();
-                        
                     }else{
                         if(text.toString().indexOf('select')>=0){
                             $('#value').attr('disabled',true);
                             $('#generic-modal-container').find('.options-row-header').removeClass('hidden');
                             var nOptions = $('#generic-modal-container').find('.options-row').length;
-                            var htmlBlock = '<tr class="options-row added"><td><input id="configurationFileAttributeOptions'+(nOptions)+'.name" name="configurationFileAttributeOptions['+(nOptions)+'].name" class="form-control input-sm attr-opt" value="" type="text"><div class="has-error"></div></td><td><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><input type="radio" name="radio-options" class="radio-options"></td></tr>';
+                            var htmlBlock = '<tr class="options-row added"><td><input id="configurationFileAttributeOptions'+(nOptions)+'.name" name="configurationFileAttributeOptions['+(nOptions)+'].name" class="form-control input-sm attr-opt" value="" type="text"><div class="has-error"></div></td><td><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><input type="radio" name="radio-options" class="radio-options"></td></tr>\n\
+                                             <tr><td>Description</td><td><textarea id="configurationFileAttributeOptions'+(nOptions)+'.description" name="configurationFileAttributeOptions['+(nOptions)+'].description" type="text" class="form-control input-sm" rows="2" cols="30"></textarea></td></tr>';
                             $(this).closest('tbody').append(htmlBlock);
                             $('.radio-options').trigger('click');
                         }else{
@@ -347,7 +357,8 @@ $(document).ready(function () {
     $('#fileConfigurationTemplateModal').on('click','#add-file-attribute-option-button',function(){
         var nOptions = $('#generic-modal-container').find('.options-row').length;
         var isChecked = (nOptions==0) ? 'checked' : '';
-        var htmlBlock = '<tr class="options-row added"><td><input id="configurationFileAttributeOptions'+(nOptions)+'.name" name="configurationFileAttributeOptions['+(nOptions)+'].name" class="form-control input-sm attr-opt" value="" type="text"><div class="has-error"></div></td><td><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><input type="radio" name="radio-options" class="radio-options" '+isChecked+'></td></tr>';
+        var htmlBlock = '<tr class="options-row added"><td><input id="configurationFileAttributeOptions'+(nOptions)+'.name" name="configurationFileAttributeOptions['+(nOptions)+'].name" class="form-control input-sm attr-opt" value="" type="text"><div class="has-error"></div></td><td><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><input type="radio" name="radio-options" class="radio-options"></td></tr>\n\
+                                             <tr><td>Description</td><td><textarea id="configurationFileAttributeOptions'+(nOptions)+'.description" name="configurationFileAttributeOptions['+(nOptions)+'].description" type="text" class="form-control input-sm" rows="2" cols="30"></textarea></td></tr>';
         $(this).closest('tbody').append(htmlBlock);
         if (nOptions==0){
             $('.radio-options').trigger('click');
@@ -363,6 +374,7 @@ $(document).ready(function () {
     });
     
     $('#fileConfigurationTemplateModal').on('click','#remove-config-file-attr-opt',function(){
+        $(this).closest('tr').next().remove();
         $(this).closest('tr').remove();
     });
     
@@ -509,14 +521,10 @@ $(document).ready(function () {
     
     /************************MANAGE RULES ****************************/
     $('.parameter-item').on('click',function(){
-//        alert($(this).text().trim(' '));
         var name = $(this).text().replace('REQUEST-','').trim();
         name = name.replace('RESPONSE-','').trim();
-//        alert(name);
         name = name.substring(0,name.indexOf('-'));
-//        alert(name);
         name = name+"000-"+name+"999";
-//        alert(name);
         if ($(this).hasClass('alert-warning')){
             $('#'+name).remove();
             $(this).removeClass('alert-warning');
@@ -538,9 +546,7 @@ $(document).ready(function () {
                 $('.final-value').val(name);
             }
             $('.blocked-container').append('<div id="'+name +'" class="blocked-item">'+name+'</div>');
-//            alert($(this).text().substring(2,$(this).text().indexOf('-')));
         }
-//        alert($('.final-value').val());
     });
     
     $('.id-parameter-item').on('click',function(){
@@ -568,7 +574,6 @@ $(document).ready(function () {
         finalValue = finalValue.replace(',,',',');
         
         $('.final-value').val(finalValue);
-//        alert(finalValue);
 
     });
     
