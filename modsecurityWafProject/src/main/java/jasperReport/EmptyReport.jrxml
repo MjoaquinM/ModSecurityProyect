@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="03816695-95ad-445a-966c-3ce59f031809">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="NewDataset" uuid="ba7671d2-5ce0-4151-a126-627fee0ffc04"/>
+	<parameter name="ItemDataSource" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="param" class="java.lang.String"/>
+	<parameter name="event" class="java.lang.Object"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="58" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="19" width="555" height="20" uuid="0c2ad1c4-0c62-4692-b690-1681d46d47ab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans Mono" size="12"/>
+				</textElement>
+				<text><![CDATA[Prueba Reporte]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="50">
+			<textField>
+				<reportElement x="92" y="27" width="100" height="20" uuid="952d5dce-7dcf-496d-8bea-d7e1b3a49328"/>
+				<textFieldExpression><![CDATA[$P{param}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="348" splitType="Stretch">
+			<textField>
+				<reportElement x="68" y="41" width="100" height="20" uuid="cca96091-568d-4136-a51e-918221328e9e"/>
+				<textFieldExpression><![CDATA[$P{event}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

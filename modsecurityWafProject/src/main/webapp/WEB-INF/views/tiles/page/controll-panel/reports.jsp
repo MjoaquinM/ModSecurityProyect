@@ -10,5 +10,7 @@
         <a class="btn btn-primary" href="<c:url value="/jasperDownloadPDF" />">Descargar PDF</a>
         <hr/>
         <a class="btn btn-primary" href="<c:url value="/jasperInlinePDF" />">Inline PDF</a>
+        <hr/>
+        <a class="btn btn-primary" href="<c:url value="/jasperPrueba" />">Inline Prueba</a>
     </div>
 </div>
