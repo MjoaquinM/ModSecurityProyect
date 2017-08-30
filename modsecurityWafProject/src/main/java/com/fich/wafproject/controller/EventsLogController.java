@@ -4,14 +4,18 @@ import com.mysql.jdbc.Connection;
 import com.fich.wafproject.model.Event;
 import com.fich.wafproject.model.EventRule;
 import com.fich.wafproject.model.File;
+import com.fich.wafproject.model.Item;
 import com.fich.wafproject.model.Rule;
 import com.fich.wafproject.service.EventService;
 import com.fich.wafproject.service.EventRuleService;
 import com.fich.wafproject.service.FileService;
 import com.fich.wafproject.service.RuleService;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -33,7 +37,13 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JasperRunManager;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.JDBCConnectionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +65,65 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/")
 public class EventsLogController {
+    
+    @Autowired
+    EventService eventService;
+    @Autowired
+    FileService fileService;
+    @Autowired
+    RuleService ruleService;
+    @Autowired
+    EventRuleService eventRuleService;
+    
+    @RequestMapping(value = "/jasperEntitiesPDF", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> jasperEntitiesPDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException, FileNotFoundException {
+        System.out.println("ENTRO AL JASPER ENTITIES");
+        /* User home directory location */
+        String userHomeDirectory = System.getProperty("user.home");
+        /* Output file location */
+        String outputFile = userHomeDirectory + java.io.File.separatorChar + "JasperTableExample.pdf";
+
+//            List<Event> lstEvent = eventService.findAllEvents(0);
+        List<Item> lstEvent = new ArrayList<Item>();
+
+        /* Create Items */
+        Item iPhone = new Item();
+        iPhone.setName("iPhone 6S");
+        iPhone.setPrice(65000.00);
+
+        Item iPad = new Item();
+        iPad.setName("iPad Pro");
+        iPad.setPrice(70000.00);
+
+        /* Add Items to List */
+        lstEvent.add(iPhone);
+        lstEvent.add(iPad);
+
+
+        /* Convert List to JRBeanCollectionDataSource */
+        JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(lstEvent);
+
+        /* Map to hold Jasper report Parameters */
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("ItemDataSource", itemsJRBean);
+
+        /* Using compiled version(.jasper) of Jasper report to generate PDF */
+        JasperPrint jasperPrint = JasperFillManager.fillReport("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/BlankReport.jasper", parameters, new JREmptyDataSource());
+
+        //Guardo en el Home del usuario
+        OutputStream outputStream = new FileOutputStream(new java.io.File(outputFile));
+        /* Write content to PDF file */
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+        
+        byte[] fichero = JasperExportManager.exportReportToPdf(jasperPrint);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+        String filename = "output.pdf";
+        headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
+        return response;
+    }
     
     @RequestMapping(value = "/jasperDownloadPDF", method = RequestMethod.GET)
     public ResponseEntity<byte[]> jasperDownloadPDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException {
@@ -105,19 +174,10 @@ public class EventsLogController {
         headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
-        System.out.println("RESPONSE ENTITY: " + response.getHeaders());
         return response;
     }
     
 //********************************************  PARSER  ********************************//
-    @Autowired
-    EventService eventService;
-    @Autowired
-    FileService fileService;
-    @Autowired
-    RuleService ruleService;
-    @Autowired
-    EventRuleService eventRuleService;
     
     @RequestMapping(value = "/put", method = RequestMethod.PUT)
     public String sayHelloAgainPut(HttpServletRequest request,
