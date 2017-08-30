@@ -1,14 +1,6 @@
-/*
- * 
- * 
- * 
- */
+
 package com.fich.wafproject.model;
 
-/**
- *
- * @author martin
- */
 public class Item {
 
     private String name;
@@ -29,6 +21,5 @@ public class Item {
     public void setPrice(Double price) {
         this.price = price;
     }
-
     
 }
