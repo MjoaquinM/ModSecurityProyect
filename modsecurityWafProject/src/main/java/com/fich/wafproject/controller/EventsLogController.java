@@ -43,6 +43,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -87,33 +88,45 @@ public class EventsLogController {
         /* Output file location */
         String outputFile = userHomeDirectory + java.io.File.separatorChar + "JasperTableExample.pdf";
 
-//            List<Event> lstEvent = eventService.findAllEvents(0);
-        List<Item> lstEvent = new ArrayList<Item>();
+//        List<Event> lstEvent = eventService.findAllEvents(0);
+        List<Event> lstEvent = new ArrayList<>();
+        
+        Event e = new Event();
+        
+        e.setTransactionId("SOY EL TXID");
+        e.setClientIp("soy el client ip");
+        
+        lstEvent.add(e);
 
+        List<Item> lstItem = new ArrayList<Item>();
+        System.out.println("EVENT LIST: " + lstEvent);
+        
         /* Create Items */
         Item iPhone = new Item();
         iPhone.setName("iPhone 6S");
         iPhone.setPrice(65000.00);
 
-        Item iPad = new Item();
-        iPad.setName("iPad Pro");
-        iPad.setPrice(70000.00);
+//        Item iPad = new Item();
+//        iPad.setName("iPad Pro");
+//        iPad.setPrice(70000.00);
 
         /* Add Items to List */
-        lstEvent.add(iPhone);
-        lstEvent.add(iPad);
+        lstItem.add(iPhone);
+//        lstItem.add(iPad);
 
-
+        System.out.println("ITEM LIST: " + lstItem);
         /* Convert List to JRBeanCollectionDataSource */
-        JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(lstEvent);
+        JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(lstItem);
+        JRBeanCollectionDataSource eventsJRBean = new JRBeanCollectionDataSource(lstEvent);
 
         /* Map to hold Jasper report Parameters */
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("ItemDataSource", itemsJRBean);
+        parameters.put("EventDataSource", eventsJRBean);
 
         /* Using compiled version(.jasper) of Jasper report to generate PDF */
         JasperPrint jasperPrint = JasperFillManager.fillReport("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/BlankReport.jasper", parameters, new JREmptyDataSource());
-
+        
         //Guardo en el Home del usuario
         OutputStream outputStream = new FileOutputStream(new java.io.File(outputFile));
         /* Write content to PDF file */

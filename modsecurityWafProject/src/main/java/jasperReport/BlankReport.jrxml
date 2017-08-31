@@ -48,11 +48,14 @@
 		<field name="name" class="java.lang.String"/>
 		<field name="price" class="java.lang.Double"/>
 	</subDataset>
-	<subDataset name="dataset2" uuid="969241f6-0bfd-49ac-b509-02b4b62cb735"/>
-	<subDataset name="dataset3" uuid="954fa5b5-e578-4e89-aede-ca22ce7b0371"/>
-	<parameter name="ItemDataSource" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
-	<field name="field1" class="java.lang.String"/>
-	<field name="$P{lstEvent}.getTransaction" class="java.lang.String"/>
+	<subDataset name="eventDataSet" uuid="8c2e04a0-7600-427b-9903-cd3b35e4613e">
+		<parameter name="EventDataSource" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource" isForPrompting="false"/>
+		<field name="transactionId" class="java.lang.String"/>
+		<field name="clientIp" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="dataset3" uuid="9f39aefd-beb5-4b9e-bcfe-ac89462f5700"/>
+	<parameter name="ItemDataSource" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="EventDataSource" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -60,7 +63,7 @@
 		<band height="449" splitType="Stretch">
 			<componentElement>
 				<reportElement x="55" y="28" width="447" height="361" uuid="463af025-67d9-4e44-a1f5-93bf67ea954a"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="dataset3" uuid="608834ce-e11e-4674-853c-97055758c474">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource(1)]]></dataSourceExpression>
 					</datasetRun>
@@ -79,11 +82,23 @@
 						</staticText>
 						<textField>
 							<reportElement x="168" y="82" width="100" height="20" uuid="67b8fe79-a71e-414f-a6a7-f3acdc4d706b"/>
-							<textFieldExpression><![CDATA[$P{ItemDataSource}.getPrice]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$P{ItemDataSource}.getPrice()]]></textFieldExpression>
 						</textField>
+						<staticText>
+							<reportElement x="68" y="114" width="100" height="20" uuid="40cea5d6-a52e-422b-bd12-788730b5f03d"/>
+							<text><![CDATA[transactionId]]></text>
+						</staticText>
 						<textField>
-							<reportElement x="55" y="26" width="100" height="20" uuid="2696ff9e-caf1-41b8-b815-92993326c59e"/>
-							<textFieldExpression><![CDATA[$F{field}]]></textFieldExpression>
+							<reportElement x="168" y="114" width="100" height="20" uuid="54ff8863-44a7-48bf-b59f-83c394da8f3b"/>
+							<textFieldExpression><![CDATA[$P{EventDataSource}.getTransactionId()]]></textFieldExpression>
+						</textField>
+						<staticText>
+							<reportElement x="68" y="148" width="100" height="20" uuid="0eb856d7-0312-48f6-b99c-f8dab1a9ac7b"/>
+							<text><![CDATA[clientIp]]></text>
+						</staticText>
+						<textField>
+							<reportElement x="168" y="148" width="100" height="20" uuid="6439be2f-6726-4bce-b3b3-629184aa95f0"/>
+							<textFieldExpression><![CDATA[$P{EventDataSource}.getClientIp()]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
