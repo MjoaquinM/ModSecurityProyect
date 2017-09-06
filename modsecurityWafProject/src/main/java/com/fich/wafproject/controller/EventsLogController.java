@@ -10,6 +10,7 @@ import com.fich.wafproject.service.EventService;
 import com.fich.wafproject.service.EventRuleService;
 import com.fich.wafproject.service.FileService;
 import com.fich.wafproject.service.RuleService;
+import com.fich.wafproject.service.StudentDataSource;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -32,6 +33,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -49,6 +51,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.JDBCConnectionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +83,19 @@ public class EventsLogController {
     RuleService ruleService;
     @Autowired
     EventRuleService eventRuleService;
+    
+    @RequestMapping(value = "/jrreport", method = RequestMethod.GET)
+    public String printWelcome(ModelMap model) throws JRException {
+
+        StudentDataSource dsStudent = new StudentDataSource();
+        JRDataSource jrDatasource = dsStudent.create(null);
+
+        model.addAttribute("datasource", jrDatasource);
+        model.addAttribute("format", "pdf");
+        System.out.println("ENTRA AL JRREPORT. TODO BIEN");
+        
+        return "multiViewReport";
+    }
     
     @RequestMapping(value = "/jasperEntitiesPDF", method = RequestMethod.GET)
     public ResponseEntity<byte[]> jasperEntitiesPDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException, FileNotFoundException {
@@ -131,6 +148,18 @@ public class EventsLogController {
         OutputStream outputStream = new FileOutputStream(new java.io.File(outputFile));
         /* Write content to PDF file */
         JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+        
+        JasperDesign jd = JRXmlLoader.load("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/BlankReport.jasper");
+        
+        JasperReport report = JasperCompileManager.compileReport(jd);
+        // Rellenamos el informe con la conexion creada y sus parametros establecidos
+        JasperPrint print = JasperFillManager.fillReport(report, parameters, eventsJRBean);
+
+        // Exportamos el informe a formato PDF
+        JasperExportManager.exportReportToPdfFile(print, outputFile);
+
+        
+        
         
         byte[] fichero = JasperExportManager.exportReportToPdf(jasperPrint);
         HttpHeaders headers = new HttpHeaders();
