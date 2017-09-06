@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.fich.wafproject.model.Users;
 import com.fich.wafproject.model.UserProfiles;
 import com.fich.wafproject.model.UserStates;
+import com.fich.wafproject.model.UsersHistory;
 import com.fich.wafproject.service.ConfigurationFileAttributeGroupsService;
 import com.fich.wafproject.service.ConfigurationFileService;
 import com.fich.wafproject.service.ConfigurationFileStatesService;
@@ -49,6 +50,7 @@ import com.fich.wafproject.service.ConfigurationFileAttributeService;
 import com.fich.wafproject.service.ConfigurationFileAttributeOptionsService;
 import com.fich.wafproject.service.EventRuleService;
 import com.fich.wafproject.service.RuleService;
+import com.fich.wafproject.service.UsersHistoryService;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -56,10 +58,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.web.bind.annotation.PathVariable;
  
 @Controller
 @RequestMapping("/")
@@ -97,6 +103,12 @@ public class WafProjectController {
     ConfigurationFileAttributeOptionsService configurationFileAttributeOptionsService;
     
     @Autowired
+    UsersHistoryService userHistory;
+    
+    @Autowired
+    UsersHistoryService userHistoryService;
+    
+    @Autowired
     EventRuleService eventRuleService;
     
     @Autowired
@@ -124,17 +136,35 @@ public class WafProjectController {
         
         model.addAttribute("user", getPrincipal());
         model.addAttribute("message", message);
-//        switch (status){
-//            case "delete":
-//                model.addAttribute("messageClass","danger");
-//            break;
-//        }
         return "listUsers";
     }
     
-    @RequestMapping(value = "/historyUsers", method = RequestMethod.GET)
-    public String userHistoryPage(ModelMap model) {
-        //model.addAttribute("users", userService.findAll());
+//    @RequestMapping(value = "/eventList/{pageNumber}", method = RequestMethod.GET)
+    @RequestMapping(value = "/historyUsers/{pageNumber}", method = RequestMethod.GET)
+    public String userHistoryPage(@PathVariable int pageNumber, ModelMap model, HttpServletRequest request) { 
+        List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
+        List<UsersHistory> uh = new ArrayList<UsersHistory>();
+        boolean flagFilter = false;
+        if(!request.getParameterMap().containsKey("filterFlag")){
+            if(pageNumber<1){
+                pageNumber=1;
+            }
+            uh = userHistory.findAll(pageNumber);
+            if(uh.size() == 0){
+                pageNumber = pageNumber-1;
+                uh = userHistory.findAll(pageNumber);
+            }
+        }else{
+            flagFilter = true;
+            String[] names = request.getParameterValues("filter-parameters-names");
+            String[] targets = request.getParameterValues("filter-parameters-targets");
+            uh = userHistory.filer(request.getParameterValues("filter-parameters-values"),request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-targets"), pageNumber);
+        }
+        
+        model.addAttribute("pageNumber",pageNumber);
+        model.addAttribute("flagFilter",flagFilter);
+        model.addAttribute("configFiles",configurationFilesAll);
+        model.addAttribute("usersActions", uh);
         model.addAttribute("user", getPrincipal());
         return "historyUsers";
     }
@@ -557,10 +587,6 @@ public class WafProjectController {
             String line = null, fileToLine = "";
             Integer count = 0;
             
-//            for(String val: values){
-//                System.out.println(val.substring(0, 3));
-//            }
-            
             while ((line = in.readLine()) != null) {
                 if(line.contains("REQUEST") || line.contains("RESPONSE")){
 //                    ls.add(line);
@@ -725,6 +751,7 @@ public class WafProjectController {
             BindingResult result, ModelMap model) throws IOException, InterruptedException {
         String value = cfa.getValue();
         cfa = configurationFileAttributeService.findById(cfa.getId());
+        String currentValue = cfa.getValue();
         cfa.setValue(value);
         configurationFileAttributeService.save(cfa);
         try {
@@ -735,19 +762,23 @@ public class WafProjectController {
             FileWriter w = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(w);
             PrintWriter wr = new PrintWriter(bw);
+            String msgToHistoryLog = "Rule Block";
             while ((line = br.readLine()) != null) {
-                if (!line.isEmpty()) {    
+                if (!line.isEmpty()) {
                     if (line.contains(cfa.getName())){
                         line = line.replaceAll("#", "");
                         if(cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED")){
+                            msgToHistoryLog = msgToHistoryLog+" - Disable "+cfa.getName();
                             line = "# "+line;
                         }else{
+                            msgToHistoryLog = msgToHistoryLog+" - Current Values : "+ currentValue +" - New Values: "+cfa.getValue();
                             line = cfa.getName()+" "+cfa.getValue();
                         }
                     }
                 }
                 wr.append(line + "\n");
             }
+            this.persistEvent(msgToHistoryLog);
             wr.close();
             bw.close();
             br.close();
@@ -766,8 +797,20 @@ public class WafProjectController {
             line = "";
         } catch (IOException e) {
             System.out.println(e);
+            this.persistEvent("There was an error trying to blocking rules - "+e);
         }
         return this.rulesConfigurationPage(model);
     }
- 
+    
+    private void persistEvent(String msg){
+        String currentUsr = this.getPrincipal();
+        
+        Users user = userService.findByUserName(this.getPrincipal());
+        UsersHistory uh = new UsersHistory();
+        uh.setDescription(msg);
+        uh.setUser(user);
+        uh.setDateEvent(new Date());
+        userHistoryService.save(uh);
+    }
+    
 }

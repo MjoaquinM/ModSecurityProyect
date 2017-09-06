@@ -14,7 +14,15 @@
 
         <title><tiles:getAsString name="title" /></title>
 
+        <!-- Custom -->
         <link href="<c:url value='/static/css/app.css' />" rel="stylesheet"></link>
+        
+        <!-- JQuery UI -->
+        <link href="<c:url value='/static/css/jquery-ui.min.css' />" rel="stylesheet"></link>
+        
+        <link href="<c:url value='/static/css/jquery-ui.structure.css' />" rel="stylesheet"></link>
+        
+        <link href="<c:url value='/static/css/jquery-ui.theme.css' />" rel="stylesheet"></link>
 
         <!-- Bootstrap Core CSS -->
         <link href="<c:url value='/static/css/bootstrap.min.css' />"  rel="stylesheet"></link>
@@ -60,7 +68,9 @@
 
         <!-- jQuery -->
         <script src="<c:url value='/static/js/jquery-3.2.1.min.js' />"></script>
-
+        
+        <script src="<c:url value='/static/js/jquery-ui.min.js' />"></script>
+        
         <!-- custom -->
         <script src="<c:url value='/static/js/index.js' />"></script>
 

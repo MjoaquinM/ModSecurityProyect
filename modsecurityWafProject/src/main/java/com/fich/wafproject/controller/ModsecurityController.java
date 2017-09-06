@@ -28,9 +28,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
  
 import com.fich.wafproject.model.Users;
 import com.fich.wafproject.model.UserProfiles;
+import com.fich.wafproject.model.UsersHistory;
 import com.fich.wafproject.service.ConfigurationFileAttributeService;
 import com.fich.wafproject.service.ConfigurationFileService;
 import com.fich.wafproject.service.UserService;
+import com.fich.wafproject.service.UsersHistoryService;
 import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -42,6 +44,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -57,6 +60,12 @@ public class ModsecurityController {
     
     @Autowired
     ConfigurationFileService configurationFileService;
+    
+    @Autowired
+    private UserService userService;
+    
+    @Autowired
+    private UsersHistoryService userHistoryService;
     
     //Configure Request Body Page
     @RequestMapping(value = { "/reqBodyConfig" }, method = RequestMethod.GET)
@@ -79,15 +88,17 @@ public class ModsecurityController {
             FileWriter w = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(w);
             PrintWriter wr = new PrintWriter(bw);
+            String msgToHistoryLog = "ModSecurity.conf setup";
             while ((line = br.readLine()) != null) {
                 if (!line.isEmpty()) {
                     for(ConfigurationFilesAttributes cfa : attrs){
-                        
                         if (line.contains(cfa.getName())){
                             line = line.replaceAll("#", "");
                             if(cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED")){
+                                msgToHistoryLog = msgToHistoryLog + " - "+cfa.getName()+" was blocked \n";
                                 line = "# "+line;
                             }else{
+                                msgToHistoryLog = msgToHistoryLog + " - Setup "+cfa.getName()+" Attribute: "+line.replaceAll(cfa.getName(), "").trim()+" to "+cfa.getValue()+"\n";
                                 line = cfa.getName()+" "+cfa.getValue();
                             }
                         }
@@ -98,7 +109,7 @@ public class ModsecurityController {
             wr.close();
             bw.close();
             br.close();
-            
+            this.persistEvent(msgToHistoryLog);
             String cmd = " pkexec sudo mv /tmp/"+ccf.getName()+" "+ccf.getPathName();//+" && /etc/init.d/apache2 reload";
             Runtime run = Runtime.getRuntime();
             Process pr = run.exec(cmd);
@@ -135,5 +146,17 @@ public class ModsecurityController {
             userName = principal.toString();
         }
         return userName;
+    }
+    
+    private void persistEvent(String msg){
+        String currentUsr = this.getPrincipal();
+        
+        Users user = userService.findByUserName(this.getPrincipal());
+        UsersHistory uh = new UsersHistory();
+        uh.setDescription(msg);
+        uh.setUser(user);
+        uh.setDateEvent(new Date());
+        userHistoryService.save(uh);
+        System.out.println("MSG: " + msg + " \n " + "CURRENT USER: " + currentUsr);
     }
 }

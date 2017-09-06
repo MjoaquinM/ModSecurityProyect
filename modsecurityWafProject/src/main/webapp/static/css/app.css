@@ -104,7 +104,7 @@ a{
 .tmpl-page-group-header{
     color: white;
 }
-td{
+td.config-file-temp-action-column{
     min-width: 80px;
 }
 
@@ -120,6 +120,22 @@ td{
     color: black;
 }
 
+
+/*User History*/
+.user-history-description{
+    max-height: 155px;
+    overflow: auto;
+}
+
+.filter-title{
+    padding-left: 15px;
+    display: inline;
+}
+
+.table-filtered{
+    max-height: 325px;
+}
+
 /*GENERAL*/
 h1{
     margin: 10px 0 10px 0 !important;
@@ -133,4 +149,8 @@ h1{
 
 .cfa-state{
     padding:6px !important; 
+}
+
+.filters-containers>.row>div>p>input{
+    float:right;
 }

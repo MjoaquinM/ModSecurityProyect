@@ -168,7 +168,7 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
-                                <td>
+                                <td class="config-file-temp-action-column">
                                     <button type="button" class="btn btn-success file-attribute-button" data-action="edit" data-config-file-id="${currentFile.id}" data-config-file-attr-group-id="${group.id}" data-config-file-attr-id="${attr.id}" data-config-file-attr-name="${attr.name}" >
                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                     </button>

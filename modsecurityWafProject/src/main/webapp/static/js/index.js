@@ -75,9 +75,6 @@ $(document).ready(function () {
                 data: data
             }).done(function (response) {
                 $('#generic-modal-container').find('.modal-body').html(response);
-//                $('#file-selector').on('change',function(){
-//                    
-//                });
                 $('#search-file-configuration-button').on('click',function(){
                     validateFileConfiguration($('#generic-modal-container').find('#pathName').val());
                 });
@@ -516,6 +513,17 @@ $(document).ready(function () {
         $('#delete-user-form').append('<input type="text" name="id" value="' + $(this).data("id") + '" />');
         $('#delete-user-form').submit();
     });
+    
+    //USERS HISTORY
+    $('#show-filter-user-history').on('click',function(){
+        if($(this).find('i').hasClass('fa-angle-double-down')){
+            $(this).find('i').removeClass('fa-angle-double-down');
+            $(this).find('i').addClass('fa-angle-double-up');
+        }else{
+            $(this).find('i').removeClass('fa-angle-double-up');
+            $(this).find('i').addClass('fa-angle-double-down');
+        }
+    });
 
     /************************MANAGE USERS END****************************/
     
@@ -574,7 +582,7 @@ $(document).ready(function () {
         finalValue = finalValue.replace(',,',',');
         
         $('.final-value').val(finalValue);
-
+    
     });
     
     $('.block-rules-button').on('click',function(){
@@ -583,5 +591,13 @@ $(document).ready(function () {
     
     /************************MANAGE RULES END****************************/
     
+    $( "#datepicker-from" ).datepicker({ dateFormat: 'yy-mm-dd' });
+    $( "#datepicker-to" ).datepicker({ dateFormat: 'yy-mm-dd' });
+    $( "#datepicker-to" ).on("change",function(){
+        if($(this).val()<$( "#datepicker-from" ).val()){
+            $(this).val($( "#datepicker-from" ).val());
+        }
+    });
     
-})
+      
+});

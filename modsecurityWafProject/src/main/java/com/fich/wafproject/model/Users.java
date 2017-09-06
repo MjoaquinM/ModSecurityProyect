@@ -22,9 +22,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -41,7 +45,7 @@ import javax.validation.constraints.Size;
     , @NamedQuery(name = "Users.findByLastName", query = "SELECT u FROM Users u WHERE u.lastName = :lastName")
     , @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email")})
 public class Users implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,6 +89,9 @@ public class Users implements Serializable {
              joinColumns = { @JoinColumn(name = "USER_ID") },
              inverseJoinColumns = { @JoinColumn(name = "USER_PROFILE_ID") })
     private List<UserProfiles> profiles;// = new ArrayList<UserProfiles>();
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UsersHistory> UsersHistory;
     
     public Users() {
     }
@@ -189,6 +196,15 @@ public class Users implements Serializable {
     @Override
     public String toString() {
         return "com.fich.wafproject.model.Users[ id=" + id + " ]";
+    }
+
+
+    public List<UsersHistory> getUsersHistoryList() {
+        return UsersHistory;
+    }
+
+    public void setUsersHistoryList(List<UsersHistory> UsersHistory) {
+        this.UsersHistory = UsersHistory;
     }
     
 }

@@ -21,6 +21,7 @@ import org.hibernate.criterion.Order;
 public class UserDaoImpl extends AbstractDao<Long, Users> implements UserDao {
  
     public void save(Users user) {
+
         persist(user);
     }
     

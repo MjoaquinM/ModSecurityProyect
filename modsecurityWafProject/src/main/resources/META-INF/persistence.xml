@@ -13,6 +13,7 @@
     <class>com.fich.wafproject.model.ConfigurationFilesAttributes</class>
     <class>com.fich.wafproject.model.ConfigurationFileStates</class>
     <class>com.fich.wafproject.model.UserProfiles</class>
+    <class>com.fich.wafproject.model.UsersHistory</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/waf_project?zeroDateTimeBehavior=convertToNull"/>
