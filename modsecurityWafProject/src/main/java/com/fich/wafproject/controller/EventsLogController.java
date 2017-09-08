@@ -6,6 +6,7 @@ import com.fich.wafproject.model.EventRule;
 import com.fich.wafproject.model.File;
 import com.fich.wafproject.model.Item;
 import com.fich.wafproject.model.Rule;
+import com.fich.wafproject.model.Student;
 import com.fich.wafproject.service.EventService;
 import com.fich.wafproject.service.EventRuleService;
 import com.fich.wafproject.service.FileService;
@@ -85,16 +86,51 @@ public class EventsLogController {
     EventRuleService eventRuleService;
     
     @RequestMapping(value = "/jrreport", method = RequestMethod.GET)
-    public String printWelcome(ModelMap model) throws JRException {
+    public ResponseEntity<byte[]> printWelcome(ModelMap model) throws JRException, FileNotFoundException {
 
         StudentDataSource dsStudent = new StudentDataSource();
+        
         JRDataSource jrDatasource = dsStudent.create(null);
-
-        model.addAttribute("datasource", jrDatasource);
-        model.addAttribute("format", "pdf");
+        
+        Map<String, Object> parameters = new HashMap<String, Object>();
+//        parameters.put("datasource", jrDatasource);
+//        parameters.put("format", "pdf");
+        
+        JasperPrint jasperPrint = JasperFillManager.fillReport(
+                "/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/JRStudent.jasper", 
+                parameters, 
+                jrDatasource);
+        
+//        model.addAttribute("datasource", jrDatasource);
+//        model.addAttribute("format", "pdf");
         System.out.println("ENTRA AL JRREPORT. TODO BIEN");
         
-        return "multiViewReport";
+//        //Guardo en el Home del usuario
+//        String userHomeDirectory = System.getProperty("user.home");
+//        /* Output file location */
+//        String outputFile = userHomeDirectory + java.io.File.separatorChar + "JasperTableExample.pdf";
+//        OutputStream outputStream = new FileOutputStream(new java.io.File(outputFile));
+//        /* Write content to PDF file */
+//        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+//        
+//        JasperDesign jd = JRXmlLoader.load("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/BlankReport.jasper");
+//        
+//        JasperReport report = JasperCompileManager.compileReport(jd);
+//        // Rellenamos el informe con la conexion creada y sus parametros establecidos
+//        JasperPrint print = JasperFillManager.fillReport(report, parameters, jrDatasource);
+//
+//        // Exportamos el informe a formato PDF
+//        JasperExportManager.exportReportToPdfFile(print, outputFile);
+        
+        
+        byte[] fichero = JasperExportManager.exportReportToPdf(jasperPrint);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+        String filename = "output.pdf";
+        headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
+        return response;
     }
     
     @RequestMapping(value = "/jasperEntitiesPDF", method = RequestMethod.GET)
