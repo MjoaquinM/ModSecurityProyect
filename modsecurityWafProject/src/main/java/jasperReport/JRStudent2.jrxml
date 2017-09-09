@@ -1,29 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
-
-<jasperReport name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-    <background>
-        <band/>
-    </background>
-    <title>
-        <band height="79"/>
-    </title>
-    <pageHeader>
-        <band height="35"/>
-    </pageHeader>
-    <columnHeader>
-        <band height="61"/>
-    </columnHeader>
-    <detail>
-        <band height="125"/>
-    </detail>
-    <columnFooter>
-        <band height="45"/>
-    </columnFooter>
-    <pageFooter>
-        <band height="54"/>
-    </pageFooter>
-    <summary>
-        <band height="42"/>
-    </summary>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c1fc43b1-1484-49aa-893a-d13074f7c5e8">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="stuid" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="course" class="java.lang.String"/>
+	<field name="grade" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="63" splitType="Stretch"/>
+	</title>
+	<columnHeader>
+		<band height="50">
+			<staticText>
+				<reportElement x="17" y="2" width="100" height="20" uuid="5c5f900f-09ee-43c1-be7c-5e4be8d20faa"/>
+				<text><![CDATA[stuid]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="154" y="2" width="100" height="20" uuid="871df5bb-9ff0-4d26-b673-5e98fd468ec5"/>
+				<text><![CDATA[name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="291" y="2" width="100" height="20" uuid="db9e4f16-2e69-4429-b14d-10855dd78a86"/>
+				<text><![CDATA[course]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="436" y="2" width="100" height="20" uuid="b2781f9f-8a36-4748-a5b3-0c3ee666c6ad"/>
+				<text><![CDATA[grade]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="66">
+			<textField>
+				<reportElement x="17" y="12" width="100" height="20" uuid="c74ed5be-f79e-4ceb-ba5f-f7426abdac6f"/>
+				<textFieldExpression><![CDATA[$F{stuid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="154" y="14" width="100" height="20" uuid="71356f8f-653b-4db0-b8bc-0715e51f4d13"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="291" y="21" width="100" height="20" uuid="af2b9535-32d0-42c2-90a9-dab398f4ed31"/>
+				<textFieldExpression><![CDATA[$F{course}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="436" y="18" width="100" height="20" uuid="4f3c2b34-1f3f-4b34-a3d2-c729cb9b0f39"/>
+				<textFieldExpression><![CDATA[$F{grade}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="429" splitType="Stretch"/>
+	</summary>
 </jasperReport>

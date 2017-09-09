@@ -93,7 +93,6 @@ public class EventsLogController {
         JRDataSource jrDatasource = dsStudent.create(null);
         
         Map<String, Object> parameters = new HashMap<String, Object>();
-//        parameters.put("datasource", jrDatasource);
 //        parameters.put("format", "pdf");
         
         JasperPrint jasperPrint = JasperFillManager.fillReport(
