@@ -97,7 +97,7 @@ public class EventsLogController {
 //        parameters.put("format", "pdf");
         
         JasperPrint jasperPrint = JasperFillManager.fillReport(
-                "/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/JRStudent.jasper", 
+                "/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/JRStudent2.jasper", 
                 parameters, 
                 jrDatasource);
         
