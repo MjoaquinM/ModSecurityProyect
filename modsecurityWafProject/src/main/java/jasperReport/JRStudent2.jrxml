@@ -4,21 +4,18 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<field name="campo" class="java.lang.String"/>
-	<field name="valor" class="java.lang.String"/>
+	<field name="valor" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="63" splitType="Stretch"/>
 	</title>
-	<columnHeader>
-		<band height="50"/>
-	</columnHeader>
-	<detail>
-		<band height="309">
+	<summary>
+		<band height="330" splitType="Stretch">
 			<pieChart>
 				<chart>
-					<reportElement x="140" y="101" width="200" height="100" uuid="92826df0-0463-4cb8-a75e-1ce9eb9de77a"/>
+					<reportElement x="150" y="89" width="200" height="100" uuid="92826df0-0463-4cb8-a75e-1ce9eb9de77a"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
@@ -33,8 +30,5 @@
 				</piePlot>
 			</pieChart>
 		</band>
-	</detail>
-	<summary>
-		<band height="44" splitType="Stretch"/>
 	</summary>
 </jasperReport>

@@ -41,7 +41,6 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
             System.out.println(idEvent);
             events.add(this.findById((Integer) idEvent));
         }
-        
         return (List<Event>) events;
     }
     

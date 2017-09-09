@@ -91,16 +91,27 @@ public class EventsLogController {
     public ResponseEntity<byte[]> printWelcome(ModelMap model) throws JRException, FileNotFoundException {
         
         System.out.println("ENTRO AL REPORT");
-        List<Event> events = eventService.findAllEvents();
         
+        //Tomo la lista de eventos
+        List<Event> events = eventService.findAllEvents();
         for (Event e : events){
             System.out.println("EVENT: " + e.getTransactionId());
         }
         
+        //Tomo la lista de Rules
+        List<Rule> rules = ruleService.findAllRules();
+        
+        Map<Rule, Number> atackVsAmount = new HashMap<>();
+        
+        //INICIALIZAR EL MAP CON TODAS LAS REGLAS, Y EL NUMBER EN 0. NO AGREGAR LA 980 Y LA 949.
+        
+        //DSP IR RECORRRIENDO LA LISTA DE EVENTOS Y TOMANDO LA LISTA DE REGLAS PARA CADA UNO.
+        
+        //+1 PARA EL VALOR DE LA REGLA EN EL MAP (YA ESTAN TODAS AGREGADAS). VERIFICAR NO AGREGAR LAS EXCLUIDAS
+        
+        
+        
         List<JasperCharts> listjc = new ArrayList<>();
-        listjc.add(new JasperCharts("hola1", 1));
-        listjc.add(new JasperCharts("hola2", 2));
-        listjc.add(new JasperCharts("hola3", 3));
         
         JRDataSource jrDatasource = new JRBeanCollectionDataSource(listjc);
         

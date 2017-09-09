@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fich.wafproject.dao.RuleDao;
 import com.fich.wafproject.model.Rule;
+import java.util.List;
 
 @Service("ruleService")
 @Transactional
@@ -23,6 +24,11 @@ public class RuleServiceImpl implements RuleService {
     public Rule findByRuleId(String ruleId) {
         Rule rule = dao.findByRuleId(ruleId);
         return rule;
+    }
+
+    @Override
+    public List<Rule> findAllRules() {
+        return dao.findAllRules();
     }
 
 }
