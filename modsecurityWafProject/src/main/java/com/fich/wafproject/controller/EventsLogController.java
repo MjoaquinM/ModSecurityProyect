@@ -5,8 +5,10 @@ import com.fich.wafproject.model.Event;
 import com.fich.wafproject.model.EventRule;
 import com.fich.wafproject.model.File;
 import com.fich.wafproject.model.Item;
+import com.fich.wafproject.model.JasperCharts;
 import com.fich.wafproject.model.Rule;
 import com.fich.wafproject.model.Student;
+import com.fich.wafproject.service.EventDataSource;
 import com.fich.wafproject.service.EventService;
 import com.fich.wafproject.service.EventRuleService;
 import com.fich.wafproject.service.FileService;
@@ -87,13 +89,23 @@ public class EventsLogController {
     
     @RequestMapping(value = "/jrreport", method = RequestMethod.GET)
     public ResponseEntity<byte[]> printWelcome(ModelMap model) throws JRException, FileNotFoundException {
-
-        StudentDataSource dsStudent = new StudentDataSource();
         
-        JRDataSource jrDatasource = dsStudent.create(null);
+        System.out.println("ENTRO AL REPORT");
+        List<Event> events = eventService.findAllEvents();
+        
+        for (Event e : events){
+            System.out.println("EVENT: " + e.getTransactionId());
+        }
+        
+        List<JasperCharts> listjc = new ArrayList<>();
+        listjc.add(new JasperCharts("hola1", 1));
+        listjc.add(new JasperCharts("hola2", 2));
+        listjc.add(new JasperCharts("hola3", 3));
+        
+        JRDataSource jrDatasource = new JRBeanCollectionDataSource(listjc);
         
         Map<String, Object> parameters = new HashMap<String, Object>();
-//        parameters.put("format", "pdf");
+//        parameters.put("lista", listjc);
         
         JasperPrint jasperPrint = JasperFillManager.fillReport(
                 "/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/JRStudent2.jasper", 

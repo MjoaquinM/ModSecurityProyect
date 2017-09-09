@@ -25,8 +25,13 @@ public class EventDataSource extends JRAbstractBeanDataSourceProvider {
 
     @Override
     public JRDataSource create(JasperReport jr) throws JRException {
-        listEvent = eventService.findAllEvents(0);
-        return new JRBeanCollectionDataSource(listEvent);
+        List<Event> le = eventService.findAllEvents(1);
+        System.out.println("ACA ABAJO VAN TODOS LOS EVENTOS TRAIDOS:");
+        for (Event e: le){
+            System.out.println("txid: " + e.getTransactionId());
+        }
+        System.out.println("LARGO DE LA LISTA: " + le.size());
+        return new JRBeanCollectionDataSource(le);
     }
 
     @Override

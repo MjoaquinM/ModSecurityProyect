@@ -11,6 +11,8 @@ public interface EventDao {
     
     List<Event> findAllEvent(int pageNumber);
     
+    List<Event> findAllEvent();
+    
     Event findById(Integer id);
      
 }

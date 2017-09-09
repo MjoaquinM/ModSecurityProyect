@@ -44,4 +44,15 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
         
         return (List<Event>) events;
     }
+    
+    @Override
+    public List<Event> findAllEvent() {
+        Criteria crit = this.createEntityCriteria();//.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+        crit.setProjection(Projections.distinct(Projections.property("id")));
+        List<Event> events = new ArrayList<Event>();
+        for(Object idEvent : crit.list()){
+            events.add(this.findById((Integer) idEvent));
+        }
+        return (List<Event>) events;
+    }
 }

@@ -10,5 +10,7 @@ public interface EventService {
     Event findByTransactionId(String transactionId);
     
     List<Event> findAllEvents(int pageNumber);
+    
+    List<Event> findAllEvents();
      
 }
