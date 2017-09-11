@@ -109,9 +109,30 @@ public class EventsLogController {
         
         //+1 PARA EL VALOR DE LA REGLA EN EL MAP (YA ESTAN TODAS AGREGADAS). VERIFICAR NO AGREGAR LAS EXCLUIDAS
         
+        for (Rule r : rules){
+            if (!("949".equals(r.getRuleId().substring(0, 3)) || "980".equals(r.getRuleId().substring(0, 3))))
+                atackVsAmount.put(r, 0);
+        }
+        
+        for (Event e : events){
+            List<EventRule> eventRules = e.getEventRuleList();
+            for (EventRule er : eventRules){
+                Rule ruleAux = er.getRuleId();
+                if (!("949".equals(ruleAux.getRuleId().substring(0, 3)) || "980".equals(ruleAux.getRuleId().substring(0, 3)))){
+                    atackVsAmount.put(ruleAux, atackVsAmount.get(ruleAux).intValue() + 1 );
+                }
+            }
+        }
+
+        System.out.println("SALIDA DEL MAPA: ");
+
         
         
         List<JasperCharts> listjc = new ArrayList<>();
+        for (Map.Entry<Rule, Number> entry : atackVsAmount.entrySet()) {
+            System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
+            listjc.add(new JasperCharts(entry.getKey().getRuleId(),entry.getValue()));
+        }
         
         JRDataSource jrDatasource = new JRBeanCollectionDataSource(listjc);
         

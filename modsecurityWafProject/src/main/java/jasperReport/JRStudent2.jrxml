@@ -15,7 +15,7 @@
 		<band height="330" splitType="Stretch">
 			<pieChart>
 				<chart>
-					<reportElement x="150" y="89" width="200" height="100" uuid="92826df0-0463-4cb8-a75e-1ce9eb9de77a"/>
+					<reportElement x="91" y="36" width="353" height="236" uuid="92826df0-0463-4cb8-a75e-1ce9eb9de77a"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
@@ -23,6 +23,7 @@
 				<pieDataset>
 					<keyExpression><![CDATA[$F{campo}]]></keyExpression>
 					<valueExpression><![CDATA[$F{valor}]]></valueExpression>
+					<labelExpression><![CDATA[""+$F{valor}]]></labelExpression>
 				</pieDataset>
 				<piePlot>
 					<plot/>
