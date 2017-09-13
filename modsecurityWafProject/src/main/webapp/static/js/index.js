@@ -524,6 +524,23 @@ $(document).ready(function () {
             $(this).find('i').addClass('fa-angle-double-down');
         }
     });
+    
+    //User filter
+//    $( "#datepicker-from" ).datepicker({ dateFormat: 'yy-mm-dd' });
+    $( "#datepicker-from" ).datepicker({ dateFormat: 'yy-mm-dd' });
+    $( "#datepicker-to" ).datepicker({ dateFormat: 'yy-mm-dd' });
+    $( "#datepicker-to" ).on("change",function(){
+        if($(this).val()<$( "#datepicker-from" ).val()){
+            $(this).val($( "#datepicker-from" ).val());
+        }
+    });
+    
+    //Users History Pagination
+    $('.user-history-filter-btn').on('click',function(){
+        
+        $('#user-history-filter-form').find('#pageNumber').val($(this).val());
+        $('#user-history-filter-form').submit();
+    });
 
     /************************MANAGE USERS END****************************/
     
@@ -591,13 +608,11 @@ $(document).ready(function () {
     
     /************************MANAGE RULES END****************************/
     
-    $( "#datepicker-from" ).datepicker({ dateFormat: 'yy-mm-dd' });
-    $( "#datepicker-to" ).datepicker({ dateFormat: 'yy-mm-dd' });
-    $( "#datepicker-to" ).on("change",function(){
-        if($(this).val()<$( "#datepicker-from" ).val()){
-            $(this).val($( "#datepicker-from" ).val());
-        }
+    /************************EVENTS****************************/
+    $('.event-filter-btn').on('click',function(){
+        $('#event-filter-form').find('#pageNumber').val($(this).val());
+        $('#event-filter-form').submit();
     });
-    
+    /************************EVENTS END****************************/
       
 });

@@ -372,25 +372,38 @@ public class EventsLogController {
         return result;
     }
 
-    @RequestMapping(value = "/eventList/{pageNumber}", method = RequestMethod.GET)
-    public String EventList(@PathVariable int pageNumber, ModelMap model) {
+    @RequestMapping(value = "/eventList", method = RequestMethod.GET)
+    public String EventList(ModelMap model,HttpServletRequest request) {
+        int pageNumber = 1;
+        if(request.getParameterMap().containsKey("pageNumber")){
+           pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        }
+        
         if(pageNumber<1){
             pageNumber=1;
         }
-        List<Event> events = eventService.findAllEvents(pageNumber);
-//        System.out.println("PARAMETROS QUE SE VAN A MANDAR1111: " + events);
-//        for (Event e : events){
-//            System.out.println("ID Evento: " + e.getId());
-//        }
+        
+        List<Event> events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"),request.getParameterValues("filter-parameters-values"));
         if(events.size() == 0){
             pageNumber = pageNumber-1;
-            events = eventService.findAllEvents(pageNumber);
+            events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"));
         }
+        
+        String[] n1 = request.getParameterValues("filter-parameters-values");
+        String[] n2 = request.getParameterValues("filter-parameters-labels");
+        HashMap hm = new HashMap<String,String>();
+        
+        if(n1 != null){
+            int count = 0;
+            for(String val: n1){
+                hm.put(n2[count], val);
+                count++;
+            }
+        }
+        
+        model.addAttribute("hm",hm);
         model.addAttribute("lst",events);
         model.addAttribute("pageNumber",pageNumber);
-//        System.out.println("CANTIDAD: "+events.size());
-//        System.out.println("PARAMETRO RECIBIDO: " + pageNumber);
-//        System.out.println("PARAMETROS QUE SE VAN A MANDAR: " + events);
         return "events";
     }
     

@@ -27,13 +27,12 @@
                     Filters
                 </h3>
                 <button id="show-filter-user-history" data-toggle="collapse" data-target="#filters-containers"><i class="fa fa-angle-double-down" aria-hidden="true"></i></button>
-                <a href="<c:url value="/historyUsers/1" />" class="btn btn-primary">Reset</a>
+                <a href="<c:url value="/historyUsers" />" class="btn btn-primary">Reset</a>
             </div>
         </div>
         <div class="panel-body collapse" id="filters-containers">
-            <form method="GET">
-                <input type="hidden" name="filterFlag"  value="true" />
-
+            <form method="GET" id="user-history-filter-form">
+                <!--<input type="hidden" name="filterFlag"  value="true" />-->
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
@@ -48,29 +47,34 @@
                                 <td>From:</td>
                                 <td>
                                     <input type="hidden" name="filter-parameters-targets" value="dateEvent" />
-                                    <input type="text" id="datepicker-from" name="filter-parameters-values" />
+                                    <input type="hidden" name="filter-parameters-labels" value="dateEventFrom" />
+                                    <input type="text" id="datepicker-from" name="filter-parameters-values" value="${hm.dateEventFrom}" />
                                 </td>
                                 <td>Name:</td>
                                 <td>
                                     <input type="hidden" name="filter-parameters-targets" value="user.userName" />
-                                    <input type="text" name="filter-parameters-values" />
+                                    <input type="hidden" name="filter-parameters-labels" value="userName" />
+                                    <input type="text" name="filter-parameters-values" value="${hm.userName}" />
                                 </td>
                                 <td>Keyword:</td>
                                 <td>
                                     <input type="hidden" name="filter-parameters-targets" value="description" />
-                                    <input type="text" name="filter-parameters-values" />
+                                    <input type="hidden" name="filter-parameters-labels" value="description" />
+                                    <input type="text" name="filter-parameters-values" value="${hm.description}" />
                                 </td>
                             </tr>
                             <tr>
                                 <td>To:</td>
                                 <td>
                                     <input type="hidden" name="filter-parameters-targets" value="dateEvent" />
-                                    <input type="text" id="datepicker-to" name="filter-parameters-values" />
+                                    <input type="hidden" name="filter-parameters-labels" value="dateEventTo" />
+                                    <input type="text" id="datepicker-to" name="filter-parameters-values" value="${hm.dateEventTo}" />
                                 </td>
                                 <td>Mail:</td>
                                 <td>
                                     <input type="hidden" name="filter-parameters-targets" value="user.email" />
-                                    <input type="text" name="filter-parameters-values" />
+                                    <input type="hidden" name="filter-parameters-labels" value="userEmail" />
+                                    <input type="text" name="filter-parameters-values" value="${hm.userEmail}" />
                                 </td>
                                 <td></td>
                             </tr>
@@ -83,8 +87,8 @@
                     </table>
                 </div>
                 <input type="hidden" name="filter-parameters-names" value="user" />
-                <input type="hidden" name="pageNumber" value="${pageNumber}" />
-                <input type="hidden" name="flagFilter" id="flagFilter" value="${flagFilter}" />
+                <input type="hidden" id="pageNumber" name="pageNumber" value="1" />
+                <!--<input type="hidden" name="flagFilter" id="flagFilter" value="${flagFilter}" />-->
             </form>
         </div>
     </div>
@@ -97,8 +101,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel-body">
-            
+        <div class="panel-body">    
             <c:choose>
                 <c:when test="${flagFilter=='true'}">
                     <div class="table-responsive table-filtered">
@@ -141,21 +144,13 @@
                     </tbody>
                 </table>
             </div>
-            <c:choose>
-                <c:when test="${flagFilter!='true'}">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item">
-                                <a class="page-link" href="${pageNumber-1}">Previus</a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">${pageNumber}</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="${pageNumber+1}">Next</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </c:when>
-            </c:choose>
+                        
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary user-history-filter-btn" value="${pageNumber-1}">Previus</button>
+                <button type="button" class="btn btn-primary user-history-filter-btn" value="${pageNumber}">${pageNumber}</button>
+                <button type="button" class="btn btn-primary user-history-filter-btn" value="${pageNumber+1}">Next</button>
+            </div>
+            
         </div>
     </div>
 </div>

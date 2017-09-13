@@ -92,7 +92,7 @@ public class ModsecurityController {
             while ((line = br.readLine()) != null) {
                 if (!line.isEmpty()) {
                     for(ConfigurationFilesAttributes cfa : attrs){
-                        if (line.contains(cfa.getName())){
+                        if (line.contains(cfa.getName()+" ")){
                             line = line.replaceAll("#", "");
                             if(cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED")){
                                 msgToHistoryLog = msgToHistoryLog + " - "+cfa.getName()+" was blocked \n";

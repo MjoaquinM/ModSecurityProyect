@@ -9,6 +9,6 @@ public interface EventService {
     
     Event findByTransactionId(String transactionId);
     
-    List<Event> findAllEvents(int pageNumber);
+    List<Event> findAllEvents(int pageNumber, String[] targets, String[] names, String[] values);
      
 }

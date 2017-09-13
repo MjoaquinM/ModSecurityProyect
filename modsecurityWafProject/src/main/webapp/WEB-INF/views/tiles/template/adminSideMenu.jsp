@@ -14,7 +14,7 @@
                             <a href="<c:url value="/users/list" />">User List</a>
                         </li>
                         <li>
-                            <a href="<c:url value="/historyUsers/1" />">User History</a>
+                            <a href="<c:url value="/historyUsers" />">User History</a>
                         </li>
                         <li>
                             <a href="<c:url value="/chronHistoryUsers" />">Chronological History (que sería esto?)</a>
@@ -50,7 +50,7 @@
                             <a href="<c:url value="/reports" />">Generate Report</a>
                         </li>
                         <li>
-                            <a href="<c:url value="/eventList/1" />">List Events</a>
+                            <a href="<c:url value="/eventList" />">List Events</a>
                         </li>
                     </ul>
                     <!-- /.nav-third-level -->

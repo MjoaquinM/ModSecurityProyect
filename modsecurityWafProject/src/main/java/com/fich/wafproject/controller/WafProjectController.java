@@ -139,30 +139,35 @@ public class WafProjectController {
         return "listUsers";
     }
     
-//    @RequestMapping(value = "/eventList/{pageNumber}", method = RequestMethod.GET)
-    @RequestMapping(value = "/historyUsers/{pageNumber}", method = RequestMethod.GET)
-    public String userHistoryPage(@PathVariable int pageNumber, ModelMap model, HttpServletRequest request) { 
+    @RequestMapping(value = "/historyUsers", method = RequestMethod.GET)
+    public String userHistoryPage(ModelMap model, HttpServletRequest request) {
+        int pageNumber = 1;
+        if(request.getParameterMap().containsKey("pageNumber")){
+           pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        }
+        if(pageNumber<1){
+            pageNumber=1;
+        }
+        String[] values = request.getParameterValues("filter-parameters-values");
+        List<UsersHistory> uh = userHistory.filer(values,request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-targets"), pageNumber);
+        if(uh.size() == 0){
+            pageNumber = pageNumber-1;
+            uh = userHistory.filer(values,request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-targets"), pageNumber);
+        }
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
-        List<UsersHistory> uh = new ArrayList<UsersHistory>();
-        boolean flagFilter = false;
-        if(!request.getParameterMap().containsKey("filterFlag")){
-            if(pageNumber<1){
-                pageNumber=1;
+        
+        String[] labels = request.getParameterValues("filter-parameters-labels");
+        HashMap hm = new HashMap<String,String>();
+        if(values != null){
+            int count = 0;
+            for(String val: values){
+                hm.put(labels[count], val);
+                count++;
             }
-            uh = userHistory.findAll(pageNumber);
-            if(uh.size() == 0){
-                pageNumber = pageNumber-1;
-                uh = userHistory.findAll(pageNumber);
-            }
-        }else{
-            flagFilter = true;
-            String[] names = request.getParameterValues("filter-parameters-names");
-            String[] targets = request.getParameterValues("filter-parameters-targets");
-            uh = userHistory.filer(request.getParameterValues("filter-parameters-values"),request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-targets"), pageNumber);
         }
         
+        model.addAttribute("hm",hm);
         model.addAttribute("pageNumber",pageNumber);
-        model.addAttribute("flagFilter",flagFilter);
         model.addAttribute("configFiles",configurationFilesAll);
         model.addAttribute("usersActions", uh);
         model.addAttribute("user", getPrincipal());
