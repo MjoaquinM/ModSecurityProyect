@@ -97,7 +97,7 @@ public class EventsLogController {
         for (Event e : events){
             System.out.println("EVENT: " + e.getTransactionId());
         }
-        
+        System.out.println("ACA ARRIBA TIENE Q ESTA LA LISTA DE EVENTOS");
         //Tomo la lista de Rules
         List<Rule> rules = ruleService.findAllRules();
         
@@ -126,8 +126,6 @@ public class EventsLogController {
 
         System.out.println("SALIDA DEL MAPA: ");
 
-        
-        
         List<JasperCharts> listjc = new ArrayList<>();
         for (Map.Entry<Rule, Number> entry : atackVsAmount.entrySet()) {
             System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
@@ -137,10 +135,27 @@ public class EventsLogController {
         JRDataSource jrDatasource = new JRBeanCollectionDataSource(listjc);
         
         Map<String, Object> parameters = new HashMap<String, Object>();
-//        parameters.put("lista", listjc);
+        parameters.put("lista", listjc);
+        
+        for (Event e : events){
+            System.out.println("EVENT: " + e.getTransactionId());
+        }
+        System.out.println("ACA ARRIBA TIENE Q ESTA LA LISTA DE EVENTOS");
+        parameters.put("listaEvent", events);
+        
+        List<String> empleados = new ArrayList<>();
+        empleados.add("martin");
+        empleados.add("juana");
+        empleados.add("pepe");
+        empleados.add("maria");
+        empleados.add("magali");
+        
+        List<String> emp2 = new ArrayList(Arrays.asList(new String[] {"String1","String2","String3","String4"}));
+        
+        parameters.put("empleados", empleados);
         
         JasperPrint jasperPrint = JasperFillManager.fillReport(
-                "/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/JRStudent2.jasper", 
+                "/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/newReport.jasper", 
                 parameters, 
                 jrDatasource);
         

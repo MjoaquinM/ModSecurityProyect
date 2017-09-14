@@ -3,6 +3,12 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset2" uuid="ae68e234-b520-4767-8c8d-7fc04c707298">
+		<field name="_THIS" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="empleados" class="java.util.List">
+		<defaultValueExpression><![CDATA[new Arrays.asList("Martin","Jose","Maria","Melina")]]></defaultValueExpression>
+	</parameter>
 	<field name="campo" class="java.lang.String"/>
 	<field name="valor" class="java.lang.Integer"/>
 	<background>
@@ -11,6 +17,24 @@
 	<title>
 		<band height="63" splitType="Stretch"/>
 	</title>
+	<detail>
+		<band height="254">
+			<componentElement>
+				<reportElement x="50" y="33" width="427" height="154" uuid="543aac9c-382c-4680-961c-2da39dad8c01"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="dataset2" uuid="b3b21e28-e9b9-4717-b6b3-0c5cb894d8f8">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource($P{empleados})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="154" width="427">
+						<textField>
+							<reportElement x="16" y="11" width="100" height="20" uuid="26dcc33e-4a6d-4526-93e9-6c8166d8e74b"/>
+							<textFieldExpression><![CDATA[$F{_THIS}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</detail>
 	<summary>
 		<band height="330" splitType="Stretch">
 			<pieChart>
