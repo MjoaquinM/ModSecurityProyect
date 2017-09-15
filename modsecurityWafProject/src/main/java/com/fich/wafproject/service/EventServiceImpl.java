@@ -30,5 +30,10 @@ public class EventServiceImpl implements EventService {
     public List<Event> findAllEvents(int pageNumber, String[] targets, String[] names, String[] values) {
         return dao.findAllEvent(pageNumber, targets, names, values);
     }
+    
+    @Override
+    public List<Event> findAllEvents() {
+        return dao.findAllEvent();
+    }
      
 }

@@ -584,7 +584,7 @@ public class WafProjectController {
         List<String> ruleFiles = new ArrayList<String>();
         String value = configurationFileAttributeService.findByName("SecRuleRemoveById").getValue();//VIEW THIS -> HARDCODE
         String[] values = value.split(",");
-        List<Rule> rules = ruleService.findAll();
+        List<Rule> rules = ruleService.findAllRules();
         try{
             String path = "/usr/share/modsecurity-crs/rules/";
             Process p = Runtime.getRuntime().exec("ls "+path);

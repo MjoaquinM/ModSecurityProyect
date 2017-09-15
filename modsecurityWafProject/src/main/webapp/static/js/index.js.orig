@@ -544,6 +544,7 @@ $(document).ready(function () {
 
     /************************MANAGE USERS END****************************/
     
+<<<<<<< HEAD
     /************************MANAGE RULES ****************************/
     $('.parameter-item').on('click',function(){
         var name = $(this).text().replace('REQUEST-','').trim();
@@ -608,13 +609,17 @@ $(document).ready(function () {
     
     /************************MANAGE RULES END****************************/
     
-    /************************MANAGE EVENTS****************************/
+    /************************EVENTS****************************/
     $('.event-filter-btn').on('click',function(){
         $('#event-filter-form').find('#pageNumber').val($(this).val());
         $('#event-filter-form').submit();
     });
-
-$('.show-event-details').on('click', function () {
+    /************************EVENTS END****************************/
+      
+});
+=======
+    /************************MANAGE EVENTS****************************/
+    $('.show-event-details').on('click', function () {
         /*<VARIABLES>*/
         var modalTitle = 'Event Details';
         var data = {};
@@ -642,7 +647,6 @@ $('.show-event-details').on('click', function () {
         /*<SHOW MODAL>*/
         $('#eventModal').modal('show');
     });
-
-/************************MANAGE EVENTS END****************************/
-      
-});
+    /************************MANAGE EVENTS END****************************/
+})
+>>>>>>> 5256347aa00614a1aed16fd49f77ff0f0258bd0d

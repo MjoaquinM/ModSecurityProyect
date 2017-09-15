@@ -9,8 +9,12 @@ public interface EventService {
     
     Event findByTransactionId(String transactionId);
     
+<<<<<<< HEAD
     List<Event> findAllEvents(int pageNumber, String[] targets, String[] names, String[] values);
-
+=======
+    List<Event> findAllEvents(int pageNumber);
+    
     List<Event> findAllEvents();
+>>>>>>> 5256347aa00614a1aed16fd49f77ff0f0258bd0d
      
 }

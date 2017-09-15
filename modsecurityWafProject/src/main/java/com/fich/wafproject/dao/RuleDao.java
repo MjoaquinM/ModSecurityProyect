@@ -9,7 +9,11 @@ public interface RuleDao {
     void saveRule(Rule rule);
     
     public Rule findByRuleId(String ruleId);
+
+    public Rule findById(Integer id);
     
-    List<Rule> findAll();
+    public List<Rule> findAllRules();
+
+//    List<Rule> findAll();
     
 }

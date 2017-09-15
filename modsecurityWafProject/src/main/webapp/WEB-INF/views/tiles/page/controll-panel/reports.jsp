@@ -4,10 +4,13 @@
         <div class="col-lg-12">
             <h1 class="page-header">Users List</h1>
         </div>
-        <!-- /.col-lg-12 -->
     </div>
-    <!-- /.row -->
+
     <div class="row">
-        <h1>ACA VA LA CONFIGURACIÓN DE LAS REGLAS</h1>
+        <a class="btn btn-primary" href="<c:url value="/jasperDownloadPDF" />">Descargar PDF</a>
+        <hr/>
+        <a class="btn btn-primary" href="<c:url value="/jasperInlinePDF" />">Inline PDF</a>
+        <hr/>
+        <a class="btn btn-primary" href="<c:url value="/jasperEntitiesPDF" />">Entities PDF</a>
     </div>
 </div>

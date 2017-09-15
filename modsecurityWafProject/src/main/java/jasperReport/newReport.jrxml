@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9b51f674-8cda-470a-9f6e-95465475ec59">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset1" uuid="a9efd098-fe57-447c-9884-d08e6ea23970">
+		<field name="_THIS" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="dataset2" uuid="ae35e2b2-6c59-4524-9528-7539f3b9e52d">
+		<field name="transactionId" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="empleados" class="java.util.List">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="listaEvent" class="java.util.List"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<summary>
+		<band height="426" splitType="Stretch">
+			<staticText>
+				<reportElement x="155" y="30" width="100" height="20" uuid="7de3e274-3706-43ed-9068-cc8d98284296"/>
+				<text><![CDATA[_THIS]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="27" y="259" width="463" height="108" uuid="2a4ce3ff-4d44-487e-bb91-ce17521a45f7"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="dataset2" uuid="88d04304-aa34-421e-b4ec-06ec93eeb24c">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listaEvent})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="108" width="463">
+						<textField>
+							<reportElement x="314" y="30" width="100" height="20" uuid="f36ca60e-afce-48f5-a55b-24dc68f1f010"/>
+							<textFieldExpression><![CDATA[$F{transactionId}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<componentElement>
+				<reportElement x="27" y="113" width="426" height="79" uuid="1562c3d0-c3c0-4d60-8d40-fc14c7f70087"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="dataset1" uuid="9d059299-493a-496c-a6d4-0bc4b0dc1b38">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{empleados})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="79" width="426">
+						<textField>
+							<reportElement x="67" y="19" width="100" height="20" uuid="5df9e1f1-4488-4265-b9d5-6155789da27f"/>
+							<textFieldExpression><![CDATA[$F{_THIS}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement x="367" y="30" width="100" height="20" uuid="108a9bdb-81e1-48b9-b330-fbac6f75bcd0"/>
+				<text><![CDATA[_THIS]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

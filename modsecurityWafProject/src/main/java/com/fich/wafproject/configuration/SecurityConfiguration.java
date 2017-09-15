@@ -54,18 +54,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-      http.authorizeRequests()
+        http.csrf().disable();
+        http.authorizeRequests()
         .antMatchers("/admin-test","/EventList","/jasperHTML","/jasperPDF","/jasperXLS","/put").permitAll()
         .antMatchers("/", "/home").access("hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')")
-//        .antMatchers("/admin/**").access("hasRole('ADMIN')")
         .antMatchers("/admin/**").permitAll()
         .antMatchers("/users/**").access("hasRole('ADMIN')")
-//        .antMatchers("/admin/**").permitAll()      
-//        .antMatchers("/admin/**").permitAll()
         .antMatchers("/db/**").access("hasRole('ADMIN') or hasRole('DBA')")
         .and().formLogin().loginPage("/login").successHandler(customSuccessHandler)
         .usernameParameter("user_name").passwordParameter("password")
-        .and().csrf()
+//        .and().csrf()
         .and().exceptionHandling().accessDeniedPage("/Access_Denied");
     }
 }

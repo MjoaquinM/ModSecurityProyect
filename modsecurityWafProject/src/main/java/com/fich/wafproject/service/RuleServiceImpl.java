@@ -27,8 +27,8 @@ public class RuleServiceImpl implements RuleService {
     }
 
     @Override
-    public List<Rule> findAll() {
-        return dao.findAll();
+    public List<Rule> findAllRules() {
+        return dao.findAllRules();
     }
 
 }
