@@ -622,7 +622,7 @@ public class EventsLogController {
         return "eventsList";
     }
     
-     @RequestMapping(value = "/eventList/eventDetailsForm", method = RequestMethod.GET)
+     @RequestMapping(value = "/eventDetailsForm", method = RequestMethod.GET)
     public String getAddUserForm(ModelMap model, @RequestParam("transactionId") String transactionId) {
         System.out.println("ENTRO A DETAILS FORM: " + transactionId);
         model.addAttribute("idModal", "eventModal");
