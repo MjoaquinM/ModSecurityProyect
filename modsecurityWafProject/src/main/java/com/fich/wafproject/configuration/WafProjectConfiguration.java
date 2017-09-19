@@ -42,8 +42,6 @@ public class WafProjectConfiguration extends WebMvcConfigurerAdapter {
         return tilesConfigurer;
     }
     
-    
-     
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
 //        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -52,7 +50,7 @@ public class WafProjectConfiguration extends WebMvcConfigurerAdapter {
 //        viewResolver.setSuffix(".jsp");
 //        registry.viewResolver(viewResolver);
         TilesViewResolver viewResolver = new TilesViewResolver();
-        registry.viewResolver(viewResolver);
+        registry.viewResolver(viewResolver);        
     }
  
     /*

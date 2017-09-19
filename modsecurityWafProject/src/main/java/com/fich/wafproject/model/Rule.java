@@ -58,7 +58,7 @@ public class Rule implements Serializable {
     @Size(max = 45)
     @Column(name = "severity")
     private String severity;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ruleId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ruleId", fetch=FetchType.EAGER)
     private List<EventRule> eventRuleList;
     @JoinColumn(name = "fileId", referencedColumnName = "id")
     @ManyToOne(optional = false)

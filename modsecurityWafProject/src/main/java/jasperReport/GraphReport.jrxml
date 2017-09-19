@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8e41678a-25ee-4798-8bb4-dbe2e7f8123d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select count(EventRule.transactionId),Rule.ruleId,( (count(EventRule.transactionId) * 100) / ( select count(EventRule.transactionId) from EventRule ) ) from EventRule join Rule on EventRule.ruleId = Rule.ruleId group by Rule.ruleId;]]>
+	</queryString>
+	<field name="count(EventRule.transactionId)" class="java.lang.Long"/>
+	<field name="ruleId" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="( (count(EventRule.transactionId) * 100) / ( select count(EventRule.transactionId) from EventRule ) )" class="java.math.BigDecimal"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="194" y="55" width="198" height="24" uuid="54718943-4474-44d8-b3ef-40fc70cd93ac"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Eventos detectados VS Reglas]]></text>
+			</staticText>
+		</band>
+	</title>
+	<summary>
+		<band height="530" splitType="Stretch">
+			<pieChart>
+				<chart>
+					<reportElement x="120" y="29" width="340" height="201" uuid="fed63c4a-d827-46c6-a236-9334d3c6be63"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{ruleId}]]></keyExpression>
+					<valueExpression><![CDATA[$F{count(EventRule.transactionId)}]]></valueExpression>
+					<labelExpression><![CDATA[""+$F{count(EventRule.transactionId)}]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+		</band>
+	</summary>
+</jasperReport>

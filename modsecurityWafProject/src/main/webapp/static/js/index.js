@@ -4,13 +4,13 @@
 
 $(document).ready(function () {
     //POPOVER ATTRIBUTE DESCRIPTION
-    $('[data-toggle="popover"]').popover({ container: 'body'});
-    $('.attribute-description').click(function(e) {
+    $('[data-toggle="popover"]').popover({container: 'body'});
+    $('.attribute-description').click(function (e) {
         e.preventDefault();
     });
-    
+
     $('.message-status-container > div').fadeOut(7000);
-    
+
     /************************LOGIN PAGE****************************/
 
     //Center login form
@@ -75,7 +75,7 @@ $(document).ready(function () {
                 data: data
             }).done(function (response) {
                 $('#generic-modal-container').find('.modal-body').html(response);
-                $('#search-file-configuration-button').on('click',function(){
+                $('#search-file-configuration-button').on('click', function () {
                     validateFileConfiguration($('#generic-modal-container').find('#pathName').val());
                 });
             }).fail(function () {
@@ -83,41 +83,42 @@ $(document).ready(function () {
             });
         }
         /*<SHOW MODAL>*/
-        if($('#generic-modal-container').find('#fileConfigurationTemplateModal').length==1){
+        if ($('#generic-modal-container').find('#fileConfigurationTemplateModal').length == 1) {
             $('#fileConfigurationTemplateModal').modal('show');
-        }else{
+        } else {
             $('#fileConfigurationModal').modal('show');
         }
     });
-    
+
     //Validate FILE
-    function validateFileConfiguration(path){
+    function validateFileConfiguration(path) {
         $.ajax({
-            method : "POST",
-            url : "checkFile",
-            timeout : 100000,
+            method: "POST",
+            url: "checkFile",
+            timeout: 100000,
             data: {path: path},
-            beforeSend: function(xhr){
+            beforeSend: function (xhr) {
                 xhr.setRequestHeader('X-CSRF-Token', $('#token-form').val());
             },
-        }).done(function(response){
+        }).done(function (response) {
             var messageStatus = '';
             var typeAlert = 'danger';
-            if(response.length==2){
-                $('#name').val(response[1].substring(response[1].lastIndexOf('/')+1));
+            if (response.length == 2) {
+                $('#name').val(response[1].substring(response[1].lastIndexOf('/') + 1));
                 messageStatus = 'The path is correct';
                 typeAlert = 'success';
-            }else{
+            } else {
                 messageStatus = 'Can\'t find file';
             }
-            var html = '<div class="alert alert-'+typeAlert+' notice-login-page" ><p style="margin-left: auto; margin-right: auto">'+messageStatus+'</p></div>';
+            var html = '<div class="alert alert-' + typeAlert + ' notice-login-page" ><p style="margin-left: auto; margin-right: auto">' + messageStatus + '</p></div>';
             html += (typeAlert == 'success') ? '<input type="hidden" id="file-path-status" value="true" />' : '<input type="hidden" id="file-path-status" value="false" />';
-            
+
             $('.path-file-state').html(html);
-        }).fail(function(e){
-            console.log('Error',e);
+        }).fail(function (e) {
+            console.log('Error', e);
         });
-    };
+    }
+    ;
 
     $('#configurationFileModalCancel').on('click', function () {
         $('#fileConfigurationModal').modal('close');
@@ -126,12 +127,12 @@ $(document).ready(function () {
     $('#fileConfigurationModal').on('click', '#addFileConfiguration', function () {
         editConfigFile('configFileList');
     });
-    
-    $('#fileConfigurationTemplateModal').on('click','#addFileConfiguration',function(){
+
+    $('#fileConfigurationTemplateModal').on('click', '#addFileConfiguration', function () {
         editConfigFile('configFileTemplate');
     });
-    
-    function editConfigFile(redirectTo){
+
+    function editConfigFile(redirectTo) {
         $('#fileConfigurationModal,#fileConfigurationTemplateModal').find('form').validate({
             rules: {
                 pathName: "required"
@@ -140,16 +141,17 @@ $(document).ready(function () {
                 pathName: "Please enter a valid file path"
             }
         });
-        if($('#name').val()!='' && $('#file-path-status').val()=='true'){
+        if ($('#name').val() != '' && $('#file-path-status').val() == 'true') {
             var form = $('#fileConfigurationModal,#fileConfigurationTemplateModal').find('form');
-            form.append('<input type="hidden" value="'+redirectTo+'" name=redirectTo />')
+            form.append('<input type="hidden" value="' + redirectTo + '" name=redirectTo />')
             form.submit();
-        }else{
-            if($('#file-path-status').length==0 || $('#file-path-status').val()=='false'){
+        } else {
+            if ($('#file-path-status').length == 0 || $('#file-path-status').val() == 'false') {
                 $('.path-file-state').html('<div class="alert alert-danger notice-login-page" ><p style="margin-left: auto; margin-right: auto">Please, verify the path file.</p></div><input type="hidden" id="file-path-status" value="false" />');
             }
         }
-    };
+    }
+    ;
 
     $('body').on('click', '#removeFileConfiguration', function () {
         $('#deleteFileconfiguration').append('<input type="text" name="id" value="' + $(this).data("id") + '" />');
@@ -175,23 +177,23 @@ $(document).ready(function () {
             configFileAttrGroupId = -1;
         }
         var data = {'cfag-id': configFileAttrGroupId,
-                    'cfa-id' : configFileId};
+            'cfa-id': configFileId};
         /*<PREPARE MODAL>*/
         var modalFooter = "";
         switch (action) {
             case 'remove':
                 modalTitle = 'Remove File Configuration Group';
                 url = 'removeFileConfiguration';
-                modalFooter = '<button type="button" class="btn btn-primary" id="removeFileConfigurationAttGroup" data-cfId="'+configFileId+'" data-cfagId="'+configFileAttrGroupId+'" data-action="'+action+'">Delete</button>';
+                modalFooter = '<button type="button" class="btn btn-primary" id="removeFileConfigurationAttGroup" data-cfId="' + configFileId + '" data-cfagId="' + configFileAttrGroupId + '" data-action="' + action + '">Delete</button>';
                 break;
             case 'edit':
                 modalTitle = 'Edit File Configuration Group';
-                modalFooter = '<button type="button" class="btn btn-primary" id="addFileConfigurationAttrGroup" data-cfId="'+configFileId+'" data-cfagId="'+configFileAttrGroupId+'" data-action="'+action+'">Save</button>';
+                modalFooter = '<button type="button" class="btn btn-primary" id="addFileConfigurationAttrGroup" data-cfId="' + configFileId + '" data-cfagId="' + configFileAttrGroupId + '" data-action="' + action + '">Save</button>';
                 url = 'addFileConfigurationAttrGroupForm';
                 break;
             default:
                 modalTitle = 'Add File Configuration Attribute Group';
-                modalFooter = '<button type="button" class="btn btn-primary" id="addFileConfigurationAttrGroup" data-cfId="'+configFileId+'" data-cfagId="'+configFileAttrGroupId+'" data-action="'+action+'">Add</button>';
+                modalFooter = '<button type="button" class="btn btn-primary" id="addFileConfigurationAttrGroup" data-cfId="' + configFileId + '" data-cfagId="' + configFileAttrGroupId + '" data-action="' + action + '">Add</button>';
                 url = 'addFileConfigurationAttrGroupForm';
         }
         modalFooter += '<button type="button" class="btn btn-secondary" data-dismiss="modal" id="configurationFileAttrGroupModalCancel">Cancel</button>';
@@ -214,7 +216,7 @@ $(document).ready(function () {
         /*<SHOW MODAL>*/
         $('#fileConfigurationTemplateModal').modal('show');
     });
-    
+
     //Confirm Add Attribute 
     $('#fileConfigurationTemplateModal').on('click', '#addFileConfigurationAttrGroup', function () {
         $('#fileConfigurationTemplateModal').find('form').validate({
@@ -227,23 +229,23 @@ $(document).ready(function () {
                 description: "Please enter a description"
             }
         });
-        $('#fileConfigurationTemplateModal').find('form').append('<input type="hidden" name="action" value="'+$(this).data('action')+'" />');
-        $('#fileConfigurationTemplateModal').find('form').append('<input type="hidden" name="cf-id" value="'+$(this).data('cfid')+'" />');
-        $('#fileConfigurationTemplateModal').find('form').append('<input type="hidden" name="cfag-id" value="'+$(this).data('cfagid')+'" />');
+        $('#fileConfigurationTemplateModal').find('form').append('<input type="hidden" name="action" value="' + $(this).data('action') + '" />');
+        $('#fileConfigurationTemplateModal').find('form').append('<input type="hidden" name="cf-id" value="' + $(this).data('cfid') + '" />');
+        $('#fileConfigurationTemplateModal').find('form').append('<input type="hidden" name="cfag-id" value="' + $(this).data('cfagid') + '" />');
         $('#fileConfigurationTemplateModal').find('form').submit();
     });
     //Confirm Remove Attribute Group
     $('#fileConfigurationTemplateModal').on('click', '#removeFileConfigurationAttGroup', function () {
-        $('#deleteAttrGroupForm').append('<input type="hidden" name="cfag-id" value="'+$(this).data('cfagid')+'" />');
+        $('#deleteAttrGroupForm').append('<input type="hidden" name="cfag-id" value="' + $(this).data('cfagid') + '" />');
         $('#deleteAttrGroupForm').submit();
     });
-    
+
     //Show form to edit a new configuration file attribute
     $('.file-attribute-button').on('click', function () {
         /*<VARIABLES>*/
         var modalTitle = '';
         var action = $(this).data('action');
-        
+
         var url = '';
         var configFileAttrGroupId = $(this).data('config-file-attr-group-id');
         var configFileAttrId = $(this).data('config-file-attr-id');
@@ -255,13 +257,13 @@ $(document).ready(function () {
             configFileAttrGroupId = -1;
         }
         var data = {'cfag-id': configFileAttrGroupId,
-                    'cfa-id' : configFileAttrId};
+            'cfa-id': configFileAttrId};
         /*<PREPARE MODAL>*/
         var modalFooter = "";
         switch (action) {
             case 'remove':
-                modalTitle = 'Remove File Configuration Attr '+$(this).data('config-file-attr-name')+'?';
-                modalFooter = '<button type="button" class="btn btn-primary" id="removeFileConfigurationAttr" data-id="'+configFileAttrId+'">Delete</button>';
+                modalTitle = 'Remove File Configuration Attr ' + $(this).data('config-file-attr-name') + '?';
+                modalFooter = '<button type="button" class="btn btn-primary" id="removeFileConfigurationAttr" data-id="' + configFileAttrId + '">Delete</button>';
                 break;
             case 'edit':
                 modalTitle = 'Edit File Configuration';
@@ -286,29 +288,29 @@ $(document).ready(function () {
                 data: data
             }).done(function (response) {
                 $('#generic-modal-container').find('.modal-body').html(response);
-                $('#generic-modal-container').find('form').append('<input type="hidden" name="cfid" value="'+configFileId+'" />');
-                $('#generic-modal-container').find('.type-row').find('select').on('change',function(){
+                $('#generic-modal-container').find('form').append('<input type="hidden" name="cfid" value="' + configFileId + '" />');
+                $('#generic-modal-container').find('.type-row').find('select').on('change', function () {
                     var currentValue = $(this).val();
-                    var text = $(this).find('[value='+currentValue+']').text();
-                    if(text.toString().indexOf('group')>=0){
+                    var text = $(this).find('[value=' + currentValue + ']').text();
+                    if (text.toString().indexOf('group') >= 0) {
                         $('#generic-modal-container').find('.options-row-header').addClass('hidden');
-                        $('#value').attr('readonly',false);
-                        $('#value').attr('disabled',false);
+                        $('#value').attr('readonly', false);
+                        $('#value').attr('disabled', false);
                         $('.option-groups-row-header').removeClass('hidden');
                         $('#generic-modal-container').find('.options-row').remove();
-                    }else{
-                        if(text.toString().indexOf('select')>=0){
-                            $('#value').attr('disabled',true);
+                    } else {
+                        if (text.toString().indexOf('select') >= 0) {
+                            $('#value').attr('disabled', true);
                             $('#generic-modal-container').find('.options-row-header').removeClass('hidden');
                             var nOptions = $('#generic-modal-container').find('.options-row').length;
-                            var htmlBlock = '<tr class="options-row added"><td><input id="configurationFileAttributeOptions'+(nOptions)+'.name" name="configurationFileAttributeOptions['+(nOptions)+'].name" class="form-control input-sm attr-opt" value="" type="text"><div class="has-error"></div></td><td><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><input type="radio" name="radio-options" class="radio-options"></td></tr>\n\
-                                             <tr><td>Description</td><td><textarea id="configurationFileAttributeOptions'+(nOptions)+'.description" name="configurationFileAttributeOptions['+(nOptions)+'].description" type="text" class="form-control input-sm" rows="2" cols="30"></textarea></td></tr>';
+                            var htmlBlock = '<tr class="options-row added"><td><input id="configurationFileAttributeOptions' + (nOptions) + '.name" name="configurationFileAttributeOptions[' + (nOptions) + '].name" class="form-control input-sm attr-opt" value="" type="text"><div class="has-error"></div></td><td><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><input type="radio" name="radio-options" class="radio-options"></td></tr>\n\
+                                             <tr><td>Description</td><td><textarea id="configurationFileAttributeOptions' + (nOptions) + '.description" name="configurationFileAttributeOptions[' + (nOptions) + '].description" type="text" class="form-control input-sm" rows="2" cols="30"></textarea></td></tr>';
                             $(this).closest('tbody').append(htmlBlock);
                             $('.radio-options').trigger('click');
-                        }else{
+                        } else {
                             $('#generic-modal-container').find('.options-row-header').addClass('hidden');
-                            $('#value').attr('readonly',false);
-                            $('#value').attr('disabled',false);
+                            $('#value').attr('readonly', false);
+                            $('#value').attr('disabled', false);
                             $('#generic-modal-container').find('.options-row').remove();
                         }
                     }
@@ -320,7 +322,7 @@ $(document).ready(function () {
         /*<SHOW MODAL>*/
         $('#fileConfigurationTemplateModal').modal('show');
     });
-    
+
     $('#fileConfigurationTemplateModal').on('click', '#addFileConfigurationAttr', function () {
         $('#fileConfigurationTemplateModal').find('form').validate({
             rules: {
@@ -335,95 +337,95 @@ $(document).ready(function () {
             }
         });
         var flagSubmit = true;
-        $('.attr-opt').each(function(){
-           if($(this).val()==""){
-               flagSubmit = false;
-               $(this).parent().find('.error').remove();
-               $(this).parent().append('<label class="error" for="name">Please enter a option value</label>');
-           }else{
-               $(this).parent().find('.error').remove();
-           }
+        $('.attr-opt').each(function () {
+            if ($(this).val() == "") {
+                flagSubmit = false;
+                $(this).parent().find('.error').remove();
+                $(this).parent().append('<label class="error" for="name">Please enter a option value</label>');
+            } else {
+                $(this).parent().find('.error').remove();
+            }
         });
-        if(flagSubmit){
-            $('#value').attr('disabled',false);
+        if (flagSubmit) {
+            $('#value').attr('disabled', false);
             $('#fileConfigurationTemplateModal').find('form').submit();
         }
     });
-    
+
     //Attributes options
-    $('#fileConfigurationTemplateModal').on('click','#add-file-attribute-option-button',function(){
+    $('#fileConfigurationTemplateModal').on('click', '#add-file-attribute-option-button', function () {
         var nOptions = $('#generic-modal-container').find('.options-row').length;
-        var isChecked = (nOptions==0) ? 'checked' : '';
-        var htmlBlock = '<tr class="options-row added"><td><input id="configurationFileAttributeOptions'+(nOptions)+'.name" name="configurationFileAttributeOptions['+(nOptions)+'].name" class="form-control input-sm attr-opt" value="" type="text"><div class="has-error"></div></td><td><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><input type="radio" name="radio-options" class="radio-options"></td></tr>\n\
-                                             <tr><td>Description</td><td><textarea id="configurationFileAttributeOptions'+(nOptions)+'.description" name="configurationFileAttributeOptions['+(nOptions)+'].description" type="text" class="form-control input-sm" rows="2" cols="30"></textarea></td></tr>';
+        var isChecked = (nOptions == 0) ? 'checked' : '';
+        var htmlBlock = '<tr class="options-row added"><td><input id="configurationFileAttributeOptions' + (nOptions) + '.name" name="configurationFileAttributeOptions[' + (nOptions) + '].name" class="form-control input-sm attr-opt" value="" type="text"><div class="has-error"></div></td><td><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><input type="radio" name="radio-options" class="radio-options"></td></tr>\n\
+                                             <tr><td>Description</td><td><textarea id="configurationFileAttributeOptions' + (nOptions) + '.description" name="configurationFileAttributeOptions[' + (nOptions) + '].description" type="text" class="form-control input-sm" rows="2" cols="30"></textarea></td></tr>';
         $(this).closest('tbody').append(htmlBlock);
-        if (nOptions==0){
+        if (nOptions == 0) {
             $('.radio-options').trigger('click');
         }
     });
-    
+
     //Select current option
-    $('#fileConfigurationTemplateModal').on('click','.radio-options',function(){
+    $('#fileConfigurationTemplateModal').on('click', '.radio-options', function () {
         $('#value').val($(this).closest('.options-row.added').find('.attr-opt').val());
-        $(this).closest('.options-row.added').find('.attr-opt').keyup(function(){
+        $(this).closest('.options-row.added').find('.attr-opt').keyup(function () {
             $('#value').val($(this).val());
         });
     });
-    
-    $('#fileConfigurationTemplateModal').on('click','#remove-config-file-attr-opt',function(){
+
+    $('#fileConfigurationTemplateModal').on('click', '#remove-config-file-attr-opt', function () {
         $(this).closest('tr').next().remove();
         $(this).closest('tr').remove();
     });
-    
+
     //Remove file configuration on file configuration template
-    $('#remove-config-file-button').on('click',function(){
-        
+    $('#remove-config-file-button').on('click', function () {
+
     });
-    
+
     //Remove file configuration attribute on file configuration template    
-    $('#fileConfigurationTemplateModal').on('click','#removeFileConfigurationAttr',function(){
+    $('#fileConfigurationTemplateModal').on('click', '#removeFileConfigurationAttr', function () {
         $('#deleteAttrForm').append('<input type="text" name="id" value="' + $(this).data("id") + '" />');
         $('#deleteAttrForm').submit();
     });
-    
+
     //This is to set current options on select attributes in configuration file template page
-    $('.file-config-page-select-attr').find('option').attr('selected',false);
-    $('.file-config-page-current-value-attr-label').each(function(){
+    $('.file-config-page-select-attr').find('option').attr('selected', false);
+    $('.file-config-page-current-value-attr-label').each(function () {
         var text = $(this).text();
-        $(this).parent().parent().find('.file-config-page-select-attr').find('option').each(function(){
-            if($(this).text()==text){
+        $(this).parent().parent().find('.file-config-page-select-attr').find('option').each(function () {
+            if ($(this).text() == text) {
                 $(this).parent().val($(this).val());
                 return false;
             }
         });
     });
-    
+
     //When select option change -> update the hidden value attr input
-    $('.file-config-page-select-attr').on('change',function(){
+    $('.file-config-page-select-attr').on('change', function () {
         var values = '';
-        $(this).find('option:selected').each(function(){
-            values += $(this).text()+',';
+        $(this).find('option:selected').each(function () {
+            values += $(this).text() + ',';
         });
-        values = values.slice(0,-1);
+        values = values.slice(0, -1);
         $(this).parent().parent('tr').find('.file-config-page-current-value-attr').val(values);
     });
-    
-    $('.file-config-page-text-number-attr').on('keyup click',function(){
-       $(this).parent().parent('tr').find('.file-config-page-current-value-attr').val($(this).val());
+
+    $('.file-config-page-text-number-attr').on('keyup click', function () {
+        $(this).parent().parent('tr').find('.file-config-page-current-value-attr').val($(this).val());
     });
-    
+
     //Apply configuration
-    $('#apply-configuration').on('click',function(){
-        
+    $('#apply-configuration').on('click', function () {
+
         $('#configurationFrom').submit();
     });
-    
+
     /**
      * SPECIFIC CONFIGURATION FILE TEMPLATE - EDIT ATTRIBUTES END
      */
 
     /************************ADMIN FILE CONFIGURATION PAGE END****************************/
-    
+
     /************************MANAGE USERS****************************/
 
     /**
@@ -513,106 +515,137 @@ $(document).ready(function () {
         $('#delete-user-form').append('<input type="text" name="id" value="' + $(this).data("id") + '" />');
         $('#delete-user-form').submit();
     });
-    
+
     //USERS HISTORY
-    $('#show-filter-user-history').on('click',function(){
-        if($(this).find('i').hasClass('fa-angle-double-down')){
+    $('#show-filter-user-history').on('click', function () {
+        if ($(this).find('i').hasClass('fa-angle-double-down')) {
             $(this).find('i').removeClass('fa-angle-double-down');
             $(this).find('i').addClass('fa-angle-double-up');
-        }else{
+        } else {
             $(this).find('i').removeClass('fa-angle-double-up');
             $(this).find('i').addClass('fa-angle-double-down');
         }
     });
-    
+
     //User filter
 //    $( "#datepicker-from" ).datepicker({ dateFormat: 'yy-mm-dd' });
-    $( "#datepicker-from" ).datepicker({ dateFormat: 'yy-mm-dd' });
-    $( "#datepicker-to" ).datepicker({ dateFormat: 'yy-mm-dd' });
-    $( "#datepicker-to" ).on("change",function(){
-        if($(this).val()<$( "#datepicker-from" ).val()){
-            $(this).val($( "#datepicker-from" ).val());
+    $("#datepicker-from").datepicker({dateFormat: 'yy-mm-dd'});
+    $("#datepicker-to").datepicker({dateFormat: 'yy-mm-dd'});
+    $("#datepicker-to").on("change", function () {
+        if ($(this).val() < $("#datepicker-from").val()) {
+            $(this).val($("#datepicker-from").val());
         }
     });
-    
+
     //Users History Pagination
-    $('.user-history-filter-btn').on('click',function(){
-        
+    $('.user-history-filter-btn').on('click', function () {
+
         $('#user-history-filter-form').find('#pageNumber').val($(this).val());
         $('#user-history-filter-form').submit();
     });
 
     /************************MANAGE USERS END****************************/
-    
+
     /************************MANAGE RULES ****************************/
-    $('.parameter-item').on('click',function(){
-        var name = $(this).text().replace('REQUEST-','').trim();
-        name = name.replace('RESPONSE-','').trim();
-        name = name.substring(0,name.indexOf('-'));
-        name = name+"000-"+name+"999";
-        if ($(this).hasClass('alert-warning')){
-            $('#'+name).remove();
+    $('.parameter-item').on('click', function () {
+        var name = $(this).text().replace('REQUEST-', '').trim();
+        name = name.replace('RESPONSE-', '').trim();
+        name = name.substring(0, name.indexOf('-'));
+        name = name + "000-" + name + "999";
+        if ($(this).hasClass('alert-warning')) {
+            $('#' + name).remove();
             $(this).removeClass('alert-warning');
             var finalValue = $('.final-value').val();
-            finalValue = finalValue.replace(name,'');
-            if(finalValue[0]==','){
-                finalValue = finalValue.substring(1,finalValue.length);
+            finalValue = finalValue.replace(name, '');
+            if (finalValue[0] == ',') {
+                finalValue = finalValue.substring(1, finalValue.length);
             }
-            if(finalValue[finalValue.length-1]==','){
-                finalValue = finalValue.substring(0,finalValue.length-1);
+            if (finalValue[finalValue.length - 1] == ',') {
+                finalValue = finalValue.substring(0, finalValue.length - 1);
             }
             $('.final-value').val(finalValue);
-            
-        }else{
+
+        } else {
             $(this).addClass('alert-warning');
-            if($('.final-value').val()!=''){
-                $('.final-value').val($('.final-value').val()+","+name);
-            }else{
+            if ($('.final-value').val() != '') {
+                $('.final-value').val($('.final-value').val() + "," + name);
+            } else {
                 $('.final-value').val(name);
             }
-            $('.blocked-container').append('<div id="'+name +'" class="blocked-item">'+name+'</div>');
+            $('.blocked-container').append('<div id="' + name + '" class="blocked-item">' + name + '</div>');
         }
     });
-    
-    $('.id-parameter-item').on('click',function(){
+
+    $('.id-parameter-item').on('click', function () {
         var finalValue = $('.final-value').val();
-        
-        if ($(this).hasClass('alert-warning')){
-            $('#id-blocked-container').find('#'+$(this).html().trim(' ')).remove();
+
+        if ($(this).hasClass('alert-warning')) {
+            $('#id-blocked-container').find('#' + $(this).html().trim(' ')).remove();
             $(this).removeClass('alert-warning');
 //            $('.final-value').val($('.final-value').val().replace($(this).html().trim(' '),'').trim(','));
-            finalValue = finalValue.replace($(this).html().trim(),'');
-        }else{
+            finalValue = finalValue.replace($(this).html().trim(), '');
+        } else {
             $(this).addClass('alert-warning');
-            $('#id-blocked-container').append('<div id="'+$(this).html().trim()+'" class="blocked-item">'+$(this).html().trim()+'</div>');
+            $('#id-blocked-container').append('<div id="' + $(this).html().trim() + '" class="blocked-item">' + $(this).html().trim() + '</div>');
 //            $('.final-value').val(($('.final-value').val()+','+$(this).html().trim(' ')).trim(','));
-            finalValue = finalValue+','+$(this).html().trim();
+            finalValue = finalValue + ',' + $(this).html().trim();
         }
-        
-        if(finalValue[0]==','){
-            finalValue = finalValue.substring(1,finalValue.length);
+
+        if (finalValue[0] == ',') {
+            finalValue = finalValue.substring(1, finalValue.length);
         }
-        if(finalValue[finalValue.length-1]==','){
-            finalValue = finalValue.substring(0,finalValue.length-1);
+        if (finalValue[finalValue.length - 1] == ',') {
+            finalValue = finalValue.substring(0, finalValue.length - 1);
         }
-        
-        finalValue = finalValue.replace(',,',',');
-        
+
+        finalValue = finalValue.replace(',,', ',');
+
         $('.final-value').val(finalValue);
-    
+
     });
-    
-    $('.block-rules-button').on('click',function(){
+
+    $('.block-rules-button').on('click', function () {
         $('#blockRules').submit();
     });
-    
+
     /************************MANAGE RULES END****************************/
-    
+
     /************************EVENTS****************************/
-    $('.event-filter-btn').on('click',function(){
+    $('.event-filter-btn').on('click', function () {
         $('#event-filter-form').find('#pageNumber').val($(this).val());
         $('#event-filter-form').submit();
     });
     /************************EVENTS END****************************/
-      
+
 });
+
+/************************MANAGE EVENTS****************************/
+$('.show-event-details').on('click', function () {
+    /*<VARIABLES>*/
+    var modalTitle = 'Event Details';
+    var data = {};
+    var url = '';
+    var txid = $(this).data('id');
+    if (!txid) {
+        txid = "";
+    }
+    data = {transactionId: txid};
+    /*<PREPARE MODAL>*/
+    var modalFooter = '<button type="button" class="btn btn-secondary" data-dismiss="modal" id="eventDetailsCancel">Close</button>';
+    $('#generic-modal-container').find('.modal-title').html(modalTitle);
+    $('#generic-modal-container').find('.modal-footer').html(modalFooter);
+    $.ajax({
+        url: 'eventDetailsForm',
+        method: 'GET',
+        dataType: 'html',
+        data: data
+    }).done(function (response) {
+        $('#generic-modal-container').find('.modal-body').html(response);
+    }).fail(function (e) {
+        console.log(e.responseText);
+        $('#generic-modal-container').find('.modal-body').html('An error has occurred.');
+    });
+    /*<SHOW MODAL>*/
+    $('#eventModal').modal('show');
+});
+/************************MANAGE EVENTS END****************************/

@@ -3,7 +3,6 @@ package com.fich.wafproject.dao;
 import java.util.List;
  
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
  
@@ -22,7 +21,6 @@ import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Subqueries;
  
 @Repository("EventDao")
 public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDao {
@@ -95,4 +93,14 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
         return (List<Event>) events;
     }
     
+    @Override
+    public List<Event> findAllEvent() {
+        Criteria crit = this.createEntityCriteria();//.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+        crit.setProjection(Projections.distinct(Projections.property("id")));
+        List<Event> events = new ArrayList<Event>();
+        for(Object idEvent : crit.list()){
+            events.add(this.findById((Integer) idEvent));
+        }
+        return (List<Event>) events;
+    }
 }

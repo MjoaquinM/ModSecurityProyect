@@ -10,6 +10,11 @@ public interface RuleDao {
     
     public Rule findByRuleId(String ruleId);
     
+
     List<Rule> findAll();
+
+    public Rule findById(Integer id);
+    
+    public List<Rule> findAllRules();
     
 }

@@ -8,6 +8,8 @@ public interface RuleService {
     void saveRule(Rule rule);
     
     Rule findByRuleId(String ruleId);
+    
+    List<Rule> findAllRules();
      
     List<Rule> findAll();
 }
