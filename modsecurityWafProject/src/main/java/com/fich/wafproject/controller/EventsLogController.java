@@ -636,9 +636,44 @@ public class EventsLogController {
             rules.add(er.getRuleId());
             files.add(er.getRuleId().getFileId());
         }
+        
+        //Armo display para las partes del evento
+        event.setPartA(event.getPartA().substring(event.getPartA().indexOf("A--")+4).replace("\n", "<br/>"));
+        
+        if (!(event.getPartB() == null)){
+            event.setPartB(event.getPartB().substring(event.getPartB().indexOf("B--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartC() == null)){
+            event.setPartC(event.getPartC().substring(event.getPartC().indexOf("C--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartD() == null)){
+            event.setPartD(event.getPartD().substring(event.getPartD().indexOf("D--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartE() == null)){
+            event.setPartE(event.getPartE().substring(event.getPartE().indexOf("E--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartF() == null)){
+            event.setPartF(event.getPartF().substring(event.getPartF().indexOf("F--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartG() == null)){
+            event.setPartG(event.getPartG().substring(event.getPartG().indexOf("G--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartH() == null)){
+            event.setPartH(event.getPartH().substring(event.getPartH().indexOf("H--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartI() == null)){
+            event.setPartI(event.getPartI().substring(event.getPartI().indexOf("I--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartJ() == null)){
+            event.setPartJ(event.getPartJ().substring(event.getPartJ().indexOf("J--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartK() == null)){
+            event.setPartK(event.getPartK().substring(event.getPartK().indexOf("K--")+4).replace("\n", "<br/>"));
+        }
+        
         model.addAttribute("event",event);
         model.addAttribute("rules",rules);
-        model.addAttribute("files   ",files);
+        model.addAttribute("files",files);
         return "eventDetailsForm";
     }
     
