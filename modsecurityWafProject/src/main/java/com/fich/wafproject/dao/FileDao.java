@@ -2,6 +2,7 @@
 package com.fich.wafproject.dao;
 
 import com.fich.wafproject.model.File;
+import java.util.List;
 
 public interface FileDao {
     
@@ -9,4 +10,7 @@ public interface FileDao {
     
     public File findByPath(String path);
     
+    public File findById(Integer id);
+    
+    public List<File> findAllEvent();
 }

@@ -3,60 +3,40 @@
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<subDataset name="dataset1" uuid="a9efd098-fe57-447c-9884-d08e6ea23970">
-		<field name="_THIS" class="java.lang.String"/>
+	<subDataset name="listRuleNumber" uuid="ba5456fb-3d45-49c0-a77b-28a768625575">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
 	</subDataset>
-	<subDataset name="dataset2" uuid="ae35e2b2-6c59-4524-9528-7539f3b9e52d">
-		<field name="transactionId" class="java.lang.String"/>
-	</subDataset>
-	<parameter name="empleados" class="java.util.List">
+	<parameter name="listRuleNumber" class="java.util.List">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="listaEvent" class="java.util.List"/>
+	<parameter name="listFileNumber" class="java.util.List"/>
+	<parameter name="events" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch"/>
+		<band height="41" splitType="Stretch">
+			<staticText>
+				<reportElement x="179" y="11" width="219" height="22" uuid="9d4c6f46-a9e7-45f2-82f7-f9efb30a868a"/>
+				<textElement>
+					<font fontName="SansSerif" size="14"/>
+				</textElement>
+				<text><![CDATA[Statistical Graph Report]]></text>
+			</staticText>
+		</band>
 	</title>
 	<summary>
 		<band height="426" splitType="Stretch">
-			<staticText>
-				<reportElement x="155" y="30" width="100" height="20" uuid="7de3e274-3706-43ed-9068-cc8d98284296"/>
-				<text><![CDATA[_THIS]]></text>
-			</staticText>
 			<componentElement>
-				<reportElement x="27" y="259" width="463" height="108" uuid="2a4ce3ff-4d44-487e-bb91-ce17521a45f7"/>
+				<reportElement x="115" y="385" width="26" height="23" uuid="19c1f9ad-f270-481c-9740-c1f4bdaa4e4c"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="dataset2" uuid="88d04304-aa34-421e-b4ec-06ec93eeb24c">
-						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listaEvent})]]></dataSourceExpression>
+					<datasetRun subDataset="listRuleNumber" uuid="ba849cfc-22fc-46de-9f62-d6b358f89a7b">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listRuleNumber})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="108" width="463">
-						<textField>
-							<reportElement x="314" y="30" width="100" height="20" uuid="f36ca60e-afce-48f5-a55b-24dc68f1f010"/>
-							<textFieldExpression><![CDATA[$F{transactionId}]]></textFieldExpression>
-						</textField>
-					</jr:listContents>
+					<jr:listContents height="23" width="26"/>
 				</jr:list>
 			</componentElement>
-			<componentElement>
-				<reportElement x="27" y="113" width="426" height="79" uuid="1562c3d0-c3c0-4d60-8d40-fc14c7f70087"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="dataset1" uuid="9d059299-493a-496c-a6d4-0bc4b0dc1b38">
-						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{empleados})]]></dataSourceExpression>
-					</datasetRun>
-					<jr:listContents height="79" width="426">
-						<textField>
-							<reportElement x="67" y="19" width="100" height="20" uuid="5df9e1f1-4488-4265-b9d5-6155789da27f"/>
-							<textFieldExpression><![CDATA[$F{_THIS}]]></textFieldExpression>
-						</textField>
-					</jr:listContents>
-				</jr:list>
-			</componentElement>
-			<staticText>
-				<reportElement x="367" y="30" width="100" height="20" uuid="108a9bdb-81e1-48b9-b330-fbac6f75bcd0"/>
-				<text><![CDATA[_THIS]]></text>
-			</staticText>
 		</band>
 	</summary>
 </jasperReport>

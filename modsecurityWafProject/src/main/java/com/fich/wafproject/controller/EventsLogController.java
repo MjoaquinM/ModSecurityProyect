@@ -84,80 +84,103 @@ public class EventsLogController {
     EventRuleService eventRuleService;
     
     @RequestMapping(value = "/jrreport", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> printWelcome(ModelMap model) throws JRException, FileNotFoundException {
+    public ResponseEntity<byte[]> printWelcome(ModelMap model, HttpServletRequest request) throws JRException, FileNotFoundException {
         
         System.out.println("ENTRO AL REPORT");
         
+        int pageNumber = 1;
+//        if(request.getParameterMap().containsKey("pageNumber")){
+//           pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+//        }
+        
+//        if(pageNumber<1){
+//            pageNumber=1;
+//        }
+        List<Event> events = eventService.findAllEvents(1, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"),request.getParameterValues("filter-parameters-values"),false);
+//        if(events.size() == 0){
+//            pageNumber = pageNumber-1;
+//            events = eventService.findAllEvents(1, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"),false);
+//        }
+        
+        String[] n1 = request.getParameterValues("filter-parameters-values");
+        String[] n2 = request.getParameterValues("filter-parameters-labels");
+        HashMap hm = new HashMap<String,String>();
+        
+        if(n1 != null){
+            int count = 0;
+            for(String val: n1){
+                hm.put(n2[count], val);
+                count++;
+            }
+        }
+        
         //Tomo la lista de eventos
-        List<Event> events = eventService.findAllEvents();
+//        List<Event> events = eventService.findAllEvents();
+        List<Rule> rules = ruleService.findAllRules();
+        List<File> files = fileService.findAllEvents();
+        
+        //Solo para ver q trajo
         for (Event e : events){
             System.out.println("EVENT: " + e.getTransactionId());
         }
-        System.out.println("ACA ARRIBA TIENE Q ESTA LA LISTA DE EVENTOS");
-        //Tomo la lista de Rules
-        List<Rule> rules = ruleService.findAllRules();
+        for (Rule r : rules){
+            System.out.println("RULE: " + r.getRuleId());
+        }
+        for (File f : files){
+            System.out.println("FILE: " + f.getFileName());
+        }
         
-        Map<Rule, Number> atackVsAmount = new HashMap<>();
-        
-        //INICIALIZAR EL MAP CON TODAS LAS REGLAS, Y EL NUMBER EN 0. NO AGREGAR LA 980 Y LA 949.
-        
-        //DSP IR RECORRRIENDO LA LISTA DE EVENTOS Y TOMANDO LA LISTA DE REGLAS PARA CADA UNO.
-        
-        //+1 PARA EL VALOR DE LA REGLA EN EL MAP (YA ESTAN TODAS AGREGADAS). VERIFICAR NO AGREGAR LAS EXCLUIDAS
+        //INICIALIZO MAPAS PARA CADA GRAFICO
+        Map<Rule, Number> ruleVsNumber = new HashMap<>();   //cantidad de ataques por cada regla
+        Map<File, Number> fileVsNumber = new HashMap<>();   //cantidad de ataques por cada clase de ataque
+        //Map<Rule, Number> fileVsNumber = new HashMap<>();   //cantidad de ataques por servicio de la app (events)
         
         for (Rule r : rules){
             if (!("949".equals(r.getRuleId().substring(0, 3)) || "980".equals(r.getRuleId().substring(0, 3))))
-                atackVsAmount.put(r, 0);
+                ruleVsNumber.put(r, 0);
+        }
+        for (File f : files){
+            if (!(f.getFileName().contains("949") || f.getFileName().contains("980"))){
+                fileVsNumber.put(f, 0);
+            }
         }
         
+        //CARGO LOS MAPAS CON LOS DATOS
         for (Event e : events){
             List<EventRule> eventRules = e.getEventRuleList();
             for (EventRule er : eventRules){
                 Rule ruleAux = er.getRuleId();
                 if (!("949".equals(ruleAux.getRuleId().substring(0, 3)) || "980".equals(ruleAux.getRuleId().substring(0, 3)))){
-                    atackVsAmount.put(ruleAux, atackVsAmount.get(ruleAux).intValue() + 1 );
+                    ruleVsNumber.put(ruleAux, ruleVsNumber.get(ruleAux).intValue() + 1 );
+                }
+                File fileAux = er.getRuleId().getFileId();
+                if (!(fileAux.getFileName().contains("949") || fileAux.getFileName().contains("980"))){
+                    fileVsNumber.put(fileAux, fileVsNumber.get(fileAux).intValue() + 1 );
                 }
             }
         }
-
-        System.out.println("SALIDA DEL MAPA: ");
-
-        List<JasperCharts> listjc = new ArrayList<>();
-        for (Map.Entry<Rule, Number> entry : atackVsAmount.entrySet()) {
+        
+        //TRANSFORMO LOS MAPAS A LISTAS
+        List<JasperCharts> listRuleNumber = new ArrayList<>();
+        for (Map.Entry<Rule, Number> entry : ruleVsNumber.entrySet()) {
             System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
-            listjc.add(new JasperCharts(entry.getKey().getRuleId(),entry.getValue()));
+            listRuleNumber.add(new JasperCharts(entry.getKey().getRuleId(),entry.getValue()));
+        }
+        List<JasperCharts> listFileNumber = new ArrayList<>();
+        for (Map.Entry<File, Number> entry : fileVsNumber.entrySet()) {
+            System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
+            listFileNumber.add(new JasperCharts(entry.getKey().getFileName(),entry.getValue()));
         }
         
-        JRDataSource jrDatasource = new JRBeanCollectionDataSource(listjc);
-        
+        //PASO LAS LISTAS AL REPORTE POR PARAMETRO
         Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("lista", listjc);
-        
-        for (Event e : events){
-            System.out.println("EVENT: " + e.getTransactionId());
-        }
-        System.out.println("ACA ARRIBA TIENE Q ESTA LA LISTA DE EVENTOS");
-        parameters.put("listaEvent", events);
-        
-        List<String> empleados = new ArrayList<>();
-        empleados.add("martin");
-        empleados.add("juana");
-        empleados.add("pepe");
-        empleados.add("maria");
-        empleados.add("magali");
-        
-        List<String> emp2 = new ArrayList(Arrays.asList(new String[] {"String1","String2","String3","String4"}));
-        
-        parameters.put("empleados", empleados);
+        parameters.put("listRuleNumber", listRuleNumber);
+        parameters.put("listFileNumber", listFileNumber);
+        parameters.put("events", events);
         
         JasperPrint jasperPrint = JasperFillManager.fillReport(
-                "/home/usuario/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/newReport.jasper", 
-                parameters, 
-                jrDatasource);
-        
-//        model.addAttribute("datasource", jrDatasource);
-//        model.addAttribute("format", "pdf");
-        System.out.println("ENTRA AL JRREPORT. TODO BIEN");
+                "/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/newReport.jasper", 
+                parameters);
         
 //        //Guardo en el Home del usuario
 //        String userHomeDirectory = System.getProperty("user.home");
@@ -175,6 +198,83 @@ public class EventsLogController {
 //
 //        // Exportamos el informe a formato PDF
 //        JasperExportManager.exportReportToPdfFile(print, outputFile);
+
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+            System.out.println(dateFormat.format(date));
+            System.out.println("SALIDA DEL JASPER");
+
+        byte[] fichero = JasperExportManager.exportReportToPdf(jasperPrint);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+        String filename = "output.pdf";
+        headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
+        return response;
+    }
+    
+    @RequestMapping(value = "/jasperEntitiesPDF", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> jasperEntitiesPDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException, FileNotFoundException {
+        System.out.println("ENTRO AL JASPER ENTITIES");
+        /* User home directory location */
+        String userHomeDirectory = System.getProperty("user.home");
+        /* Output file location */
+        String outputFile = userHomeDirectory + java.io.File.separatorChar + "JasperTableExample.pdf";
+
+//        List<Event> lstEvent = eventService.findAllEvents(0);
+        List<Event> lstEvent = new ArrayList<>();
+        
+        Event e = new Event();
+        
+        e.setTransactionId("SOY EL TXID");
+        e.setClientIp("soy el client ip");
+        
+        lstEvent.add(e);
+
+
+        System.out.println("EVENT LIST: " + lstEvent);
+        
+        /* Create Items */
+
+
+//        Item iPad = new Item();
+//        iPad.setName("iPad Pro");
+//        iPad.setPrice(70000.00);
+
+        /* Add Items to List */
+
+//        lstItem.add(iPad);
+
+
+        /* Convert List to JRBeanCollectionDataSource */
+
+        JRBeanCollectionDataSource eventsJRBean = new JRBeanCollectionDataSource(lstEvent);
+
+        /* Map to hold Jasper report Parameters */
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        
+        parameters.put("EventDataSource", eventsJRBean);
+
+        /* Using compiled version(.jasper) of Jasper report to generate PDF */
+        JasperPrint jasperPrint = JasperFillManager.fillReport("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/BlankReport.jasper", parameters, new JREmptyDataSource());
+        
+        //Guardo en el Home del usuario
+        OutputStream outputStream = new FileOutputStream(new java.io.File(outputFile));
+        /* Write content to PDF file */
+        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+        
+        JasperDesign jd = JRXmlLoader.load("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/BlankReport.jasper");
+        
+        JasperReport report = JasperCompileManager.compileReport(jd);
+        // Rellenamos el informe con la conexion creada y sus parametros establecidos
+        JasperPrint print = JasperFillManager.fillReport(report, parameters, eventsJRBean);
+
+        // Exportamos el informe a formato PDF
+        JasperExportManager.exportReportToPdfFile(print, outputFile);
+
+        
         
         
         byte[] fichero = JasperExportManager.exportReportToPdf(jasperPrint);
@@ -187,120 +287,56 @@ public class EventsLogController {
         return response;
     }
     
-//    @RequestMapping(value = "/jasperEntitiesPDF", method = RequestMethod.GET)
-//    public ResponseEntity<byte[]> jasperEntitiesPDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException, FileNotFoundException {
-//        System.out.println("ENTRO AL JASPER ENTITIES");
-//        /* User home directory location */
-//        String userHomeDirectory = System.getProperty("user.home");
-//        /* Output file location */
-//        String outputFile = userHomeDirectory + java.io.File.separatorChar + "JasperTableExample.pdf";
-//
-////        List<Event> lstEvent = eventService.findAllEvents(0);
-//        List<Event> lstEvent = new ArrayList<>();
-//        
-//        Event e = new Event();
-//        
-//        e.setTransactionId("SOY EL TXID");
-//        e.setClientIp("soy el client ip");
-//        
-//        lstEvent.add(e);
-//
-////        Item iPad = new Item();
-////        iPad.setName("iPad Pro");
-////        iPad.setPrice(70000.00);
-//
-//        /* Add Items to List */
-////        lstItem.add(iPad);
-//
-//
-//        /* Convert List to JRBeanCollectionDataSource */
-//
-//        JRBeanCollectionDataSource eventsJRBean = new JRBeanCollectionDataSource(lstEvent);
-//
-//        /* Map to hold Jasper report Parameters */
-//        Map<String, Object> parameters = new HashMap<String, Object>();
-//        parameters.put("EventDataSource", eventsJRBean);
-//
-//        /* Using compiled version(.jasper) of Jasper report to generate PDF */
-//        JasperPrint jasperPrint = JasperFillManager.fillReport("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/BlankReport.jasper", parameters, new JREmptyDataSource());
-//        
-//        //Guardo en el Home del usuario
-//        OutputStream outputStream = new FileOutputStream(new java.io.File(outputFile));
-//        /* Write content to PDF file */
-//        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
-//        
-//        JasperDesign jd = JRXmlLoader.load("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/BlankReport.jasper");
-//        
-//        JasperReport report = JasperCompileManager.compileReport(jd);
-//        // Rellenamos el informe con la conexion creada y sus parametros establecidos
-//        JasperPrint print = JasperFillManager.fillReport(report, parameters, eventsJRBean);
-//
-//        // Exportamos el informe a formato PDF
-//        JasperExportManager.exportReportToPdfFile(print, outputFile);
-//
-//        
-//        
-//        
-//        byte[] fichero = JasperExportManager.exportReportToPdf(jasperPrint);
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.parseMediaType("application/pdf"));
-//        String filename = "output.pdf";
-//        headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
-//        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-//        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
-//        return response;
-//    }
+    @RequestMapping(value = "/jasperDownloadPDF", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> jasperDownloadPDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException {
+        
+        Connection conexion;
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        conexion = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/waf_project", "root", "mcardoso27"); 
+        Map parameters = new HashMap();
+        //A nuestro informe de prueba le vamos a enviar la fecha de hoy
+        parameters.put("fechainicio", new Date());
+        
+        JasperReport jasperReport;
+        jasperReport= (JasperReport) JRLoader.loadObject("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper");
+        
+        byte[] fichero = JasperRunManager.runReportToPdf("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper", parameters, conexion);
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+        String filename = "output.pdf";
+        headers.setContentDispositionFormData(filename, filename);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
+        return response;
+        
+    }
     
-//    @RequestMapping(value = "/jasperDownloadPDF", method = RequestMethod.GET)
-//    public ResponseEntity<byte[]> jasperDownloadPDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException {
-//        
-//        Connection conexion;
-//        Class.forName("com.mysql.jdbc.Driver").newInstance();
-//        conexion = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/waf_project", "root", "mcardoso27"); 
-//        Map parameters = new HashMap();
-//        //A nuestro informe de prueba le vamos a enviar la fecha de hoy
-//        parameters.put("fechainicio", new Date());
-//        
-//        JasperReport jasperReport;
-//        jasperReport= (JasperReport) JRLoader.loadObject("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper");
-//        
-//        byte[] fichero = JasperRunManager.runReportToPdf("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper", parameters, conexion);
-//        
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.parseMediaType("application/pdf"));
-//        String filename = "output.pdf";
-//        headers.setContentDispositionFormData(filename, filename);
-//        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-//        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
-//        return response;
-//        
-//    }
-//    
-//    @RequestMapping(value = "/jasperInlinePDF", method = RequestMethod.GET)
-//    public ResponseEntity<byte[]> jasperInlinePDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException {
-//        System.out.println("ENTRO AL JASPER INLINE");        
-//    
-//        Connection conexion;
-//        Class.forName("com.mysql.jdbc.Driver").newInstance();
-//        conexion = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/waf_project", "root", "mcardoso27");
-//
-//        Map parameters = new HashMap();
-//        //A nuestro informe de prueba le vamos a enviar la fecha de hoy
-//        parameters.put("fechainicio", new Date());
-//        
-//        JasperReport jasperReport;
-//        jasperReport= (JasperReport) JRLoader.loadObject("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper");
-//        
-//        byte[] fichero = JasperRunManager.runReportToPdf("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper", parameters, conexion);
-//        
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.parseMediaType("application/pdf"));
-//        String filename = "output.pdf";
-//        headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
-//        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-//        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
-//        return response;
-//    }
+    @RequestMapping(value = "/jasperInlinePDF", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> jasperInlinePDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException {
+        System.out.println("ENTRO AL JASPER INLINE");        
+    
+        Connection conexion;
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        conexion = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/waf_project", "root", "mcardoso27");
+
+        Map parameters = new HashMap();
+        //A nuestro informe de prueba le vamos a enviar la fecha de hoy
+        parameters.put("fechainicio", new Date());
+        
+        JasperReport jasperReport;
+        jasperReport= (JasperReport) JRLoader.loadObject("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper");
+        
+        byte[] fichero = JasperRunManager.runReportToPdf("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper", parameters, conexion);
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+        String filename = "output.pdf";
+        headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
+        return response;
+    }
     
 //********************************************  PARSER  ********************************//
     
@@ -597,10 +633,10 @@ public class EventsLogController {
         if(pageNumber<1){
             pageNumber=1;
         }
-        List<Event> events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"),request.getParameterValues("filter-parameters-values"));
+        List<Event> events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"),request.getParameterValues("filter-parameters-values"),true);
         if(events.size() == 0){
             pageNumber = pageNumber-1;
-            events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"));
+            events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"),true);
         }
         
         String[] n1 = request.getParameterValues("filter-parameters-values");
@@ -637,7 +673,6 @@ public class EventsLogController {
             files.add(er.getRuleId().getFileId());
         }
         
-        //Armo display para las partes del evento
         event.setPartA(event.getPartA().substring(event.getPartA().indexOf("A--")+4).replace("\n", "<br/>"));
         
         if (!(event.getPartB() == null)){

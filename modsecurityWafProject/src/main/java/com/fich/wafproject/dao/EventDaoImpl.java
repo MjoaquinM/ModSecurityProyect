@@ -1,11 +1,11 @@
 package com.fich.wafproject.dao;
- 
+
 import java.util.List;
- 
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
- 
+
 import com.fich.wafproject.model.Event;
 import com.fich.wafproject.model.Users;
 import java.io.Serializable;
@@ -21,84 +21,86 @@ import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
- 
+
 @Repository("EventDao")
 public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDao {
- 
+
     public void saveEvent(Event event) {
         persist(event);
     }
-    
+
     @Override
-    public Event findByTransactionId(String transactionId){
+    public Event findByTransactionId(String transactionId) {
         Criteria crit = createEntityCriteria();
         crit.add(Restrictions.eq("transactionId", transactionId));
         Event event = (Event) crit.uniqueResult();
         return event;
     }
-    
+
     public Event findById(Integer id) {
         return getByKey(id);
     }
 
     @Override
-    public List<Event> findAllEvent(int pageNumber, String[] targets, String[] names, String[] values) {
+    public List<Event> findAllEvent(int pageNumber, String[] targets, String[] names, String[] values, boolean pagination) {
         int pageSize = 6;
         Criteria crit = this.createEntityCriteria();
         crit.setProjection(Projections.distinct(Projections.property("id")));
-        String dateFrom="",dateTo="",targetDate="";
-        if(names != null){
-            for(String alias:names){
+        String dateFrom = "", dateTo = "", targetDate = "";
+        if (names != null) {
+            for (String alias : names) {
                 crit.createAlias(alias, alias);
             }
         }
         int count = 0;
-        if (values != null){
-            for(String value : values){
-                if (!value.equals("") && value!=null){    
-                    if(targets[count].contains("date")){
-                        if(dateFrom!=""){
-                            dateTo=value;
-                        }else{
-                            dateFrom=value;
-                            targetDate=targets[count];
+        if (values != null) {
+            for (String value : values) {
+                if (!value.equals("") && value != null) {
+                    if (targets[count].contains("date")) {
+                        if (dateFrom != "") {
+                            dateTo = value;
+                        } else {
+                            dateFrom = value;
+                            targetDate = targets[count];
                         }
-                    }else{
-                        crit.add(Restrictions.like(targets[count],"%"+value+"%"));
+                    } else {
+                        crit.add(Restrictions.like(targets[count], "%" + value + "%"));
                     }
                 }
                 count++;
             }
-            if (targetDate!=""){
-                if(dateFrom!="" && dateTo==""){
-                    dateTo=dateFrom;
+            if (targetDate != "") {
+                if (dateFrom != "" && dateTo == "") {
+                    dateTo = dateFrom;
                 }
                 DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                 try {
                     Date dateF = format.parse(dateFrom);
                     Date dateT = format.parse(dateTo);
-                    crit.add(Restrictions.between(targetDate,dateF,dateT));
+                    crit.add(Restrictions.between(targetDate, dateF, dateT));
                 } catch (ParseException ex) {
                     Logger.getLogger(UserHistoryDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
-        crit.setFirstResult((pageNumber-1)*pageSize);
-        crit.setMaxResults(pageSize);
+        if (pagination) {
+            crit.setFirstResult((pageNumber - 1) * pageSize);
+            crit.setMaxResults(pageSize);
+        }
         List<Event> events = new ArrayList<Event>();
-        for(Object idEvent : crit.list()){
+        for (Object idEvent : crit.list()) {
             System.out.println(idEvent);
             events.add(this.findById((Integer) idEvent));
         }
         return (List<Event>) events;
     }
-    
+
     @Override
     public List<Event> findAllEvent() {
         Criteria crit = this.createEntityCriteria();//.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
         crit.setProjection(Projections.distinct(Projections.property("id")));
         List<Event> events = new ArrayList<Event>();
-        for(Object idEvent : crit.list()){
+        for (Object idEvent : crit.list()) {
             events.add(this.findById((Integer) idEvent));
         }
         return (List<Event>) events;
