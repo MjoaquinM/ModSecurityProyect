@@ -148,14 +148,17 @@ public class EventsLogController {
         //CARGO LOS MAPAS CON LOS DATOS
         for (Event e : events){
             List<EventRule> eventRules = e.getEventRuleList();
+            System.out.println("ENTRO AL FOR DE LOS EVENTOS");
             for (EventRule er : eventRules){
                 Rule ruleAux = er.getRuleId();
                 if (!("949".equals(ruleAux.getRuleId().substring(0, 3)) || "980".equals(ruleAux.getRuleId().substring(0, 3)))){
                     ruleVsNumber.put(ruleAux, ruleVsNumber.get(ruleAux).intValue() + 1 );
+                    System.out.println("ENTRO AL IF 1");
                 }
                 File fileAux = er.getRuleId().getFileId();
                 if (!(fileAux.getFileName().contains("949") || fileAux.getFileName().contains("980"))){
                     fileVsNumber.put(fileAux, fileVsNumber.get(fileAux).intValue() + 1 );
+                    System.out.println("ENTRO AL IF 2");
                 }
             }
         }
@@ -178,9 +181,12 @@ public class EventsLogController {
         parameters.put("listFileNumber", listFileNumber);
         parameters.put("events", events);
         
+        JRDataSource jrDatasource = new JRBeanCollectionDataSource(events);
+        
         JasperPrint jasperPrint = JasperFillManager.fillReport(
-                "/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/newReport.jasper", 
-                parameters);
+                "/home/usuario/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/com/fich/wafproject/report/reporte.jasper", 
+                parameters,
+                jrDatasource);
         
 //        //Guardo en el Home del usuario
 //        String userHomeDirectory = System.getProperty("user.home");
