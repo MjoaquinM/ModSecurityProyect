@@ -5,7 +5,7 @@
 	<property name="ireport.y" value="0"/>
 	<subDataset name="dataset1" uuid="2492d4ca-bd30-415e-9317-6d7a6be35b4f">
 		<field name="campo" class="java.lang.String"/>
-		<field name="valor" class="java.lang.String"/>
+		<field name="valor" class="java.lang.Number"/>
 	</subDataset>
 	<parameter name="listRuleNumber" class="java.util.List" isForPrompting="false"/>
 	<parameter name="listFileNumber" class="java.util.List" isForPrompting="false"/>
@@ -108,6 +108,28 @@ de ModSecurity]]></text>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
+			<pieChart>
+				<chart>
+					<reportElement x="126" y="95" width="245" height="138" uuid="2d0a36a2-fc75-46ac-a16c-c9114555aa5f"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset>
+						<datasetRun subDataset="dataset1" uuid="64af86ab-8ed1-420c-823f-aacb8d560d7e">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listRuleNumber})]]></dataSourceExpression>
+						</datasetRun>
+					</dataset>
+					<keyExpression><![CDATA[$F{campo}]]></keyExpression>
+					<valueExpression><![CDATA[$F{valor}]]></valueExpression>
+					<labelExpression><![CDATA[""+$F{valor}]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
 		</band>
 	</summary>
 </jasperReport>
