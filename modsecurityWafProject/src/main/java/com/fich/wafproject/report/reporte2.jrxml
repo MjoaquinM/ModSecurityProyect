@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c0deea25-47e8-476f-8cee-ec192e57ecd2">
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.2100000000000004"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
 	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<subDataset name="dataset1" uuid="d63882ea-4bc4-4242-81f5-dc184f324d35">
+		<field name="transactionId" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="dataset2" uuid="00423454-abb5-473c-b2f6-c7c459701d1b">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.Number"/>
+	</subDataset>
 	<parameter name="listRuleNumber" class="java.util.List"/>
 	<parameter name="listFileNumber" class="java.util.List"/>
 	<parameter name="events" class="java.util.List"/>
@@ -32,10 +39,42 @@
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<detail>
-		<band height="65" splitType="Stretch"/>
+		<band height="44" splitType="Stretch">
+			<image>
+				<reportElement x="378" y="20" width="371" height="136" uuid="e4c05f83-ee8b-4162-bdb3-9fa4649860ca"/>
+				<imageExpression><![CDATA["/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/com/fich/wafproject/report/download.png"]]></imageExpression>
+			</image>
+		</band>
 	</detail>
 	<columnFooter>
-		<band height="276" splitType="Stretch"/>
+		<band height="619" splitType="Stretch">
+			<pieChart>
+				<chart>
+					<reportElement x="65" y="33" width="400" height="309" uuid="9be85661-1e14-4713-86ef-1e2753767095"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset>
+						<datasetRun subDataset="dataset2" uuid="d5974775-527c-4701-94e9-d00e9d767094">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listRuleNumber})]]></dataSourceExpression>
+						</datasetRun>
+					</dataset>
+					<keyExpression><![CDATA[$F{campo}]]></keyExpression>
+					<valueExpression><![CDATA[$F{valor}]]></valueExpression>
+					<labelExpression><![CDATA[$F{campo}]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+			<image>
+				<reportElement x="148" y="586" width="158" height="33" uuid="9240bfc2-f927-46d8-b28b-c10716be2826"/>
+				<imageExpression><![CDATA["/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/com/fich/wafproject/report/leaf_banner_green.png"]]></imageExpression>
+			</image>
+		</band>
 	</columnFooter>
 	<pageFooter>
 		<band height="26" splitType="Stretch">

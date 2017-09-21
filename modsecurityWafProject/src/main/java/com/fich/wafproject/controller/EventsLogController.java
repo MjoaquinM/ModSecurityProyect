@@ -184,7 +184,7 @@ public class EventsLogController {
         JRDataSource jrDatasource = new JRBeanCollectionDataSource(events);
         
         JasperPrint jasperPrint = JasperFillManager.fillReport(
-                "/home/usuario/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/com/fich/wafproject/report/reporte.jasper", 
+                "/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/com/fich/wafproject/report/newReport.jasper", 
                 parameters,
                 jrDatasource);
         
