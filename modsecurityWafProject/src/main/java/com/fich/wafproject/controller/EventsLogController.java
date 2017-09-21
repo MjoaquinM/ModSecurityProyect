@@ -110,6 +110,7 @@ public class EventsLogController {
             int count = 0;
             for(String val: n1){
                 hm.put(n2[count], val);
+                System.out.println("EN EL HASHMAP => PARAMETER: " + n2[count] +"    VALOR: " + val);
                 count++;
             }
         }
@@ -181,10 +182,12 @@ public class EventsLogController {
         parameters.put("listFileNumber", listFileNumber);
         parameters.put("events", events);
         
+        //AGREGAR PARAMATROS DE FILTRADO.
+        
         JRDataSource jrDatasource = new JRBeanCollectionDataSource(events);
         
         JasperPrint jasperPrint = JasperFillManager.fillReport(
-                "/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/com/fich/wafproject/report/newReport.jasper", 
+                "/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/com/fich/wafproject/report/report.jasper", 
                 parameters,
                 jrDatasource);
         
