@@ -28,7 +28,7 @@ de ModSecurity]]></text>
 				<staticText>
 					<reportElement x="395" y="43" width="180" height="20" forecolor="#FFFFFF" uuid="2ab354f3-2770-491e-9a5b-a62885105407"/>
 					<textElement textAlignment="Right">
-						<font fontName="SansSerif" size="14" isBold="false"/>
+						<font fontName="SansSerif" size="12" isBold="false"/>
 					</textElement>
 					<text><![CDATA[GOBIERNO DE SANTA FE]]></text>
 				</staticText>
@@ -92,7 +92,7 @@ de ModSecurity]]></text>
 		<band height="384">
 			<componentElement>
 				<reportElement x="59" y="334" width="418" height="22" uuid="2b77c4a0-e2c4-4137-a630-3329b178c433"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="dataset1" uuid="132ce75a-54e1-446e-a303-2a2bb287bc99">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listRuleNumber})]]></dataSourceExpression>
 					</datasetRun>
