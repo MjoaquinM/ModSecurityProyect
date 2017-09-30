@@ -35,5 +35,26 @@ public class EventServiceImpl implements EventService {
     public List<Event> findAllEvents() {
         return dao.findAllEvent();
     }
+
+    @Override
+    public List<Event> findEventsByProperties(String[] properties, String[] values) {
+        return dao.findEventsByProperties(properties, values);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        dao.delete(id);
+    }
+
+    @Override
+    public Event findById(Integer id) {
+        return this.dao.findById(id);
+    }
+
+    @Override
+    public void deleteAll() {
+        this.dao.deletAll();
+    }
+    
      
 }

@@ -12,5 +12,13 @@ public interface EventService {
     List<Event> findAllEvents(int pageNumber, String[] targets, String[] names, String[] values);
 
     List<Event> findAllEvents();
+    
+    List<Event> findEventsByProperties(String[] properties, String[] values);
+    
+    Event findById(Integer id);
+    
+    void delete(Integer id);
+    
+    void deleteAll();
      
 }

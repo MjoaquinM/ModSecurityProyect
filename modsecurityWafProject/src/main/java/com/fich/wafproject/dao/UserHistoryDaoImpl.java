@@ -106,35 +106,6 @@ public class UserHistoryDaoImpl extends AbstractDao<Long, UsersHistory> implemen
             }
         }
         
-//        for(String value : values){
-//            if (!value.equals("") && value!=null){
-//                if(targets[count].contains("date")){
-//                    if(dateFrom!=""){
-//                        dateTo=value;
-//                    }else{
-//                        dateFrom=value;
-//                        targetDate=targets[count];
-//                    }
-//                }else{
-//                    crit.add(Restrictions.like(targets[count],"%"+value+"%"));
-//                }
-//            }
-//            count++;
-//        }
-//        if (targetDate!=""){
-//            if(dateFrom!="" && dateTo==""){
-//                dateTo=dateFrom;
-//            }
-//            DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-//            try {
-//                Date dateF = format.parse(dateFrom);
-//                Date dateT = format.parse(dateTo);
-//                crit.add(Restrictions.between(targetDate,dateF,dateT));
-//            } catch (ParseException ex) {
-//                Logger.getLogger(UserHistoryDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//        return crit.list();
         crit.setFirstResult((pageNumber-1)*pageSize);
         crit.setMaxResults(pageSize);
         List<UsersHistory> events = new ArrayList<UsersHistory>();

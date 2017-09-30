@@ -14,5 +14,11 @@ public interface EventDao {
     List<Event> findAllEvent();
     
     Event findById(Integer id);
+    
+    List<Event> findEventsByProperties(String[] properties, String[] values);
+    
+    public void delete(Integer id);
+    
+    public void deletAll();
      
 }

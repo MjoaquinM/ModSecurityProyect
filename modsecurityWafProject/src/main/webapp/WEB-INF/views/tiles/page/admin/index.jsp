@@ -97,6 +97,31 @@
             </div>
         </div>
     </div>
+
+    <!-- BORRAR ESTO CUANDO ESTE ANDANDO LO DEL WEBSOCKET -->
+    <div class="row">
+        <div>
+            <div>
+                <input type="text" id="from" placeholder="Choose a nickname"/>
+            </div>
+            <br />
+            <div>
+                <button id="connect" >Connect</button>
+                <button id="disconnect" disabled="disabled" onclick="disconnect();">
+                    Disconnect
+                </button>
+            </div>
+            <br />
+            <div id="conversationDiv">
+                <input type="text" id="text" placeholder="Write a message..."/>
+                <button id="sendMessage" >Send</button>
+                <p id="response"></p>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="contenedor-auxiliar">
+        
+    </div>
 </div>
    
 

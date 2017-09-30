@@ -8,7 +8,6 @@ import com.fich.wafproject.model.ConfigurationFileAttributeType;
 import com.fich.wafproject.model.ConfigurationFileStates;
 import com.fich.wafproject.model.ConfigurationFiles;
 import com.fich.wafproject.model.ConfigurationFilesAttributes;
-import com.fich.wafproject.model.EventRule;
 import com.fich.wafproject.model.Rule;
 import java.util.List;
  
@@ -48,7 +47,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import com.fich.wafproject.service.ConfigurationFileAttributeService;
 import com.fich.wafproject.service.ConfigurationFileAttributeOptionsService;
-import com.fich.wafproject.service.EventRuleService;
 import com.fich.wafproject.service.RuleService;
 import com.fich.wafproject.service.UsersHistoryService;
 import java.io.BufferedReader;
@@ -107,9 +105,6 @@ public class WafProjectController {
     
     @Autowired
     UsersHistoryService userHistoryService;
-    
-    @Autowired
-    EventRuleService eventRuleService;
     
     @Autowired
     RuleService ruleService;
@@ -580,7 +575,6 @@ public class WafProjectController {
         List<String> ls = new ArrayList<String>();
         List<Boolean> lsState = new ArrayList<Boolean>();
         List<Boolean> lsStateIds = new ArrayList<Boolean>();
-        List<Rule> ruleIds = new ArrayList<Rule>();
         List<String> ruleFiles = new ArrayList<String>();
         String value = configurationFileAttributeService.findByName("SecRuleRemoveById").getValue();//VIEW THIS -> HARDCODE
         String[] values = value.split(",");

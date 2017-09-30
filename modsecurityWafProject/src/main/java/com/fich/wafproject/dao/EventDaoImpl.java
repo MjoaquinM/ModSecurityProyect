@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -97,12 +98,34 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
     
     @Override
     public List<Event> findAllEvent() {
-        Criteria crit = this.createEntityCriteria();//.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-        crit.setProjection(Projections.distinct(Projections.property("id")));
-        List<Event> events = new ArrayList<Event>();
-        for(Object idEvent : crit.list()){
-            events.add(this.findById((Integer) idEvent));
+        Criteria crit = this.createEntityCriteria().setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+        return (List<Event>) crit.list();
+    }
+
+    @Override
+    public List<Event> findEventsByProperties(String[] properties, String[] values) {
+        Criteria crit = this.createEntityCriteria().setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+        int indx = 0;
+        for(String property : properties){
+            crit.add(Restrictions.like(property,"%"+values[indx++]+"%"));
         }
-        return (List<Event>) events;
+        
+        return (List<Event>) crit.list();
+    }
+    
+    @Override
+    public void delete(Integer id){
+        Event e = this.findById(id);
+        if(e!=null){
+            delete(e);
+        }
+    }
+
+    @Override
+    public void deletAll() {
+        List<Event> events = this.findAllEvent();
+        for(Event e : events){
+            delete(e);
+        }
     }
 }

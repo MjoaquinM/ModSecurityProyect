@@ -160,6 +160,7 @@
             </div>
         </div>
     </div>
+    
     <form:form id="blockRules" method="POST" modelAttribute="fileAttribute" action="blockRules">
         <form:hidden path="value" cssClass="final-value" readonly="true" />
         <form:hidden path="id"></form:hidden>

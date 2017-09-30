@@ -22,6 +22,7 @@
             </h3>
             <button id="show-filter-user-history" data-toggle="collapse" data-target="#filters-containers"><i class="fa fa-angle-double-down" aria-hidden="true"></i></button>
             <a href="<c:url value="/eventList" />" class="btn btn-primary">Reset</a>
+            <a href="<c:url value="/deleteAllEvents" />" class="btn btn-danger">Delete All</a>
         </div>
     </div>
     <div class="panel-body collapse" id="filters-containers">
@@ -101,6 +102,7 @@
                     <td><strong>DestinationPort</strong></td>
                     <td><strong>ClassAtack</strong></td>
                     <td><strong>Details</strong></td>
+                    <td><strong>Action</strong></td>
                 </tr>
             </thead>
             <tbody>
@@ -112,9 +114,16 @@
                         <td>${e.clientPort}</td>
                         <td>${e.serverIp}</td>
                         <td>${e.serverPort}</td>
-                        <td>${e.eventRuleList[0].ruleId.fileId.fileName}</td>
+                        <td>${e.eventRuleList[0].fileId.fileName}</td>
                         <td>
                             <a href="get">${e.transactionId}</a>
+                        </td>
+                        <td>
+                            <strong> 
+                                <a class="btn btn-danger" href="<c:url value="/deleteAllEvents?event=${e.id}" />">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </a> 
+                            </strong>
                         </td>
                     </tr>
                 </c:forEach>

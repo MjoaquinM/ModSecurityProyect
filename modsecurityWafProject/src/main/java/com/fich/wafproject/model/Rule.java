@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -31,8 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author martin
  */
 @Entity
-@Table(name = "Rule")
-@XmlRootElement
+@Table(name = "Rule", catalog = "waf_project", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Rule.findAll", query = "SELECT r FROM Rule r")
     , @NamedQuery(name = "Rule.findById", query = "SELECT r FROM Rule r WHERE r.id = :id")
@@ -58,8 +58,10 @@ public class Rule implements Serializable {
     @Size(max = 45)
     @Column(name = "severity")
     private String severity;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ruleId", fetch=FetchType.EAGER)
-    private List<EventRule> eventRuleList;
+    
+    @ManyToMany(mappedBy="rules",fetch = FetchType.EAGER)
+    private List<Event> events;
+    
     @JoinColumn(name = "fileId", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private File fileId;
@@ -108,21 +110,20 @@ public class Rule implements Serializable {
         this.severity = severity;
     }
 
-    @XmlTransient
-    public List<EventRule> getEventRuleList() {
-        return eventRuleList;
-    }
-
-    public void setEventRuleList(List<EventRule> eventRuleList) {
-        this.eventRuleList = eventRuleList;
-    }
-
     public File getFileId() {
         return fileId;
     }
 
     public void setFileId(File fileId) {
         this.fileId = fileId;
+    }
+    
+    public List<Event> getEvents(){
+        return this.events;
+    }
+    
+    public void setEvents(List<Event> events){
+        this.events = events;
     }
 
     @Override

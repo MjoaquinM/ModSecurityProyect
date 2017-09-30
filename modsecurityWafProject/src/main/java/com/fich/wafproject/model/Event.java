@@ -6,6 +6,7 @@
 package com.fich.wafproject.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -15,11 +16,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -103,11 +109,13 @@ public class Event implements Serializable {
     @Size(min = 1, max = 2147483647)
     @Column(name = "PartZ")
     private String partZ;
+    
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 45)
     @Column(name = "dateEvent")
-    private String dateEvent;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateEvent;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
@@ -143,9 +151,16 @@ public class Event implements Serializable {
     @Size(max = 255)
     @Column(name = "protocol")
     private String protocol;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "transactionId", fetch=FetchType.EAGER)
-    private List<EventRule> eventRuleList;
-
+       
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "EventRule",
+             joinColumns = { @JoinColumn(name = "eventId") },
+             inverseJoinColumns = { @JoinColumn(name = "ruleId") })
+    private List<Rule> rules;
+    
+    @Column(name = "is_new")
+    private String isNew;
+    
     public Event() {
     }
 
@@ -153,7 +168,7 @@ public class Event implements Serializable {
         this.id = id;
     }
 
-    public Event(Integer id, String partA, String partZ, String dateEvent, String transactionId, String clientIp, String clientPort, String serverIp, String serverPort) {
+    public Event(Integer id, String partA, String partZ, Date dateEvent, String transactionId, String clientIp, String clientPort, String serverIp, String serverPort) {
         this.id = id;
         this.partA = partA;
         this.partZ = partZ;
@@ -163,6 +178,13 @@ public class Event implements Serializable {
         this.clientPort = clientPort;
         this.serverIp = serverIp;
         this.serverPort = serverPort;
+    }
+    
+    public String getIsNew() {
+        return this.isNew;
+    }
+    public void setIsNew(String isNew) {
+        this.isNew = isNew;
     }
 
     public Integer getId() {
@@ -269,11 +291,11 @@ public class Event implements Serializable {
         this.partZ = partZ;
     }
 
-    public String getDateEvent() {
+    public Date getDateEvent() {
         return dateEvent;
     }
 
-    public void setDateEvent(String dateEvent) {
+    public void setDateEvent(Date dateEvent) {
         this.dateEvent = dateEvent;
     }
 
@@ -341,13 +363,12 @@ public class Event implements Serializable {
         this.protocol = protocol;
     }
 
-    @XmlTransient
-    public List<EventRule> getEventRuleList() {
-        return eventRuleList;
+    public List<Rule> getEventRuleList() {
+        return rules;
     }
 
-    public void setEventRuleList(List<EventRule> eventRuleList) {
-        this.eventRuleList = eventRuleList;
+    public void setEventRuleList(List<Rule> rules) {
+        this.rules = rules;
     }
 
     @Override

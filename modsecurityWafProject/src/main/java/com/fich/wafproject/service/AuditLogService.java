@@ -5,13 +5,10 @@
 package com.fich.wafproject.service;
 
 import com.fich.wafproject.model.Event;
-import com.fich.wafproject.model.EventRule;
 import com.fich.wafproject.model.File;
 import com.fich.wafproject.model.Rule;
 
 public interface AuditLogService {
-    
-    void saveAuditLog (Event event, EventRule eventRule, Rule rule, File file);
     
     public void saveEvent(Event event);
     

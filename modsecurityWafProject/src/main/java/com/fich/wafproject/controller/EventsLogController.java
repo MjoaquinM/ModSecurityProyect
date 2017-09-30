@@ -1,9 +1,11 @@
 package com.fich.wafproject.controller;
 
+
+import com.fich.wafproject.dao.UserHistoryDaoImpl;
+
 import com.fich.wafproject.model.ConfigurationFiles;
 import com.mysql.jdbc.Connection;
 import com.fich.wafproject.model.Event;
-import com.fich.wafproject.model.EventRule;
 import com.fich.wafproject.model.File;
 import com.fich.wafproject.model.Item;
 import com.fich.wafproject.model.JasperCharts;
@@ -12,10 +14,12 @@ import com.fich.wafproject.model.Student;
 import com.fich.wafproject.service.ConfigurationFileService;
 import com.fich.wafproject.service.EventDataSource;
 import com.fich.wafproject.service.EventService;
-import com.fich.wafproject.service.EventRuleService;
 import com.fich.wafproject.service.FileService;
 import com.fich.wafproject.service.RuleService;
 import com.fich.wafproject.service.StudentDataSource;
+import com.fich.wafproject.util.Message;
+import com.fich.wafproject.util.MessageData;
+import com.fich.wafproject.util.OutputMessage;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -25,6 +29,7 @@ import java.io.OutputStream;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +39,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.logging.Level;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,14 +66,21 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.JDBCConnectionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -74,20 +89,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+
+
+//@AtmosphereHandlerService(path="/",
+//        interceptors = { AtmosphereResourceLifecycleInterceptor.class,
+//                         BroadcastOnPostAtmosphereInterceptor.class
+//                       })
 
 @Controller
 @RequestMapping("/")
-public class EventsLogController {
-    
+public class EventsLogController{
+     
     @Autowired
     EventService eventService;
     @Autowired
     FileService fileService;
     @Autowired
     RuleService ruleService;
-    @Autowired
-    EventRuleService eventRuleService;
     @Autowired
     ConfigurationFileService configurationFileService;
     
@@ -119,9 +140,7 @@ public class EventsLogController {
         }
         
         for (Event e : events){
-            List<EventRule> eventRules = e.getEventRuleList();
-            for (EventRule er : eventRules){
-                Rule ruleAux = er.getRuleId();
+            for (Rule ruleAux : e.getEventRuleList()){
                 if (!("949".equals(ruleAux.getRuleId().substring(0, 3)) || "980".equals(ruleAux.getRuleId().substring(0, 3)))){
                     atackVsAmount.put(ruleAux, atackVsAmount.get(ruleAux).intValue() + 1 );
                 }
@@ -322,21 +341,44 @@ public class EventsLogController {
     
 //********************************************  PARSER  ********************************//
     
+    /*-------------------------- ESTO SERÍA PARA LOS WEB SOCKET --------------------------*/
+//    @MessageMapping("/put")
+//    @SendTo("/topic/messages")
+//    @RequestMapping(value = "/pasame", method = RequestMethod.GET)
+//    public ResponseBodyEmitter nada(HttpServletRequest request) throws IOException{
+//        String[] properties = {"isNew"},
+//                 values = {"0"};
+//        List<Event> events = eventService.findEventsByProperties(properties,values);
+//        System.out.println("Acaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        System.out.println("CANTIDAD " + events.size());
+//        String message = "";
+//        for(Event e: events){
+//            System.out.println("IS NEW!!!!!!!!!!!!!!!!!!!!!!!! "+e.getIsNew());
+//            if( e.getIsNew()!="0"){
+//                message = message + "Attack "+e.getId();
+//                e.setIsNew("1");
+//                eventService.saveEvent(e);
+//            }
+//        }
+//        final SseEmitter emitter = new SseEmitter();    
+//        emitter.send(message , MediaType.TEXT_PLAIN);
+//        return emitter;
+//    }
+    /*-------------------------- ESTO SERÍA PARA LOS WEB SOCKET END!!!!!!!!!!!!!!!!!!!!!!--------------------------*/
+    
+    @SendTo("/topic/messages")
+    @MessageMapping("/put")
     @RequestMapping(value = "/put", method = RequestMethod.PUT)
-    public String sayHelloAgainPut(HttpServletRequest request,
+    public OutputMessage sayHelloAgainPut(HttpServletRequest request,
             ModelMap model,
             Event event,
-            EventRule eventRule,
-            Rule rule,
-            File file) {
-
+            File file) throws IOException{
+                
         System.out.println("ENTRO AL PUUUUUUUUUUUUUUT: " + new Date().toString());
-
+        
         try {
-
-//            PrintWriter writer = new PrintWriter("/home/martin/Desktop/salidaJava.txt", "UTF-8");
+            
             //Tomo las cabeceras
-//            writer.println("Nombre y valores de los headers\n");
             Enumeration<String> e = request.getHeaderNames();
             while (e.hasMoreElements()) {
                 String headerName = e.nextElement();
@@ -372,23 +414,10 @@ public class EventsLogController {
                         parts[indx] = parts[indx] + line + "\n";
                     }
 
-//                    buffer.append(line);
-//                    writer.println(line);
-                } else {
-//                    buffer.append(line);
-//                    writer.println(line);
                 }
 
             }
 
-//            writer.println("\n Aca abajo viene las partes separadas.\n");
-//            for (int i = 0; i < parts.length; i++) {
-//                System.out.println("Parte " + partsLetter[i]);
-//                System.out.println(parts[i]);
-//                writer.println("\nParte " + partsLetter[i] + "\n");
-//                writer.println(parts[i]);
-//            }
-//            String data = buffer.toString();
             event.setPartA(parts[0]);
             event.setPartB(parts[1]);
             event.setPartC(parts[2]);
@@ -402,22 +431,23 @@ public class EventsLogController {
             event.setPartK(parts[10]);
             event.setPartZ(parts[11]);
 
-            HashMap<String, String> MapPartA = this.analizerPartA(parts[0]);
+//            HashMap<String, String> MapPartA = this.analizerPartA(parts[0]);
+            HashMap<String, Object> MapPartA = this.analizerPartA(parts[0]);
             HashMap<String, String> MapPartB = this.analizerPartB(parts[1]);
             HashMap<String, List<String>> MapPartH = this.analizerPartH(parts[7]);
-
-            event.setDateEvent(MapPartA.get("date"));
-            event.setTransactionId(MapPartA.get("transactionId"));
-            event.setClientIp(MapPartA.get("clientIp"));
-            event.setClientPort(MapPartA.get("clientPort"));
-            event.setServerIp(MapPartA.get("serverIp"));
-            event.setServerPort(MapPartA.get("serverPort"));
+            
+            event.setDateEvent((Date) MapPartA.get("date"));
+            event.setTransactionId((String) MapPartA.get("transactionId"));
+            event.setClientIp((String)MapPartA.get("clientIp"));
+            event.setClientPort((String) MapPartA.get("clientPort"));
+            event.setServerIp((String) MapPartA.get("serverIp"));
+            event.setServerPort((String) MapPartA.get("serverPort"));
 
             event.setMethod(MapPartB.get("method"));
             event.setDestinationPage(MapPartB.get("destinationPage"));
             event.setProtocol(MapPartB.get("protocol"));
+            event.setIsNew("0");
 
-            System.out.println("ANTES DE GUARDAR EL EVENTO ID: " + event.getId());
             try {
                 eventService.saveEvent(event);
             } catch (ConstraintViolationException ese) {
@@ -425,8 +455,9 @@ public class EventsLogController {
             } catch (JDBCConnectionException ese) {
                 System.out.println("ERROR CONNECTION: " + ese.getMessage());
             }
-            System.out.println("DESPUES DE GUARDAR EL EVENTO ID: " + event.getId());
-            int cant = MapPartH.get("filePath").size();//cant de reglas act. filePath esta siempre presente.
+            int cant = MapPartH.get("filePath").size();//cant de reglas act. filePath esta siempre presente. 
+            
+            List<Rule> rules = new ArrayList<Rule>();
             
             for (int i = 0; i < cant; i++) {
                 System.out.println("Vuelta Nrooooooooooooooooooooooooooooooooooooooooooooooooooo: " + i);
@@ -445,6 +476,7 @@ public class EventsLogController {
                 System.out.println("VA A BUSCAR POR EL RULEID: " + ruleId);
                 Rule ruleExists = ruleService.findByRuleId(ruleId);
                 System.out.println("RuleExists? " + ruleExists == null);
+                Rule rule = new Rule();
                 if (ruleExists == null) {
                     rule.setFileId(file);
                     rule.setRuleId(MapPartH.get("id").get(i));
@@ -453,52 +485,48 @@ public class EventsLogController {
                     System.out.println("BEFORE EXPLOTION");
                     System.out.println("Id: " + rule.getId());
                     System.out.println("ruleId: " + rule.getRuleId());
+                    System.out.println(rule.getId());
                     ruleService.saveRule(rule);
                 }else{
                     rule = ruleExists;
                 }
-                
-                eventRule.setTransactionId(event);
-                eventRule.setRuleId(rule);
-                eventRuleService.saveEventRule(eventRule);
-
+                rules.add(rule);
                 System.out.println("LISTO GUARDO BIEN");
-
-                //LIMPIO LAS VARIABLES
-                file.setFilePath("");
-                file.setFileName("");
-                file.setId(null);
-                rule.setRuleId("");
-                rule.setMessage("");
-                rule.setSeverity("");
-                rule.setFileId(file);
-                rule.setId(null);
-                eventRule.setRuleId(rule);
-                eventRule.setId(null);
             }
-
+            
+            //Asocio El evento con el conjunto de reglas corerspondientes
+            event.setEventRuleList(rules);
+            try {
+                //Actualizo relaciones
+                eventService.saveEvent(event);
+            } catch (ConstraintViolationException ese) {
+                System.out.println("ERROR CONSTRAINT: " + ese.getMessage());
+            } catch (JDBCConnectionException ese) {
+                System.out.println("ERROR CONNECTION: " + ese.getMessage());
+            }
+            
             System.out.println("TERMINO DE GUARDAR TODOOOOOOO");
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
             System.out.println(dateFormat.format(date));
 
-//            writer.close();
         } catch (IOException e) {
             System.out.println("¡¡¡¡¡¡¡  NO SE PUDO ESCRIBIR  !!!!");
-        }
-        return "login";
+        }        
+        
+        return new OutputMessage();
     }
-
-    private HashMap<String, String> analizerPartA(String str) {
-        HashMap<String, String> result = new HashMap<String, String>();
-
+    
+    private HashMap<String, Object> analizerPartA(String str) {
+//        HashMap<String, String> result = new HashMap<String, String>();
+        HashMap<String, Object> result = new HashMap<String, Object>();
         str = str.substring(str.indexOf("\n") + 1); //Recorto el divisor de la parte.
 
         //Guardo la fecha y recorto el string.
         int indx = str.indexOf(']');
-        result.put("date", str.substring(1, indx));
+        result.put("date", this.parseDate(str.substring(1, indx)));
         str = str.substring(indx + 2);
-
+        
         //Ahora quedo el transactionId, clientIp, clientPort, serverIp, serverPort
         String[] info = str.split(" ");
         result.put("transactionId", info[0]);
@@ -508,6 +536,59 @@ public class EventsLogController {
         result.put("serverPort", info[4]);
 
         return result;
+    }
+    
+    private Date parseDate(String dateString){
+        String time = dateString.substring(dateString.indexOf(':')+1,dateString.indexOf(' '));
+        String date = dateString.substring(0,dateString.indexOf(':'));
+        String[] dateSplitted  = date.split("/");
+        String month = "";
+        switch(dateSplitted[1]) {
+            case "Jan" :
+               month = "01";
+               break; 
+            case "Feb" :
+               month = "02";
+               break; 
+            case "Mar" :
+               month = "03";
+               break; 
+            case "Apr" :
+               month = "04";
+               break; 
+            case "May" :
+               month = "05";
+               break; 
+            case "Jun" :
+                month = "06";
+                break;
+            case "Jul" :
+                month = "07";
+                break;
+            case "Aug" :
+                month = "08";
+                break; 
+            case "Sep" :
+               month = "09";
+               break; 
+            case "Oct" :
+               month = "10";
+               break; 
+            case "Nov" :
+               month = "11";
+               break; 
+            default :
+               month = "12";
+         }
+        date = dateSplitted[2]+"-"+month+"-"+dateSplitted[0]+" "+time;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        Date currentDate = new Date();
+        try {
+            currentDate = format.parse(date);
+        } catch (ParseException ex) {
+            java.util.logging.Logger.getLogger(UserHistoryDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return currentDate;
     }
 
     private HashMap<String, String> analizerPartB(String str) {
@@ -519,9 +600,6 @@ public class EventsLogController {
         //De la primer linea guardo metodo y direcccion de destino 
         String[] current_info = info[1].split(" ");
         System.out.println("current_info: " + current_info);
-//        System.out.println("method: " + current_info[0]);
-//        System.out.println("destinationPage: " + current_info[1]);
-//        System.out.println("protocol: " + current_info[2]);
         result.put("method", current_info[0]);
         result.put("destinationPage", current_info[1]);
         result.put("protocol", current_info[2]);
@@ -641,27 +719,54 @@ public class EventsLogController {
         model.addAttribute("lst",events);
         model.addAttribute("pageNumber",pageNumber);
         model.addAttribute("idModal", "eventModal");
+        model.addAttribute("user",this.getPrincipal());
         return "eventsList";
     }
     
-     @RequestMapping(value = "/eventList/eventDetailsForm", method = RequestMethod.GET)
+    @RequestMapping(value = "/eventList/eventDetailsForm", method = RequestMethod.GET)
     public String getAddUserForm(ModelMap model, @RequestParam("transactionId") String transactionId) {
         System.out.println("ENTRO A DETAILS FORM: " + transactionId);
         model.addAttribute("idModal", "eventModal");
-        
         Event event = eventService.findByTransactionId(transactionId);
-        List<EventRule> eventRules = event.getEventRuleList();
-        List<Rule> rules = new ArrayList<>();
+        List<Rule> rules = event.getEventRuleList();
         List<File> files = new ArrayList<>();
-        
-        for (EventRule er : eventRules){
-            rules.add(er.getRuleId());
-            files.add(er.getRuleId().getFileId());
+        for (Rule r : rules){
+            files.add(r.getFileId());
         }
+        
         model.addAttribute("event",event);
         model.addAttribute("rules",rules);
         model.addAttribute("files   ",files);
         return "eventDetailsForm";
     }
     
+    @RequestMapping(value = "/deleteAllEvents", method = RequestMethod.GET)
+    public String deleteAllEvents(ModelMap model, HttpServletRequest request) {
+        
+        if(request.getParameterMap().containsKey("event")){
+           Integer eventId = Integer.parseInt(request.getParameter("event"));
+           eventService.delete(eventId);
+            System.out.println("MIRAME ACA LA PUTA MADRE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 "+eventId);
+        }else{
+            eventService.deleteAll();
+        }
+        
+        String[] aux = {};
+        request.setAttribute("filter-parameters-targets", aux);
+        request.setAttribute("filter-parameters-names", aux);
+        request.setAttribute("filter-parameters-values", aux);
+        return this.EventList(model, request);
+    }
+
+    private String getPrincipal(){
+        String userName = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            userName = ((UserDetails)principal).getUsername();
+        } else {
+            userName = principal.toString();
+        }
+        return userName;
+    }
 }

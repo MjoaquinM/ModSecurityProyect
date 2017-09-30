@@ -71,6 +71,15 @@
         
         <script src="<c:url value='/static/js/jquery-ui.min.js' />"></script>
         
+        <!--Atmosphere-->
+        <script src="<c:url value='/static/js/atmosphere.js' />"></script>
+        
+        <!--Sockjs-->
+        <script src="<c:url value='/static/js/sockjs-0.3.4.js' />"></script>
+        
+        <!--Stomp-->
+        <script src="<c:url value='/static/js/stomp.js' />"></script>
+        
         <!-- custom -->
         <script src="<c:url value='/static/js/index.js' />"></script>
 

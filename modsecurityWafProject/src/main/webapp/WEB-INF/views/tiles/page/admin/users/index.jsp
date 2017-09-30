@@ -29,21 +29,8 @@
                 <div class="col-md-2">
                     <h5>
                         <a type="button" class="btn btn-primary" id="add-user-button" data-action="addUser"><i class="fa fa-plus" aria-hidden="true"></i>Add User</a>
-<!--                            <button type="button" class="btn btn-primary attribute-group" data-config-file-id="${currentFile.id}" data-action="add">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                            Add Attribute Group
-                        </button>-->
                     </h5>
                 </div>
-<!--                    <div class="col-md-1"></div>
-                <div class="col-md-2">
-                    <h5>
-                        <button type="button" class="btn btn-success" id="apply-configuration">
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                            Apply Configuration
-                        </button>
-                    </h5>
-                </div>-->
             </div>
         </div>
         <div class="panel-body">
