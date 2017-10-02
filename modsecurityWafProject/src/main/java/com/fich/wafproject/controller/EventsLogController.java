@@ -10,13 +10,11 @@ import com.fich.wafproject.model.File;
 import com.fich.wafproject.model.Item;
 import com.fich.wafproject.model.JasperCharts;
 import com.fich.wafproject.model.Rule;
-import com.fich.wafproject.model.Student;
 import com.fich.wafproject.service.ConfigurationFileService;
 import com.fich.wafproject.service.EventDataSource;
 import com.fich.wafproject.service.EventService;
 import com.fich.wafproject.service.FileService;
 import com.fich.wafproject.service.RuleService;
-import com.fich.wafproject.service.StudentDataSource;
 import com.fich.wafproject.util.Message;
 import com.fich.wafproject.util.MessageData;
 import com.fich.wafproject.util.OutputMessage;
@@ -113,78 +111,114 @@ public class EventsLogController{
     ConfigurationFileService configurationFileService;
     
     @RequestMapping(value = "/jrreport", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> printWelcome(ModelMap model) throws JRException, FileNotFoundException {
+    public ResponseEntity<byte[]> printWelcome(ModelMap model, HttpServletRequest request) throws JRException, FileNotFoundException, IOException {
         
         System.out.println("ENTRO AL REPORT");
         
+        int pageNumber = 1;
+//        if(request.getParameterMap().containsKey("pageNumber")){
+//           pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+//        }
+        
+//        if(pageNumber<1){
+//            pageNumber=1;
+//        }
+        List<Event> events = eventService.findAllEvents(1, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"),request.getParameterValues("filter-parameters-values"),false);
+//        if(events.size() == 0){
+//            pageNumber = pageNumber-1;
+//            events = eventService.findAllEvents(1, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"),false);
+//        }
+        
+        String[] n1 = request.getParameterValues("filter-parameters-values");
+        String[] n2 = request.getParameterValues("filter-parameters-labels");
+        HashMap hm = new HashMap<String,String>();
+        
+        if(n1 != null){
+            int count = 0;
+            for(String val: n1){
+                hm.put(n2[count], val);
+                System.out.println("EN EL HASHMAP => PARAMETER: " + n2[count] +"    VALOR: " + val);
+                count++;
+            }
+        }
+        
         //Tomo la lista de eventos
-        List<Event> events = eventService.findAllEvents();
+//        List<Event> events = eventService.findAllEvents();
+        List<Rule> rules = ruleService.findAllRules();
+        List<File> files = fileService.findAllFiles();
+        
+        //Solo para ver q trajo
         for (Event e : events){
             System.out.println("EVENT: " + e.getTransactionId());
         }
-        System.out.println("ACA ARRIBA TIENE Q ESTA LA LISTA DE EVENTOS");
-        //Tomo la lista de Rules
-        List<Rule> rules = ruleService.findAllRules();
+        for (Rule r : rules){
+            System.out.println("RULE: " + r.getRuleId());
+        }
+        for (File f : files){
+            System.out.println("FILE: " + f.getFileName());
+        }
         
-        Map<Rule, Number> atackVsAmount = new HashMap<>();
-        
-        //INICIALIZAR EL MAP CON TODAS LAS REGLAS, Y EL NUMBER EN 0. NO AGREGAR LA 980 Y LA 949.
-        
-        //DSP IR RECORRRIENDO LA LISTA DE EVENTOS Y TOMANDO LA LISTA DE REGLAS PARA CADA UNO.
-        
-        //+1 PARA EL VALOR DE LA REGLA EN EL MAP (YA ESTAN TODAS AGREGADAS). VERIFICAR NO AGREGAR LAS EXCLUIDAS
+        //INICIALIZO MAPAS PARA CADA GRAFICO
+        Map<Rule, Number> ruleVsNumber = new HashMap<>();   //cantidad de ataques por cada regla
+        Map<File, Number> fileVsNumber = new HashMap<>();   //cantidad de ataques por cada clase de ataque
         
         for (Rule r : rules){
             if (!("949".equals(r.getRuleId().substring(0, 3)) || "980".equals(r.getRuleId().substring(0, 3))))
-                atackVsAmount.put(r, 0);
+                ruleVsNumber.put(r, 0);
         }
-        
-        for (Event e : events){
-            for (Rule ruleAux : e.getEventRuleList()){
-                if (!("949".equals(ruleAux.getRuleId().substring(0, 3)) || "980".equals(ruleAux.getRuleId().substring(0, 3)))){
-                    atackVsAmount.put(ruleAux, atackVsAmount.get(ruleAux).intValue() + 1 );
-                }
+        for (File f : files){
+            if (!(f.getFileName().contains("949") || f.getFileName().contains("980"))){
+                fileVsNumber.put(f, 0);
             }
         }
-
-        System.out.println("SALIDA DEL MAPA: ");
-
-        List<JasperCharts> listjc = new ArrayList<>();
-        for (Map.Entry<Rule, Number> entry : atackVsAmount.entrySet()) {
+        
+//        //CARGO LOS MAPAS CON LOS DATOS
+//        for (Event e : events){
+//            List<EventRule> eventRules = e.getEventRuleList();
+//            System.out.println("ENTRO AL FOR DE LOS EVENTOS");
+//            for (EventRule er : eventRules){
+//                Rule ruleAux = er.getRuleId();
+//                if (!("949".equals(ruleAux.getRuleId().substring(0, 3)) || "980".equals(ruleAux.getRuleId().substring(0, 3)))){
+//                    ruleVsNumber.put(ruleAux, ruleVsNumber.get(ruleAux).intValue() + 1 );
+//                    System.out.println("ENTRO AL IF 1");
+//                }
+//                File fileAux = er.getRuleId().getFileId();
+//                if (!(fileAux.getFileName().contains("949") || fileAux.getFileName().contains("980"))){
+//                    fileVsNumber.put(fileAux, fileVsNumber.get(fileAux).intValue() + 1 );
+//                    System.out.println("ENTRO AL IF 2");
+//                }
+//            }
+//        }
+        
+        //TRANSFORMO LOS MAPAS A LISTAS
+        List<JasperCharts> listRuleNumber = new ArrayList<>();
+        System.out.println("LISTA DE RULE:");
+        for (Map.Entry<Rule, Number> entry : ruleVsNumber.entrySet()) {
             System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
-            listjc.add(new JasperCharts(entry.getKey().getRuleId(),entry.getValue()));
+            listRuleNumber.add(new JasperCharts(entry.getKey().getRuleId(),entry.getValue()));
+        }
+        System.out.println("LISTA DE FILE:");
+        List<JasperCharts> listFileNumber = new ArrayList<>();
+        for (Map.Entry<File, Number> entry : fileVsNumber.entrySet()) {
+            System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
+            listFileNumber.add(new JasperCharts(entry.getKey().getFileName(),entry.getValue()));
         }
         
-        JRDataSource jrDatasource = new JRBeanCollectionDataSource(listjc);
-        
+        //PASO LAS LISTAS AL REPORTE POR PARAMETRO
         Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("lista", listjc);
+        parameters.put("listRuleNumber", listRuleNumber);
+        parameters.put("listFileNumber", listFileNumber);
+        parameters.put("events", events);
         
-        for (Event e : events){
-            System.out.println("EVENT: " + e.getTransactionId());
-        }
-        System.out.println("ACA ARRIBA TIENE Q ESTA LA LISTA DE EVENTOS");
-        parameters.put("listaEvent", events);
+        //AGREGAR PARAMATROS DE FILTRADO.
         
-        List<String> empleados = new ArrayList<>();
-        empleados.add("martin");
-        empleados.add("juana");
-        empleados.add("pepe");
-        empleados.add("maria");
-        empleados.add("magali");
+        JRDataSource jrDatasource = new JRBeanCollectionDataSource(events);
         
-        List<String> emp2 = new ArrayList(Arrays.asList(new String[] {"String1","String2","String3","String4"}));
-        
-        parameters.put("empleados", empleados);
-        
+        InputStream reporte = this.getClass().getClassLoader().getResourceAsStream("reportOriginal.jasper");
         JasperPrint jasperPrint = JasperFillManager.fillReport(
-                "/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/newReport.jasper", 
-                parameters, 
+                reporte,
+                parameters,
                 jrDatasource);
-        
-//        model.addAttribute("datasource", jrDatasource);
-//        model.addAttribute("format", "pdf");
-        System.out.println("ENTRA AL JRREPORT. TODO BIEN");
         
 //        //Guardo en el Home del usuario
 //        String userHomeDirectory = System.getProperty("user.home");
@@ -202,12 +236,17 @@ public class EventsLogController{
 //
 //        // Exportamos el informe a formato PDF
 //        JasperExportManager.exportReportToPdfFile(print, outputFile);
+
         
-        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+            System.out.println(dateFormat.format(date));
+            System.out.println("SALIDA DEL JASPER");
+
         byte[] fichero = JasperExportManager.exportReportToPdf(jasperPrint);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        String filename = "output.pdf";
+        String filename = "output";
         headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
@@ -694,10 +733,10 @@ public class EventsLogController{
             pageNumber=1;
         }
         
-        List<Event> events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"),request.getParameterValues("filter-parameters-values"));
+        List<Event> events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"),request.getParameterValues("filter-parameters-values"),true);
         if(events.size() == 0){
             pageNumber = pageNumber-1;
-            events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"));
+            events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"),true);
         }
         
         String[] n1 = request.getParameterValues("filter-parameters-values");
