@@ -179,7 +179,7 @@ public class Event implements Serializable {
         this.serverIp = serverIp;
         this.serverPort = serverPort;
     }
-    
+
     public String getIsNew() {
         return this.isNew;
     }
@@ -363,11 +363,11 @@ public class Event implements Serializable {
         this.protocol = protocol;
     }
 
-    public List<Rule> getEventRuleList() {
+    public List<Rule> getRuleList() {
         return rules;
     }
 
-    public void setEventRuleList(List<Rule> rules) {
+    public void setRuleList(List<Rule> rules) {
         this.rules = rules;
     }
 

@@ -11,7 +11,6 @@ import com.fich.wafproject.model.Item;
 import com.fich.wafproject.model.JasperCharts;
 import com.fich.wafproject.model.Rule;
 import com.fich.wafproject.service.ConfigurationFileService;
-import com.fich.wafproject.service.EventDataSource;
 import com.fich.wafproject.service.EventService;
 import com.fich.wafproject.service.FileService;
 import com.fich.wafproject.service.RuleService;
@@ -534,7 +533,7 @@ public class EventsLogController{
             }
             
             //Asocio El evento con el conjunto de reglas corerspondientes
-            event.setEventRuleList(rules);
+            event.setRuleList(rules);
             try {
                 //Actualizo relaciones
                 eventService.saveEvent(event);
@@ -767,7 +766,7 @@ public class EventsLogController{
         System.out.println("ENTRO A DETAILS FORM: " + transactionId);
         model.addAttribute("idModal", "eventModal");
         Event event = eventService.findByTransactionId(transactionId);
-        List<Rule> rules = event.getEventRuleList();
+        List<Rule> rules = event.getRuleList();
         List<File> files = new ArrayList<>();
         for (Rule r : rules){
             files.add(r.getFileId());
