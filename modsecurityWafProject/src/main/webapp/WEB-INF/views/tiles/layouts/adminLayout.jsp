@@ -99,6 +99,9 @@
 
         <!-- Validation JavaScript -->
         <script src="<c:url value='/static/js/jquery.validate.min.js' />"></script>
+        
+        <!-- Notify JavaScript -->
+        <script src="<c:url value='/static/js/bootstrap-notify.min.js' />"></script>
 
     </body>
 </html>

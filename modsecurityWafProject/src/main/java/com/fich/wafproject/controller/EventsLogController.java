@@ -1,10 +1,6 @@
 package com.fich.wafproject.controller;
 
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fich.wafproject.util.OutputMessage;
 import com.fich.wafproject.dao.UserHistoryDaoImpl;
-
 import com.fich.wafproject.model.ConfigurationFiles;
 import com.mysql.jdbc.Connection;
 import com.fich.wafproject.model.Event;
@@ -12,22 +8,15 @@ import com.fich.wafproject.model.File;
 import com.fich.wafproject.model.Item;
 import com.fich.wafproject.model.JasperCharts;
 import com.fich.wafproject.model.Rule;
-import com.fich.wafproject.model.Student;
 import com.fich.wafproject.service.ConfigurationFileService;
-import com.fich.wafproject.service.EventDataSource;
 import com.fich.wafproject.service.EventService;
 import com.fich.wafproject.service.FileService;
 import com.fich.wafproject.service.RuleService;
-import com.fich.wafproject.service.StudentDataSource;
-import com.fich.wafproject.util.AlertMessages;
-import com.fich.wafproject.util.Message;
 import com.fich.wafproject.util.MessageData;
-import com.fich.wafproject.util.OutputMessage;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -42,23 +31,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
 import java.util.logging.Level;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.JREmptyDataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JRDataSource;;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.JasperRunManager;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.JRXlsExporter;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -69,41 +48,28 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.JDBCConnectionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+/* PARA SSE */
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+/* PARA TAREAS PLANIFICADAS */
+import org.springframework.scheduling.annotation.Scheduled;
 
-
-
-//@AtmosphereHandlerService(path="/",
-//        interceptors = { AtmosphereResourceLifecycleInterceptor.class,
-//                         BroadcastOnPostAtmosphereInterceptor.class
-//                       })
 
 @Controller
 @RequestMapping("/")
@@ -350,80 +316,21 @@ public class EventsLogController{
     
 //********************************************  PARSER  ********************************//
     
-    /*-------------------------- ESTO SERÍA PARA LOS WEB SOCKET --------------------------*/
-//    @MessageMapping("/pasame")
-//    @SendTo("/topic/messages")
-//    @RequestMapping(value = "/pasame", method = RequestMethod.GET)
-//    public ResponseBodyEmitter nada(HttpServletRequest request) throws IOException{
-//        String[] properties = {"isNew"},
-//                 values = {"0"};
-//        List<Event> events = eventService.findEventsByProperties(properties,values);
-//        System.out.println("Acaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//        System.out.println("CANTIDAD " + events.size());
-//        String message = "";
-//        for(Event e: events){
-//            System.out.println("IS NEW!!!!!!!!!!!!!!!!!!!!!!!! "+e.getIsNew());
-//            if( e.getIsNew()!="0"){
-//                message = message + "Attack "+e.getId();
-//                e.setIsNew("1");
-//                eventService.saveEvent(e);
-//            }
-//        }
-//        final SseEmitter emitter = new SseEmitter();    
-//        emitter.send(message , MediaType.TEXT_PLAIN);
-//        return emitter;
-//    }
-    
-//    @MessageMapping("/chat")
-//    @SendTo("/topic/messages")
-//    public OutputMessage send() throws Exception {
-//        return new OutputMessage();
-//    }
-    
-    /*-------------------------- ESTO SERÍA PARA LOS WEB SOCKET END!!!!!!!!!!!!!!!!!!!!!!--------------------------*/
+    /*-------------------------- PARA LOS ALERTAS --------------------------*/
     @MessageMapping("/alertMessages")
     @SendTo("/topic/messages")
-      public OutputMessage borraresto() throws Exception{
-//        System.out.println("ESTOY EN LA FUNCION aaaa!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-//        System.out.println(PATH_PREFIX.size());
-//        for(MessageData md : PATH_PREFIX){
-//            System.out.println("Transaction Id: "+ md.getTransactionId());
-////            System.out.println("ClassAttack: "+ md.getClassAttack());
-//        }
-////        String message = "NO HAY NADA AMEO";
-////        MessageData alerts = new MessageData();
-////        AlertMessages returnThis = new AlertMessages();
-//        if (PATH_PREFIX!=null && PATH_PREFIX.size()>0){
-//            System.out.println("ESTOY DENTRO DEL IF");
-//            System.out.println("ESTOY DENTRO DEL IF 1");
-//            System.out.println("ESTOY DENTRO DEL IF 2");
-////            String arrayToJson = objectMapper.writeValueAsString(PATH_PREFIX);
-////            String arrayToJson = objectMapper.writeValueAsString(PATH_PREFIX);
-////            objectMapper.writeValue(System.out, PATH_PREFIX);
-//            System.out.println("ESTOY DENTRO DEL IF 3");
-//            System.out.println("LISTA A JSON!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-////            System.out.println(arrayToJson);
-////            message = "Hay " + PATH_PREFIX.size() + " cosas nuevas vithe'";
-////            alerts = PATH_PREFIX.get(0);
-////            PATH_PREFIX.getMessages().clear();
-//        }
-//        System.out.println("MIRAME: " + PATH_PREFIX.size());
-//        MessageData mdd = PATH_PREFIX.get(0);
-//        OutputMessage mdd = new OutputMessage();
-//        System.out.println("Lo que hay: " + mdd);
-        return new OutputMessage();
+      public List<MessageData> borraresto() throws Exception{
+        List<MessageData> currentAlerts = new ArrayList<MessageData>();
+        for(MessageData md : PATH_PREFIX){
+            currentAlerts.add(md);
+        }
+        PATH_PREFIX.clear();
+        return currentAlerts;
     }
-      
-//    @Scheduled(fixedDelay = 5000)
-    @MessageMapping("/nada")
-    @SendTo("/topic/messages")
-    public OutputMessage nada() throws Exception{
-        System.out.println("ESTOY EN LA FUNCION PERIODICA");
-        return new OutputMessage();
-    }
+    /*-------------------------- PARA LOS ALERTAS END!!!!!!!!!!!!!!!!!!!!!!--------------------------*/
 
     @RequestMapping(value = "/put", method = RequestMethod.PUT)
-    public String sayHelloAgainPut(HttpServletRequest request,
+    public void sayHelloAgainPut(HttpServletRequest request,
             ModelMap model,
             Event event,
             File file,
@@ -583,11 +490,6 @@ public class EventsLogController{
             System.out.println("¡¡¡¡¡¡¡  NO SE PUDO ESCRIBIR  !!!!");
         }        
         
-//        response.sendRedirect("/chat");
-//        return new OutputMessage();
-//        response.sendRedirect("aux");
-          System.out.println("¡¡¡¡¡¡¡  POR REDIRIGIRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR  !!!!");
-          return "redirect:aux";
     }
     
     private HashMap<String, Object> analizerPartA(String str) {

@@ -674,24 +674,79 @@ $('.show-event-details').on('click', function () {
     }
 
     function showMessageOutput(messageOutput) {
-        (flagLog == true) ? console.log("RECEIVED") : console.log("");
-        (flagLog == true) ? console.log(messageOutput) : console.log("");
-//        console.log("Mira el mensaje " + messageOutput);
-//        console.log("Mira el mensaje " + messageOutput.transactionId);
-//        console.log("Mira el mensaje " + messageOutput.classAttack);
-//        if(messageOutput.message!="NO HAY NADA AMEO"){
-////            console.log(messageOutput);
-//            $('#contenedor-auxiliar').append("<p>ATTACARON VIEJA! TENE CUIDADO</p>")
-//        }
+        if(messageOutput.length > 0){
+            (flagLog == true) ? console.log("RECEIVED") : console.log("");
+            (flagLog == true) ? console.log(messageOutput) : console.log("");
+            for(var obj in messageOutput){
+                console.log(messageOutput[obj].transactionId);
+            }
+            showMessageAlert(
+                    '<br><strong>Transaction Id: </strong>'+messageOutput[obj].transactionId
+                    );
+        }
     }
     
-    $('#connect').on('click',function(){
-        connect();
+    $('#sendMessage').on('click',function(){
+        showMessageAlert("TE ESTOY MOSTRANDO UN MENSAJE");
     });
     
-    $('#sendMessage').on('click',function(){
-        sendMessage();
+    /*Conect to websocket on load page*/
+    connect();
+    
+    /* Disconnect websocket before leave the page */
+    $(window).bind('beforeunload', function(){
+        disconnect();
     });
+    
+    /*Notify plugin - to show alerts*/
+    function showMessageAlert(message){
+        $.notify({
+            // options
+//            icon: 'glyphicon glyphicon-warning-sign',
+            title: 'Alert: ',
+            message: message,
+            url: 'https://github.com/mouse0270/bootstrap-notify',
+            target: '_blank'
+        },{
+            // settings
+            element: 'body',
+            position: null,
+            type: "warning",
+            allow_dismiss: true,
+            newest_on_top: false,
+            showProgressbar: false,
+            placement: {
+                    from: "top",
+                    align: "right"
+            },
+            offset: 20,
+            spacing: 10,
+            z_index: 1031,
+            delay: 10000,
+            timer: 1000,
+            url_target: '_blank',
+            mouse_over: null,
+            animate: {
+                    enter: 'animated fadeInDown',
+                    exit: 'animated fadeOutUp'
+            },
+            onShow: null,
+            onShown: null,
+            onClose: null,
+            onClosed: null,
+            icon_type: 'class',
+//            template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+//                    '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+//                    '<span data-notify="icon"></span> ' +
+//                    '<span data-notify="title">{1}</span> ' +
+//                    '<span data-notify="message">{2}</span>' +
+//                    '<div class="progress" data-notify="progressbar">' +
+//                            '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+//                    '</div>' +
+//                    '<a href="{3}" target="{4}" data-notify="url"></a>' +
+//            '</div>' 
+        });
+    }
 
 /************************ALERT ATTACK END****************************/
 });

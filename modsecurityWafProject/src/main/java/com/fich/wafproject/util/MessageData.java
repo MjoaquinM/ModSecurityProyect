@@ -26,7 +26,6 @@ public class MessageData {
         this.message = message;
         this.transactionId = transId;
         this.classAttack = classAtt;
-//        this.time = new MessageData().getTime();
     }
 
     public String getTransactionId(){
@@ -48,6 +47,10 @@ public class MessageData {
     public String getMessage() {
         return message;
     }
+    
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public String getAuthor() {
         return author;
@@ -57,16 +60,4 @@ public class MessageData {
         this.author = author;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-//    public long getTime() {
-//        return time;
-//    }
-//
-//    public void setTime(long time) {
-//        this.time = time;
-//    }
-    
 }
