@@ -208,12 +208,17 @@ public class EventsLogController{
         parameters.put("listRuleNumber", listRuleNumber);
         parameters.put("listFileNumber", listFileNumber);
         parameters.put("events", events);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        parameters.put("fecha", date);
+        parameters.put("direccionIp", "Todas");
+        parameters.put("servicio", "Todos");
         
         //AGREGAR PARAMATROS DE FILTRADO.
         
         JRDataSource jrDatasource = new JRBeanCollectionDataSource(events);
         
-        InputStream reporte = this.getClass().getClassLoader().getResourceAsStream("reportOriginal.jasper");
+        InputStream reporte = this.getClass().getClassLoader().getResourceAsStream("report.jasper");
         JasperPrint jasperPrint = JasperFillManager.fillReport(
                 reporte,
                 parameters,
@@ -237,8 +242,8 @@ public class EventsLogController{
 //        JasperExportManager.exportReportToPdfFile(print, outputFile);
 
         
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-            Date date = new Date();
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+//            Date date = new Date();
             System.out.println(dateFormat.format(date));
             System.out.println("SALIDA DEL JASPER");
 
