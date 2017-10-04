@@ -18,6 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -28,6 +29,7 @@ import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
  
 @Configuration
+@EnableScheduling
 @EnableWebMvc
 @ComponentScan(basePackages = "com.fich.wafproject")
 public class WafProjectConfiguration extends WebMvcConfigurerAdapter {
@@ -55,7 +57,7 @@ public class WafProjectConfiguration extends WebMvcConfigurerAdapter {
 //        viewResolver.setSuffix(".jsp");
 //        registry.viewResolver(viewResolver);
         TilesViewResolver viewResolver = new TilesViewResolver();
-        registry.viewResolver(viewResolver);        
+        registry.viewResolver(viewResolver);
     }
  
     /*

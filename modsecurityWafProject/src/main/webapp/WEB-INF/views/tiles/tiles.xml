@@ -171,5 +171,7 @@
    <!--BORRAMEEEEEEEEEEE--> 
    <definition name="newuser" template="/WEB-INF/views/tiles/page/newuser.jsp">
    </definition>
+   
+   <definition name="aux" template="/WEB-INF/views/tiles/page/borrame.jsp"></definition>
      
 </tiles-definitions>

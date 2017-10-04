@@ -646,160 +646,19 @@ $('.show-event-details').on('click', function () {
 /************************MANAGE EVENTS END****************************/
 
 /************************ALERT ATTACK****************************/
-////    $(function () {
-//        "use strict";
-//
-//        var content = $('#content');
-//        var input = $('#input');
-//        var status = $('#status');
-//        var myName = false;
-//        var author = null;
-//        var logged = false;
-//        var socket = atmosphere;
-//        
-////        console.log("HOLA");
-////        console.log( document.location.toString() + 'put');
-//        
-//        var request = { url: "http://localhost:8080/modsecurityWafProject/nada",// document.location.toString() + 'put',
-//            contentType: "application/json",
-//            logLevel: 'debug',
-//            transport: 'sse',
-//            reconnectInterval: 5000,
-//
-//            fallbackTransport: 'long-polling'};
-//
-//        request.onOpen = function (response) {
-//            console.log("CONECCION ABIERTA");
-//            console.log(response);
-////            content.html($('<p>', { text: 'Atmosphere connected using ' + response.transport }));
-////            input.removeAttr('disabled').focus();
-////            status.text('Choose name:');
-//        };
-//
-//        request.onReconnect = function (request, response) {
-//            console.log("CONEXION PERDIDA, INTENTANDO RECONECTAR");
-//            console.log(request);
-//            console.log(response);
-////            content.html($('<p>', { text: 'Connection lost, trying to reconnect. Trying to reconnect ' + request.reconnectInterval}));
-////            input.attr('disabled', 'disabled');
-//        };
-//
-//        request.onReopen = function (response) {
-//            console.log("CONEXION REABIERTA");
-//            console.log(response);
-////            input.removeAttr('disabled').focus();
-////            content.html($('<p>', { text: 'Atmosphere re-connected using ' + response.transport }));
-//        };
-//
-//        request.onMessage = function (response) {
-//            console.log("ESCRIBOOOOOOOOOOOOOOOOOOOOOOOOO");
-//            console.log(response);
-//            var message = response.responseBody;
-//            try {
-//                var json = atmosphere.util.parseJSON(message);
-//            } catch (e) {
-//                console.log('This doesn\'t look like a valid JSON: ', message);
-//                return;
-//            }
-//
-////            input.removeAttr('disabled').focus();
-////            if (!logged) {
-////                logged = true;
-////                status.text(myName + ': ').css('color', 'blue');
-////            } else {
-////                var me = json.author == author;
-////                var date = typeof(json.time) == 'string' ? parseInt(json.time) : json.time;
-////                addMessage(json.author, json.text, me ? 'blue' : 'black', new Date(date));
-////            }
-//        };
-//
-//        request.onClose = function (response) {
-//            console.log("CONEXION CERRADA");
-//            console.log(response);
-////            content.html($('<p>', { text: 'Server closed the connection after a timeout' }));
-////            input.attr('disabled', 'disabled');
-//        };
-//
-//        request.onError = function (response) {
-//            console.log("HUBO PROBLEMAS CON EL SOCKET O EL SERVIDOR");
-//            console.log(response);
-////            content.html($('<p>', { text: 'Sorry, but there\'s some problem with your '
-////                + 'socket or the server is down' }));
-//        };
-//
-//        /*
-//         * ACA CONECTO CON EL PUSH
-//         */
-//        var subSocket = socket.subscribe(request);
-//
-//    //    var msg = $(this).val();
-//        var msg = 'ESTO ES AL PEDO';
-//
-//        // First message is always the author's name
-//        if (author == null) {
-//            author = msg;
-//        }
-//
-//        alert("NADA");
-//        subSocket.push(atmosphere.util.stringifyJSON({ author: "author", message: "msg" }));
-//        alert("TODO");
-//        input.attr('disabled', 'disabled');
-//        if (myName === false) {
-//            myName = msg;
-//        }
-
-    //    input.keydown(function (e) {
-    //        if (e.keyCode === 13) {
-    //            var msg = $(this).val();
-    //
-    //            // First message is always the author's name
-    //            if (author == null) {
-    //                author = msg;
-    //            }
-    //
-    //            subSocket.push(atmosphere.util.stringifyJSON({ author: author, message: msg }));
-    //            $(this).val('');
-    //
-    //            input.attr('disabled', 'disabled');
-    //            if (myName === false) {
-    //                myName = msg;
-    //            }
-    //        }
-    //    });
-
-//        function addMessage(author, message, color, datetime) {
-//            content.append('<p><span style="color:' + color + '">' + author + '</span> @ ' + +(datetime.getHours() < 10 ? '0' + datetime.getHours() : datetime.getHours()) + ':'
-//                + (datetime.getMinutes() < 10 ? '0' + datetime.getMinutes() : datetime.getMinutes())
-//                + ': ' + message + '</p>');
-//        }
-//    });
-
-
-
+    var flagLog = true;
     var stompClient = null;
-             
-    function setConnected(connected) {
-        document.getElementById('connect').disabled = connected;
-        document.getElementById('disconnect').disabled = !connected;
-        document.getElementById('conversationDiv').style.visibility 
-          = connected ? 'visible' : 'hidden';
-        document.getElementById('response').innerHTML = '';
-    }
-
+    
     function connect() {
-//        var socket = new SockJS('/spring-mvc-java/chat');
-        var socket = new SockJS('/modsecurityWafProject/put');
-        
+        var socket = new SockJS('/modsecurityWafProject/alertMessages');
         stompClient = Stomp.over(socket);  
         stompClient.connect({}, function(frame) {
-            setConnected(true);
             console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/messages', function(messageOutput) {
-                showMessageOutput(messageOutput.body);
-//                showMessageOutput(messageOutput);
-//                showMessageOutput(JSON.parse(messageOutput.body));
+                showMessageOutput(JSON.parse(messageOutput.body));
             });
         });
+        setInterval(function(){ sendMessage();}, 5000);
     }
 
     function disconnect() {
@@ -811,24 +670,19 @@ $('.show-event-details').on('click', function () {
     }
 
     function sendMessage() {
-        var from = document.getElementById('from').value;
-        var text = document.getElementById('text').value;
-        stompClient.send("/app/put", {}, 
-          "hola");
-//        stompClient.send("/app/chat", {}, 
-//          JSON.stringify({'from':from, 'text':text}));
+        stompClient.send("/app/alertMessages", {}, {});
     }
 
     function showMessageOutput(messageOutput) {
-        console.log(messageOutput);
-        alert(messageOutput.time);
-        $('#contenedor-auxiliar').append("<p>ATTACARON VIEJA! TENE CUIDADO</p>")
-//        var response = document.getElementById('response');
-//        var p = document.createElement('p');
-//        p.style.wordWrap = 'break-word';
-//        p.appendChild(document.createTextNode(messageOutput.from + ": " 
-//          + messageOutput.text + " (" + messageOutput.time + ")"));
-//        response.appendChild(p);
+        (flagLog == true) ? console.log("RECEIVED") : console.log("");
+        (flagLog == true) ? console.log(messageOutput) : console.log("");
+//        console.log("Mira el mensaje " + messageOutput);
+//        console.log("Mira el mensaje " + messageOutput.transactionId);
+//        console.log("Mira el mensaje " + messageOutput.classAttack);
+//        if(messageOutput.message!="NO HAY NADA AMEO"){
+////            console.log(messageOutput);
+//            $('#contenedor-auxiliar').append("<p>ATTACARON VIEJA! TENE CUIDADO</p>")
+//        }
     }
     
     $('#connect').on('click',function(){
@@ -836,42 +690,8 @@ $('.show-event-details').on('click', function () {
     });
     
     $('#sendMessage').on('click',function(){
-//        sendMessage();
-        sendRequest();
+        sendMessage();
     });
 
-    
-    function sendRequest(){
-        console.log("APRETASTE");
-        var date = '';
-        var datedate = new Date();
-        console.log (datedate.getFullYear() + " " + datedate.getHours());
-        if(typeof(EventSource) !== "undefined") {
-            console.log("DISPONIBLE");
-            var source = new EventSource("/modsecurityWafProject/pasame?date="+date);
-            source.onmessage = function(event) {
-                console.log("mensaje recibido: "+event.data)
-//                document.getElementById("sseDiv").innerHTML += event.data + " - ";
-            };
-        } else {
-            console.log("NO DISPONIBLE");
-            alert("Your browser does not support server-sent events.");                             
-        }
-    }
-    
-//    if(typeof(EventSource) !== "undefined") {
-//        console.log("DISPONIBLE");
-//        var source = new EventSource("/modsecurityWafProject/pasame");
-//        source.onmessage = function(event) {
-//            console.log("mensaje recibido: "+event.data)
-////                document.getElementById("sseDiv").innerHTML += event.data + " - ";
-//        };
-//    } else {
-//        console.log("NO DISPONIBLE");
-//        alert("Your browser does not support server-sent events.");                             
-//    }
-    
-
 /************************ALERT ATTACK END****************************/
-      
 });

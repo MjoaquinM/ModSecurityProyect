@@ -107,7 +107,7 @@
             <br />
             <div>
                 <button id="connect" >Connect</button>
-                <button id="disconnect" disabled="disabled" onclick="disconnect();">
+                <button id="disconnect" disabled="disabled" >
                     Disconnect
                 </button>
             </div>

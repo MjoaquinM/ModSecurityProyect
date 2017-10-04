@@ -1,6 +1,8 @@
 package com.fich.wafproject.controller;
 
-
+//import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fich.wafproject.util.OutputMessage;
 import com.fich.wafproject.dao.UserHistoryDaoImpl;
 
 import com.fich.wafproject.model.ConfigurationFiles;
@@ -17,6 +19,7 @@ import com.fich.wafproject.service.EventService;
 import com.fich.wafproject.service.FileService;
 import com.fich.wafproject.service.RuleService;
 import com.fich.wafproject.service.StudentDataSource;
+import com.fich.wafproject.util.AlertMessages;
 import com.fich.wafproject.util.Message;
 import com.fich.wafproject.util.MessageData;
 import com.fich.wafproject.util.OutputMessage;
@@ -79,6 +82,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -89,6 +93,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -111,6 +117,9 @@ public class EventsLogController{
     RuleService ruleService;
     @Autowired
     ConfigurationFileService configurationFileService;
+    
+//    private static final AlertMessages PATH_PREFIX = new AlertMessages();
+    private static List<MessageData> PATH_PREFIX = new ArrayList<MessageData>();// AlertMessages();
     
     @RequestMapping(value = "/jrreport", method = RequestMethod.GET)
     public ResponseEntity<byte[]> printWelcome(ModelMap model) throws JRException, FileNotFoundException {
@@ -342,7 +351,7 @@ public class EventsLogController{
 //********************************************  PARSER  ********************************//
     
     /*-------------------------- ESTO SERÍA PARA LOS WEB SOCKET --------------------------*/
-//    @MessageMapping("/put")
+//    @MessageMapping("/pasame")
 //    @SendTo("/topic/messages")
 //    @RequestMapping(value = "/pasame", method = RequestMethod.GET)
 //    public ResponseBodyEmitter nada(HttpServletRequest request) throws IOException{
@@ -364,15 +373,61 @@ public class EventsLogController{
 //        emitter.send(message , MediaType.TEXT_PLAIN);
 //        return emitter;
 //    }
-    /*-------------------------- ESTO SERÍA PARA LOS WEB SOCKET END!!!!!!!!!!!!!!!!!!!!!!--------------------------*/
     
+//    @MessageMapping("/chat")
+//    @SendTo("/topic/messages")
+//    public OutputMessage send() throws Exception {
+//        return new OutputMessage();
+//    }
+    
+    /*-------------------------- ESTO SERÍA PARA LOS WEB SOCKET END!!!!!!!!!!!!!!!!!!!!!!--------------------------*/
+    @MessageMapping("/alertMessages")
     @SendTo("/topic/messages")
-    @MessageMapping("/put")
+      public OutputMessage borraresto() throws Exception{
+//        System.out.println("ESTOY EN LA FUNCION aaaa!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//        System.out.println(PATH_PREFIX.size());
+//        for(MessageData md : PATH_PREFIX){
+//            System.out.println("Transaction Id: "+ md.getTransactionId());
+////            System.out.println("ClassAttack: "+ md.getClassAttack());
+//        }
+////        String message = "NO HAY NADA AMEO";
+////        MessageData alerts = new MessageData();
+////        AlertMessages returnThis = new AlertMessages();
+//        if (PATH_PREFIX!=null && PATH_PREFIX.size()>0){
+//            System.out.println("ESTOY DENTRO DEL IF");
+//            System.out.println("ESTOY DENTRO DEL IF 1");
+//            System.out.println("ESTOY DENTRO DEL IF 2");
+////            String arrayToJson = objectMapper.writeValueAsString(PATH_PREFIX);
+////            String arrayToJson = objectMapper.writeValueAsString(PATH_PREFIX);
+////            objectMapper.writeValue(System.out, PATH_PREFIX);
+//            System.out.println("ESTOY DENTRO DEL IF 3");
+//            System.out.println("LISTA A JSON!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+////            System.out.println(arrayToJson);
+////            message = "Hay " + PATH_PREFIX.size() + " cosas nuevas vithe'";
+////            alerts = PATH_PREFIX.get(0);
+////            PATH_PREFIX.getMessages().clear();
+//        }
+//        System.out.println("MIRAME: " + PATH_PREFIX.size());
+//        MessageData mdd = PATH_PREFIX.get(0);
+//        OutputMessage mdd = new OutputMessage();
+//        System.out.println("Lo que hay: " + mdd);
+        return new OutputMessage();
+    }
+      
+//    @Scheduled(fixedDelay = 5000)
+    @MessageMapping("/nada")
+    @SendTo("/topic/messages")
+    public OutputMessage nada() throws Exception{
+        System.out.println("ESTOY EN LA FUNCION PERIODICA");
+        return new OutputMessage();
+    }
+
     @RequestMapping(value = "/put", method = RequestMethod.PUT)
-    public OutputMessage sayHelloAgainPut(HttpServletRequest request,
+    public String sayHelloAgainPut(HttpServletRequest request,
             ModelMap model,
             Event event,
-            File file) throws IOException{
+            File file,
+            HttpServletResponse response) throws IOException, Exception{
                 
         System.out.println("ENTRO AL PUUUUUUUUUUUUUUT: " + new Date().toString());
         
@@ -450,6 +505,20 @@ public class EventsLogController{
 
             try {
                 eventService.saveEvent(event);
+                MessageData md = new MessageData();
+                md.setTransactionId(event.getTransactionId());
+                for(MessageData mdd : PATH_PREFIX){
+                    System.out.println("Transaction id: " + mdd.getTransactionId());
+                }
+                PATH_PREFIX.add(md);
+//                md.setClassAttack(event.getEventRuleList().get(0).getFileId().getFileName());
+                //Unicamente muestro la alerta si se guardo exitosamente el evento
+//                PATH_PREFIX.setMessages(mdl);
+                System.out.println("MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA ");
+                for(MessageData mdd : PATH_PREFIX){
+                    System.out.println("Transaction id: " + mdd.getTransactionId());
+                }
+                
             } catch (ConstraintViolationException ese) {
                 System.out.println("ERROR CONSTRAINT: " + ese.getMessage());
             } catch (JDBCConnectionException ese) {
@@ -514,7 +583,11 @@ public class EventsLogController{
             System.out.println("¡¡¡¡¡¡¡  NO SE PUDO ESCRIBIR  !!!!");
         }        
         
-        return new OutputMessage();
+//        response.sendRedirect("/chat");
+//        return new OutputMessage();
+//        response.sendRedirect("aux");
+          System.out.println("¡¡¡¡¡¡¡  POR REDIRIGIRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR  !!!!");
+          return "redirect:aux";
     }
     
     private HashMap<String, Object> analizerPartA(String str) {
@@ -746,7 +819,6 @@ public class EventsLogController{
         if(request.getParameterMap().containsKey("event")){
            Integer eventId = Integer.parseInt(request.getParameter("event"));
            eventService.delete(eventId);
-            System.out.println("MIRAME ACA LA PUTA MADRE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 "+eventId);
         }else{
             eventService.deleteAll();
         }
