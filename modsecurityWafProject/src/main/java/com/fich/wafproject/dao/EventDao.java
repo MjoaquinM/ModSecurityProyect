@@ -9,7 +9,7 @@ public interface EventDao {
     
     Event findByTransactionId(String transactionId);
     
-    List<Event> findAllEvent(int pageNumber, String[] targets, String[] names, String[] values);
+    List<Event> findAllEvent(int pageNumber, String[] targets, String[] names, String[] values, boolean pagination);
     
     List<Event> findAllEvent();
     

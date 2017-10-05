@@ -45,7 +45,7 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
     }
 
     @Override
-    public List<Event> findAllEvent(int pageNumber, String[] targets, String[] names, String[] values) {
+    public List<Event> findAllEvent(int pageNumber, String[] targets, String[] names, String[] values, boolean pagination) {
         int pageSize = 6;
         Criteria crit = this.createEntityCriteria();
         crit.setProjection(Projections.distinct(Projections.property("id")));
@@ -86,8 +86,10 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
                 }
             }
         }
-        crit.setFirstResult((pageNumber-1)*pageSize);
-        crit.setMaxResults(pageSize);
+        if (pagination){
+            crit.setFirstResult((pageNumber-1)*pageSize);
+            crit.setMaxResults(pageSize);
+        }
         List<Event> events = new ArrayList<Event>();
         for(Object idEvent : crit.list()){
             System.out.println(idEvent);

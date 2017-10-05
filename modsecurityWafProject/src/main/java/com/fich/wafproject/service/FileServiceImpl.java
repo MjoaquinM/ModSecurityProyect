@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fich.wafproject.dao.FileDao;
 import com.fich.wafproject.model.File;
+import java.util.List;
 
 @Service("fileService")
 @Transactional
@@ -23,6 +24,11 @@ public class FileServiceImpl implements FileService {
     public File findByFilePath(String fp) {
         File file = dao.findByPath(fp);
         return file;
+    }
+    
+    @Override
+    public List<File> findAllFiles() {
+        return dao.findAllFiles();
     }
 
 }
