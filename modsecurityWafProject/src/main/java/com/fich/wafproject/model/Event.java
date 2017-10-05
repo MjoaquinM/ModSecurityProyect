@@ -363,11 +363,11 @@ public class Event implements Serializable {
         this.protocol = protocol;
     }
 
-    public List<Rule> getRuleList() {
+    public List<Rule> getRules() {
         return rules;
     }
 
-    public void setRuleList(List<Rule> rules) {
+    public void setRules(List<Rule> rules) {
         this.rules = rules;
     }
 

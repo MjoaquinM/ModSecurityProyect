@@ -114,7 +114,7 @@
                         <td>${e.clientPort}</td>
                         <td>${e.serverIp}</td>
                         <td>${e.serverPort}</td>
-                        <td>${e.eventRuleList[0].fileId.fileName}</td>
+                        <td>${e.rules[0].fileId.fileName}</td>
                         <td>
                             <a href="get">${e.transactionId}</a>
                         </td>

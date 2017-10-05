@@ -171,7 +171,7 @@ public class EventsLogController{
         //CARGO LOS MAPAS CON LOS DATOS
         for (Event e : events){
             System.out.println("ENTRO AL FOR DE LOS EVENTOS");
-            List<Rule> eventRules = e.getRuleList();
+            List<Rule> eventRules = e.getRules(); 
             for (Rule r : eventRules){
                 if (!("949".equals(r.getRuleId().substring(0, 3)) || "980".equals(r.getRuleId().substring(0, 3)))){
                     ruleVsNumber.put(r, ruleVsNumber.get(r).intValue() + 1 );
@@ -530,7 +530,7 @@ public class EventsLogController{
             }
             
             //Asocio El evento con el conjunto de reglas corerspondientes
-            event.setRuleList(rules);
+            event.setRules(rules);
             try {
                 //Actualizo relaciones
                 eventService.saveEvent(event);
@@ -762,7 +762,7 @@ public class EventsLogController{
         System.out.println("ENTRO A DETAILS FORM: " + transactionId);
         model.addAttribute("idModal", "eventModal");
         Event event = eventService.findByTransactionId(transactionId);
-        List<Rule> rules = event.getRuleList();
+        List<Rule> rules = event.getRules();
         List<File> files = new ArrayList<>();
         for (Rule r : rules){
             files.add(r.getFileId());
