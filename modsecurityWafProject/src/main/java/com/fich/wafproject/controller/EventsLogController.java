@@ -171,23 +171,19 @@ public class EventsLogController{
             }
         }
         
-//        //CARGO LOS MAPAS CON LOS DATOS
-//        for (Event e : events){
-//            List<EventRule> eventRules = e.getEventRuleList();
-//            System.out.println("ENTRO AL FOR DE LOS EVENTOS");
-//            for (EventRule er : eventRules){
-//                Rule ruleAux = er.getRuleId();
-//                if (!("949".equals(ruleAux.getRuleId().substring(0, 3)) || "980".equals(ruleAux.getRuleId().substring(0, 3)))){
-//                    ruleVsNumber.put(ruleAux, ruleVsNumber.get(ruleAux).intValue() + 1 );
-//                    System.out.println("ENTRO AL IF 1");
-//                }
-//                File fileAux = er.getRuleId().getFileId();
-//                if (!(fileAux.getFileName().contains("949") || fileAux.getFileName().contains("980"))){
-//                    fileVsNumber.put(fileAux, fileVsNumber.get(fileAux).intValue() + 1 );
-//                    System.out.println("ENTRO AL IF 2");
-//                }
-//            }
-//        }
+        //CARGO LOS MAPAS CON LOS DATOS
+        for (Event e : events){
+            System.out.println("ENTRO AL FOR DE LOS EVENTOS");
+            List<Rule> eventRules = e.getRuleList();
+            for (Rule r : eventRules){
+                if (!("949".equals(r.getRuleId().substring(0, 3)) || "980".equals(r.getRuleId().substring(0, 3)))){
+                    ruleVsNumber.put(r, ruleVsNumber.get(r).intValue() + 1 );
+                }
+                if (!(r.getFileId().getFileName().contains("949") || r.getFileId().getFileName().contains("980"))){
+                    fileVsNumber.put(r.getFileId(), fileVsNumber.get(r.getFileId()).intValue() + 1 );
+                }
+            }
+        }
         
         //TRANSFORMO LOS MAPAS A LISTAS
         List<JasperCharts> listRuleNumber = new ArrayList<>();
