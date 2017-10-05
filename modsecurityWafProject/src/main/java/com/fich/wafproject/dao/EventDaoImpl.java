@@ -1,12 +1,11 @@
 package com.fich.wafproject.dao;
- 
+
 import java.util.List;
- 
+
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
- 
+
 import com.fich.wafproject.model.Event;
 import com.fich.wafproject.model.Users;
 import java.io.Serializable;
@@ -27,19 +26,19 @@ import org.hibernate.criterion.Subqueries;
  
 @Repository("EventDao")
 public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDao {
- 
+
     public void saveEvent(Event event) {
         persist(event);
     }
-    
+
     @Override
-    public Event findByTransactionId(String transactionId){
+    public Event findByTransactionId(String transactionId) {
         Criteria crit = createEntityCriteria();
         crit.add(Restrictions.eq("transactionId", transactionId));
         Event event = (Event) crit.uniqueResult();
         return event;
     }
-    
+
     public Event findById(Integer id) {
         return getByKey(id);
     }
@@ -49,49 +48,49 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
         int pageSize = 6;
         Criteria crit = this.createEntityCriteria();
         crit.setProjection(Projections.distinct(Projections.property("id")));
-        String dateFrom="",dateTo="",targetDate="";
-        if(names != null){
-            for(String alias:names){
+        String dateFrom = "", dateTo = "", targetDate = "";
+        if (names != null) {
+            for (String alias : names) {
                 crit.createAlias(alias, alias);
             }
         }
         int count = 0;
-        if (values != null){
-            for(String value : values){
-                if (!value.equals("") && value!=null){    
-                    if(targets[count].contains("date")){
-                        if(dateFrom!=""){
-                            dateTo=value;
-                        }else{
-                            dateFrom=value;
-                            targetDate=targets[count];
+        if (values != null) {
+            for (String value : values) {
+                if (!value.equals("") && value != null) {
+                    if (targets[count].contains("date")) {
+                        if (dateFrom != "") {
+                            dateTo = value;
+                        } else {
+                            dateFrom = value;
+                            targetDate = targets[count];
                         }
-                    }else{
-                        crit.add(Restrictions.like(targets[count],"%"+value+"%"));
+                    } else {
+                        crit.add(Restrictions.like(targets[count], "%" + value + "%"));
                     }
                 }
                 count++;
             }
-            if (targetDate!=""){
-                if(dateFrom!="" && dateTo==""){
-                    dateTo=dateFrom;
+            if (targetDate != "") {
+                if (dateFrom != "" && dateTo == "") {
+                    dateTo = dateFrom;
                 }
                 DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                 try {
                     Date dateF = format.parse(dateFrom);
                     Date dateT = format.parse(dateTo);
-                    crit.add(Restrictions.between(targetDate,dateF,dateT));
+                    crit.add(Restrictions.between(targetDate, dateF, dateT));
                 } catch (ParseException ex) {
                     Logger.getLogger(UserHistoryDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
-        if (pagination){
-            crit.setFirstResult((pageNumber-1)*pageSize);
+        if (pagination) {
+            crit.setFirstResult((pageNumber - 1) * pageSize);
             crit.setMaxResults(pageSize);
         }
         List<Event> events = new ArrayList<Event>();
-        for(Object idEvent : crit.list()){
+        for (Object idEvent : crit.list()) {
             System.out.println(idEvent);
             events.add(this.findById((Integer) idEvent));
         }
@@ -104,17 +103,6 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
         return (List<Event>) crit.list();
     }
 
-    @Override
-    public List<Event> findEventsByProperties(String[] properties, String[] values) {
-        Criteria crit = this.createEntityCriteria().setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-        int indx = 0;
-        for(String property : properties){
-            crit.add(Restrictions.like(property,"%"+values[indx++]+"%"));
-        }
-        
-        return (List<Event>) crit.list();
-    }
-    
     @Override
     public void delete(Integer id){
         Event e = this.findById(id);
@@ -129,5 +117,16 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
         for(Event e : events){
             delete(e);
         }
+    }
+
+    @Override
+    public List<Event> findEventsByProperties(String[] properties, String[] values) {
+        Criteria crit = this.createEntityCriteria().setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+        int indx = 0;
+        for(String property : properties){
+            crit.add(Restrictions.like(property,"%"+values[indx++]+"%"));
+        }
+        
+        return (List<Event>) crit.list();
     }
 }

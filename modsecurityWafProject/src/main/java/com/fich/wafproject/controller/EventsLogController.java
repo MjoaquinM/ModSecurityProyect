@@ -1,13 +1,9 @@
 package com.fich.wafproject.controller;
 
-
-import com.fich.wafproject.dao.UserHistoryDaoImpl;
-
 import com.fich.wafproject.model.ConfigurationFiles;
 import com.mysql.jdbc.Connection;
 import com.fich.wafproject.model.Event;
 import com.fich.wafproject.model.File;
-import com.fich.wafproject.model.Item;
 import com.fich.wafproject.model.JasperCharts;
 import com.fich.wafproject.model.Rule;
 import com.fich.wafproject.service.ConfigurationFileService;
@@ -61,7 +57,6 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.JDBCConnectionException;
 import org.slf4j.Logger;
@@ -107,7 +102,7 @@ public class EventsLogController{
     private static List<MessageData> PATH_PREFIX = new ArrayList<MessageData>();// AlertMessages();
     
     @RequestMapping(value = "/jrreport", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> printWelcome(ModelMap model, HttpServletRequest request) throws JRException, FileNotFoundException, IOException {
+    public ResponseEntity<byte[]> printWelcome(ModelMap model, HttpServletRequest request) throws JRException, FileNotFoundException {
         
         System.out.println("ENTRO AL REPORT");
         
@@ -201,19 +196,13 @@ public class EventsLogController{
         parameters.put("listRuleNumber", listRuleNumber);
         parameters.put("listFileNumber", listFileNumber);
         parameters.put("events", events);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        Date date = new Date();
-        parameters.put("fecha", date);
-        parameters.put("direccionIp", "Todas");
-        parameters.put("servicio", "Todos");
         
         //AGREGAR PARAMATROS DE FILTRADO.
         
         JRDataSource jrDatasource = new JRBeanCollectionDataSource(events);
         
-        InputStream reporte = this.getClass().getClassLoader().getResourceAsStream("report.jasper");
         JasperPrint jasperPrint = JasperFillManager.fillReport(
-                reporte,
+                "/home/usuario/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/com/fich/wafproject/report/report.jasper", 
                 parameters,
                 jrDatasource);
         
@@ -234,15 +223,10 @@ public class EventsLogController{
 //        // Exportamos el informe a formato PDF
 //        JasperExportManager.exportReportToPdfFile(print, outputFile);
         
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-//            Date date = new Date();
-            System.out.println(dateFormat.format(date));
-            System.out.println("SALIDA DEL JASPER");
-
         byte[] fichero = JasperExportManager.exportReportToPdf(jasperPrint);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        String filename = "output";
+        String filename = "output.pdf";
         headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
@@ -267,30 +251,26 @@ public class EventsLogController{
         
         lstEvent.add(e);
 
-        List<Item> lstItem = new ArrayList<Item>();
+
         System.out.println("EVENT LIST: " + lstEvent);
         
         /* Create Items */
-        Item iPhone = new Item();
-        iPhone.setName("iPhone 6S");
-        iPhone.setPrice(65000.00);
+
 
 //        Item iPad = new Item();
 //        iPad.setName("iPad Pro");
 //        iPad.setPrice(70000.00);
 
-        /* Add Items to List */
-        lstItem.add(iPhone);
-//        lstItem.add(iPad);
 
-        System.out.println("ITEM LIST: " + lstItem);
+
+
         /* Convert List to JRBeanCollectionDataSource */
-        JRBeanCollectionDataSource itemsJRBean = new JRBeanCollectionDataSource(lstItem);
+
         JRBeanCollectionDataSource eventsJRBean = new JRBeanCollectionDataSource(lstEvent);
 
         /* Map to hold Jasper report Parameters */
         Map<String, Object> parameters = new HashMap<String, Object>();
-        parameters.put("ItemDataSource", itemsJRBean);
+        
         parameters.put("EventDataSource", eventsJRBean);
 
         /* Using compiled version(.jasper) of Jasper report to generate PDF */
@@ -620,7 +600,7 @@ public class EventsLogController{
         try {
             currentDate = format.parse(date);
         } catch (ParseException ex) {
-            java.util.logging.Logger.getLogger(UserHistoryDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(UserHistoryDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return currentDate;
     }
@@ -757,10 +737,11 @@ public class EventsLogController{
         return "eventsList";
     }
     
-    @RequestMapping(value = "/eventList/eventDetailsForm", method = RequestMethod.GET)
+     @RequestMapping(value = "/eventDetailsForm", method = RequestMethod.GET)
     public String getAddUserForm(ModelMap model, @RequestParam("transactionId") String transactionId) {
         System.out.println("ENTRO A DETAILS FORM: " + transactionId);
         model.addAttribute("idModal", "eventModal");
+        
         Event event = eventService.findByTransactionId(transactionId);
         List<Rule> rules = event.getRules();
         List<File> files = new ArrayList<>();
@@ -768,9 +749,43 @@ public class EventsLogController{
             files.add(r.getFileId());
         }
         
+                
+        event.setPartA(event.getPartA().substring(event.getPartA().indexOf("A--")+4).replace("\n", "<br/>"));
+        
+        if (!(event.getPartB() == null)){
+            event.setPartB(event.getPartB().substring(event.getPartB().indexOf("B--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartC() == null)){
+            event.setPartC(event.getPartC().substring(event.getPartC().indexOf("C--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartD() == null)){
+            event.setPartD(event.getPartD().substring(event.getPartD().indexOf("D--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartE() == null)){
+            event.setPartE(event.getPartE().substring(event.getPartE().indexOf("E--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartF() == null)){
+            event.setPartF(event.getPartF().substring(event.getPartF().indexOf("F--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartG() == null)){
+            event.setPartG(event.getPartG().substring(event.getPartG().indexOf("G--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartH() == null)){
+            event.setPartH(event.getPartH().substring(event.getPartH().indexOf("H--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartI() == null)){
+            event.setPartI(event.getPartI().substring(event.getPartI().indexOf("I--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartJ() == null)){
+            event.setPartJ(event.getPartJ().substring(event.getPartJ().indexOf("J--")+4).replace("\n", "<br/>"));
+        }
+        if (!(event.getPartK() == null)){
+            event.setPartK(event.getPartK().substring(event.getPartK().indexOf("K--")+4).replace("\n", "<br/>"));
+        }
+        
         model.addAttribute("event",event);
         model.addAttribute("rules",rules);
-        model.addAttribute("files   ",files);
+        model.addAttribute("files",files);
         return "eventDetailsForm";
     }
     

@@ -8,9 +8,9 @@ $(document).ready(function () {
     $('.attribute-description').click(function(e) {
         e.preventDefault();
     });
-    
+
     $('.message-status-container > div').fadeOut(7000);
-    
+
     /************************LOGIN PAGE****************************/
 
     //Center login form
@@ -608,13 +608,13 @@ $(document).ready(function () {
     
     /************************MANAGE RULES END****************************/
     
-    /************************MANAGE EVENTS****************************/
+    /************************EVENTS****************************/
     $('.event-filter-btn').on('click',function(){
         $('#event-filter-form').find('#pageNumber').val($(this).val());
         $('#event-filter-form').submit();
     });
 
-$('.show-event-details').on('click', function () {
+    $('.show-event-details').on('click', function () {
         /*<VARIABLES>*/
         var modalTitle = 'Event Details';
         var data = {};

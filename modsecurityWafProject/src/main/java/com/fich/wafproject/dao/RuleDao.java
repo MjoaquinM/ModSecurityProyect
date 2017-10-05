@@ -14,6 +14,5 @@ public interface RuleDao {
     
     public List<Rule> findAllRules();
 
-//    List<Rule> findAll();
     
 }

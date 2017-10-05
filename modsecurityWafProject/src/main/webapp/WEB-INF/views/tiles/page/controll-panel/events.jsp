@@ -91,44 +91,48 @@
         </form>
     </div>
     <div class="row">
-        <table class="table table-bordered table-striped table-hover">
-            <thead>
-                <tr>
-                    <td><strong>ID</strong></td>
-                    <td><strong>Date</strong></td>
-                    <td><strong>SourceIP</strong></td>
-                    <td><strong>SourcePort</strong></td>
-                    <td><strong>DestinationIP</strong></td>
-                    <td><strong>DestinationPort</strong></td>
-                    <td><strong>ClassAtack</strong></td>
-                    <td><strong>Details</strong></td>
-                    <td><strong>Action</strong></td>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach items="${lst}" var="e">
+        <table class="table table-bordered table-striped">
+                <thead>
                     <tr>
-                        <td>${e.id}</td>
-                        <td>${e.dateEvent}</td>
-                        <td>${e.clientIp}</td>
-                        <td>${e.clientPort}</td>
-                        <td>${e.serverIp}</td>
-                        <td>${e.serverPort}</td>
-                        <td>${e.rules[0].fileId.fileName}</td>
-                        <td>
-                            <a href="get">${e.transactionId}</a>
-                        </td>
-                        <td>
-                            <strong> 
-                                <a class="btn btn-danger" href="<c:url value="/deleteAllEvents?event=${e.id}" />">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                </a> 
-                            </strong>
-                        </td>
+                        <th>Date</th>
+                        <th>SourceIP</th>
+                        <th>SourcePort</th>
+                        <th>DestinationIP</th>
+                        <th>DestinationPort</th>
+                        <th>Method</th>
+                        <th>Service</th>
+                        <th>Protocol</th>
+                        <th>Details</th>
+                        <td><strong>Action</strong></td>
                     </tr>
-                </c:forEach>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <c:forEach items="${lst}" var="e">
+                        <tr>
+                            <td>${e.dateEvent}</td>
+                            <td>${e.clientIp}</td>
+                            <td>${e.clientPort}</td>
+                            <td>${e.serverIp}</td>
+                            <td>${e.serverPort}</td>
+                            <th>${e.method}</th>
+                            <th>${e.destinationPage}</th>
+                            <th>${e.protocol}</th>
+                            <td>
+                                <a class="show-event-details" data-action="showEvent" data-id="${e.transactionId}">
+                                    ${e.transactionId}
+                                </a>
+                            </td>
+                            <td>
+                                <strong> 
+                                    <a class="btn btn-danger" href="<c:url value="/deleteAllEvents?event=${e.id}" />">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </a> 
+                                </strong>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
         <div class="btn-group">
             <button type="button" class="btn btn-primary event-filter-btn" value="${pageNumber-1}">Previus</button>
             <button type="button" class="btn btn-primary event-filter-btn" value="${pageNumber}">${pageNumber}</button>

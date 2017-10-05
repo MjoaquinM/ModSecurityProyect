@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>    
 
 <table class="table table-hover">
-    <tbody>
+    <tbody>      
         <tr>
             <td>
                 <div class="form-group col-md-12">
@@ -52,6 +52,141 @@
                 </div>
             </td>
         </tr>
+        <tr>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>
+                                <h4><strong>Transaction Parts Details</strong></h4>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong>Part A</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>${event.partA}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Part B</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>${event.partB}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Part C</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>${event.partC}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Part D</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>${event.partD}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Part E</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>${event.partE}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Part F</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>${event.partF}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Part G</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>${event.partG}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Part H</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>${event.partH}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Part I</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>${event.partI}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Part J</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>${event.partJ}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Part K</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>${event.partK}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Part Z</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p>${event.partZ}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>      
     </tbody>
 </table>
 

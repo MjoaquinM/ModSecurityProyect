@@ -30,5 +30,4 @@ public class RuleServiceImpl implements RuleService {
     public List<Rule> findAllRules() {
         return dao.findAllRules();
     }
-
 }

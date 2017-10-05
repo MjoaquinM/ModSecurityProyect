@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ffcf61c3-11bc-4d9c-8ee9-4ad108d3f8fa">
+	<property name="ireport.zoom" value="1.2100000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset1" uuid="2492d4ca-bd30-415e-9317-6d7a6be35b4f">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.Number"/>
+	</subDataset>
+	<parameter name="listRuleNumber" class="java.util.List" isForPrompting="false"/>
+	<parameter name="listFileNumber" class="java.util.List" isForPrompting="false"/>
+	<parameter name="events" class="java.util.List" isForPrompting="false"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#006699" uuid="9b5aeaf6-b7ec-44e4-a8b0-53cd208f1c75"/>
+				<staticText>
+					<reportElement x="20" y="20" width="375" height="53" forecolor="#FFFFFF" uuid="bc812774-4bea-4afe-a946-6e73e8f101d3"/>
+					<textElement>
+						<font fontName="SansSerif" size="20" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Reporte de eventos 
+de ModSecurity]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="395" y="43" width="180" height="20" forecolor="#FFFFFF" uuid="2ab354f3-2770-491e-9a5b-a62885105407"/>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="12" isBold="false"/>
+					</textElement>
+					<text><![CDATA[GOBIERNO DE SANTA FE]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="74">
+			<staticText>
+				<reportElement x="17" y="11" width="109" height="20" uuid="76dc91e0-8392-4c65-be9c-3289e2060234"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Fecha inicial:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="31" width="109" height="20" uuid="53540a34-4185-4c99-a5b1-78522563a6d3"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Direccion IP:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="17" y="51" width="109" height="20" uuid="e3187760-0c82-464c-a888-d481c50b5746"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Servicio atacado:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="71" width="555" height="1" uuid="778f2d61-7b49-453f-86fe-2fe0da965afc"/>
+			</line>
+		</band>
+	</columnHeader>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="d9f07e0b-394d-4b7b-ba20-7ed067518c55"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="e80d21ae-9b4a-4220-8db5-17aac3d1d9e3"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="4" width="100" height="13" uuid="fe443c7b-fff3-40b3-9ae7-311041672bcc"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="384">
+			<componentElement>
+				<reportElement x="59" y="334" width="418" height="22" uuid="2b77c4a0-e2c4-4137-a630-3329b178c433"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="dataset1" uuid="132ce75a-54e1-446e-a303-2a2bb287bc99">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listRuleNumber})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="22" width="418">
+						<textField>
+							<reportElement x="9" y="0" width="100" height="20" uuid="a3dee19b-b307-45e8-8868-22f05837de71"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="221" y="0" width="100" height="20" uuid="182c90c3-a916-4020-a3c5-4bdaee02b663"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<pieChart>
+				<chart>
+					<reportElement x="126" y="95" width="245" height="138" uuid="2d0a36a2-fc75-46ac-a16c-c9114555aa5f"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset>
+						<datasetRun subDataset="dataset1" uuid="64af86ab-8ed1-420c-823f-aacb8d560d7e">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listRuleNumber})]]></dataSourceExpression>
+						</datasetRun>
+					</dataset>
+					<keyExpression><![CDATA[$F{campo}]]></keyExpression>
+					<valueExpression><![CDATA[$F{valor}]]></valueExpression>
+					<labelExpression><![CDATA[""+$F{valor}]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+		</band>
+	</summary>
+</jasperReport>
