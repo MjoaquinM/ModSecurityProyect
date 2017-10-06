@@ -102,7 +102,7 @@ public class EventsLogController{
     private static List<MessageData> PATH_PREFIX = new ArrayList<MessageData>();// AlertMessages();
     
     @RequestMapping(value = "/jrreport", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> printWelcome(ModelMap model, HttpServletRequest request) throws JRException, FileNotFoundException {
+    public ResponseEntity<byte[]> printWelcome(ModelMap model, HttpServletRequest request) throws JRException, FileNotFoundException, IOException {
         
         System.out.println("ENTRO AL REPORT");
         
@@ -124,14 +124,14 @@ public class EventsLogController{
         String[] n2 = request.getParameterValues("filter-parameters-labels");
         HashMap hm = new HashMap<String,String>();
         
-        if(n1 != null){
-            int count = 0;
-            for(String val: n1){
-                hm.put(n2[count], val);
-                System.out.println("EN EL HASHMAP => PARAMETER: " + n2[count] +"    VALOR: " + val);
-                count++;
-            }
-        }
+//        if(n1 != null){
+//            int count = 0;
+//            for(String val: n1){
+//                hm.put(n2[count], val);
+//                System.out.println("EN EL HASHMAP => PARAMETER: " + n2[count] +"    VALOR: " + val);
+//                count++;
+//            }
+//        }
         
         //Tomo la lista de eventos
 //        List<Event> events = eventService.findAllEvents();
@@ -139,6 +139,7 @@ public class EventsLogController{
         List<File> files = fileService.findAllFiles();
         
         //Solo para ver q trajo
+        System.out.println("LAS LISTAS QUE TRAJO SON");
         for (Event e : events){
             System.out.println("EVENT: " + e.getTransactionId());
         }
@@ -152,7 +153,7 @@ public class EventsLogController{
         //INICIALIZO MAPAS PARA CADA GRAFICO
         Map<Rule, Number> ruleVsNumber = new HashMap<>();   //cantidad de ataques por cada regla
         Map<File, Number> fileVsNumber = new HashMap<>();   //cantidad de ataques por cada clase de ataque
-        
+        Map<String, Number> dateVsNumber = new HashMap<>();
         for (Rule r : rules){
             if (!("949".equals(r.getRuleId().substring(0, 3)) || "980".equals(r.getRuleId().substring(0, 3))))
                 ruleVsNumber.put(r, 0);
@@ -165,8 +166,9 @@ public class EventsLogController{
         
         //CARGO LOS MAPAS CON LOS DATOS
         for (Event e : events){
+            //ruleVsNumber y fileVsNumber
             System.out.println("ENTRO AL FOR DE LOS EVENTOS");
-            List<Rule> eventRules = e.getRules(); 
+            List<Rule> eventRules = e.getRules();
             for (Rule r : eventRules){
                 if (!("949".equals(r.getRuleId().substring(0, 3)) || "980".equals(r.getRuleId().substring(0, 3)))){
                     ruleVsNumber.put(r, ruleVsNumber.get(r).intValue() + 1 );
@@ -174,6 +176,14 @@ public class EventsLogController{
                 if (!(r.getFileId().getFileName().contains("949") || r.getFileId().getFileName().contains("980"))){
                     fileVsNumber.put(r.getFileId(), fileVsNumber.get(r.getFileId()).intValue() + 1 );
                 }
+            }
+            //dateVsNumber
+            Date d = e.getDateEvent();
+            String date = d.toString().substring(0, 10);
+            if (dateVsNumber.get(date) != null){
+                dateVsNumber.put(date, dateVsNumber.get(date).intValue() + 1);
+            }else{
+                dateVsNumber.put(date, 1);
             }
         }
         
@@ -190,19 +200,47 @@ public class EventsLogController{
             System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
             listFileNumber.add(new JasperCharts(entry.getKey().getFileName(),entry.getValue()));
         }
+        System.out.println("LISTA DE DATE:");
+        List<JasperCharts> listDateNumber = new ArrayList<>();
+        for (Map.Entry<String, Number> entry : dateVsNumber.entrySet()) {
+            System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
+            listDateNumber.add(new JasperCharts(entry.getKey(),entry.getValue()));
+        }
         
         //PASO LAS LISTAS AL REPORTE POR PARAMETRO
+        String dateEventFrom = null,
+                clientIpSource = null,
+                clientPortSource = null,
+                dateEventTo = null,
+                serverIpSource = null,
+                serverIpDestination = null;
+        
+        if (n1.length > 0) {
+            dateEventFrom = n1[0];
+            clientIpSource = n1[1];
+            clientPortSource = n1[2];
+            dateEventTo = n1[3];
+            serverIpSource = n1[4];
+            serverIpDestination = n1[5];
+        }
+
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("listRuleNumber", listRuleNumber);
         parameters.put("listFileNumber", listFileNumber);
         parameters.put("events", events);
-        
-        //AGREGAR PARAMATROS DE FILTRADO.
+        //Parametros del filtrado
+        parameters.put("dateEventFrom", dateEventFrom);
+        parameters.put("clientIpSource", clientIpSource);
+        parameters.put("clientPortSource", clientPortSource);
+        parameters.put("dateEventTo", dateEventTo);
+        parameters.put("serverIpDestination", serverIpDestination);
+        parameters.put("serverIpSource", serverIpSource);
         
         JRDataSource jrDatasource = new JRBeanCollectionDataSource(events);
         
+        InputStream reporte = this.getClass().getClassLoader().getResourceAsStream("report.jasper");
         JasperPrint jasperPrint = JasperFillManager.fillReport(
-                "/home/usuario/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/com/fich/wafproject/report/report.jasper", 
+                reporte,
                 parameters,
                 jrDatasource);
         
@@ -223,10 +261,15 @@ public class EventsLogController{
 //        // Exportamos el informe a formato PDF
 //        JasperExportManager.exportReportToPdfFile(print, outputFile);
         
+//        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+//            Date date = new Date();
+//            System.out.println(dateFormat.format(date));
+            System.out.println("SALIDA DEL JASPER");
+
         byte[] fichero = JasperExportManager.exportReportToPdf(jasperPrint);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        String filename = "output.pdf";
+        String filename = "output";
         headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);

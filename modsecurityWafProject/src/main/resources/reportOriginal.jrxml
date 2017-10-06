@@ -163,17 +163,20 @@
 			</staticText>
 			<pieChart>
 				<chart>
-					<reportElement x="121" y="40" width="285" height="222" uuid="97c4a042-c971-4398-adcc-ebb2ce62df40"/>
+					<reportElement x="106" y="40" width="324" height="212" uuid="3f06fe12-6bab-4666-8431-a5c05f4a7c55"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
 				</chart>
 				<pieDataset>
 					<dataset>
-						<datasetRun subDataset="dataset1" uuid="a3318456-3985-4437-bb14-bd5fb8617f24"/>
+						<datasetRun subDataset="dataset1" uuid="da66d750-a10c-4c87-ba5e-885a4baa146d">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listRuleNumber})]]></dataSourceExpression>
+						</datasetRun>
 					</dataset>
 					<keyExpression><![CDATA[$F{campo}]]></keyExpression>
 					<valueExpression><![CDATA[$F{valor}]]></valueExpression>
+					<labelExpression><![CDATA[""+$F{valor}]]></labelExpression>
 				</pieDataset>
 				<piePlot>
 					<plot/>

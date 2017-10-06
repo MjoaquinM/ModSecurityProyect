@@ -2,17 +2,17 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f9497b3e-d9e5-486b-a7bb-856238d001e8">
 	<property name="ireport.zoom" value="1.46410000000002"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="33"/>
+	<property name="ireport.y" value="41"/>
 	<subDataset name="dataset1" uuid="7d5c58ab-cad7-452a-ab08-4a057ef96bb4">
 		<field name="transactionId" class="java.lang.String"/>
 		<field name="dateEvent" class="java.lang.String"/>
 	</subDataset>
 	<subDataset name="fileVsNumber" uuid="9b5a9636-8dbf-4b7b-8230-a7907a4af2f7">
 		<field name="campo" class="java.lang.String"/>
-		<field name="valor" class="java.lang.String"/>
+		<field name="valor" class="java.lang.Number"/>
 	</subDataset>
 	<parameter name="events" class="java.util.List" isForPrompting="false"/>
-	<parameter name="fecha" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="fecha" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="direccionIp" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="servicio" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="listFileNumber" class="java.util.List" isForPrompting="false"/>
@@ -133,9 +133,9 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="325">
+		<band height="559">
 			<componentElement>
-				<reportElement x="53" y="303" width="440" height="0" uuid="2c8bf4bd-614d-4ff3-91c0-06eb09d8ec97"/>
+				<reportElement x="53" y="507" width="440" height="0" uuid="2c8bf4bd-614d-4ff3-91c0-06eb09d8ec97"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="dataset1" uuid="22b77096-2e44-4576-a247-2c3b3b782290">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{events})]]></dataSourceExpression>
@@ -144,18 +144,18 @@
 				</jr:list>
 			</componentElement>
 			<componentElement>
-				<reportElement x="53" y="67" width="425" height="118" uuid="f6091eca-9070-4bdc-a280-93c11534f9d5"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<reportElement x="68" y="373" width="425" height="118" uuid="f6091eca-9070-4bdc-a280-93c11534f9d5"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="fileVsNumber" uuid="580a44fa-acdb-4674-ba99-8662653b2356">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listFileNumber})]]></dataSourceExpression>
 					</datasetRun>
 					<jr:listContents height="118" width="425">
 						<textField>
-							<reportElement x="51" y="38" width="340" height="20" uuid="03cc3aa8-23ad-4fbf-9b6d-3ea3473580ec"/>
+							<reportElement x="58" y="21" width="100" height="20" uuid="a8ce9bb5-e578-475f-8a42-6cbbefba4216"/>
 							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
 						</textField>
 						<textField>
-							<reportElement x="291" y="85" width="100" height="20" uuid="8137997b-5f84-4c7b-9394-0e96b7fac173"/>
+							<reportElement x="56" y="68" width="100" height="20" uuid="d31f90e0-d8e5-4aaa-ac84-cc10c42dd77e"/>
 							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
