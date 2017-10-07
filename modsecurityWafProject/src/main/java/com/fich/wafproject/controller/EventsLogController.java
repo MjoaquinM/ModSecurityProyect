@@ -200,7 +200,7 @@ public class EventsLogController{
             System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
             listFileNumber.add(new JasperCharts(entry.getKey().getFileName(),entry.getValue()));
         }
-        System.out.println("LISTA DE DATE:");
+        System.out.println("LISTA DE DATE (eventos):");
         List<JasperCharts> listDateNumber = new ArrayList<>();
         for (Map.Entry<String, Number> entry : dateVsNumber.entrySet()) {
             System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
@@ -209,32 +209,35 @@ public class EventsLogController{
         
         //PASO LAS LISTAS AL REPORTE POR PARAMETRO
         String dateEventFrom = null,
-                clientIpSource = null,
-                clientPortSource = null,
+                clientIp = null,
+                clientPort = null,
                 dateEventTo = null,
-                serverIpSource = null,
-                serverIpDestination = null;
+                serverIp = null,
+                serverPort = null;
         
-        if (n1.length > 0) {
-            dateEventFrom = n1[0];
-            clientIpSource = n1[1];
-            clientPortSource = n1[2];
-            dateEventTo = n1[3];
-            serverIpSource = n1[4];
-            serverIpDestination = n1[5];
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        if (n1 != null) {
+            dateEventFrom = "".equals(n1[0]) ? "Inicio de registros" : n1[0];
+            clientIp = "".equals(n1[1]) ? "Todas" : n1[1];
+            clientPort = "".equals(n1[2]) ? "Todos" : n1[2];
+            dateEventTo = "".equals(n1[3]) ? date.toString() : n1[3];
+            serverIp = "".equals(n1[4]) ? "Todas" : n1[4];
+            serverPort = "".equals(n1[5]) ? "Todas" : n1[5];
         }
-
+        
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("listRuleNumber", listRuleNumber);
         parameters.put("listFileNumber", listFileNumber);
+        parameters.put("listDateNumber", listDateNumber);
         parameters.put("events", events);
         //Parametros del filtrado
         parameters.put("dateEventFrom", dateEventFrom);
-        parameters.put("clientIpSource", clientIpSource);
-        parameters.put("clientPortSource", clientPortSource);
+        parameters.put("clientIp", clientIp);
+        parameters.put("clientPort", clientPort);
         parameters.put("dateEventTo", dateEventTo);
-        parameters.put("serverIpDestination", serverIpDestination);
-        parameters.put("serverIpSource", serverIpSource);
+        parameters.put("serverIp", serverIp);
+        parameters.put("serverPort", serverPort);
         
         JRDataSource jrDatasource = new JRBeanCollectionDataSource(events);
         
