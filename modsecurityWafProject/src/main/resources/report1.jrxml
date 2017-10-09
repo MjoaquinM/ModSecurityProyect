@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="14874671-00d2-4654-8e20-f9856528c156">
+	<property name="ireport.zoom" value="1.3310000000000035"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<subDataset name="dataset1" uuid="06bf04b9-5d91-46d2-9d55-df4108715b53">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.Number"/>
+	</subDataset>
+	<subDataset name="dataset2" uuid="f4b857a6-cb26-458c-bcc3-a9bd631b606f">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.Number"/>
+	</subDataset>
+	<parameter name="listFileNumber" class="java.util.List" isForPrompting="false"/>
+	<parameter name="listDateNumber" class="java.util.List" isForPrompting="false"/>
+	<parameter name="events" class="java.util.List" isForPrompting="false"/>
+	<parameter name="dateEventFrom" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="clientIp" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="clientPort" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="dateEventTo" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="serverIp" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="serverPort" class="java.lang.String" isForPrompting="false"/>
+	<field name="dateEvent" class="java.lang.String"/>
+	<field name="destinationPage" class="java.lang.String"/>
+	<field name="clientIp" class="java.lang.String"/>
+	<field name="method" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<image>
+				<reportElement x="275" y="0" width="300" height="64" uuid="e0625dbf-1df1-48ff-bb13-f9e009b689e0"/>
+				<imageExpression><![CDATA["leaf_banner_green.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="0" y="13" width="305" height="33" uuid="1876b419-55a7-4556-9609-d7f181828ad2"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Reporte de ModSecurity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="100" y="46" width="174" height="22" uuid="d766fa4d-93a6-4cd2-a615-5edada10b4bf"/>
+				<text><![CDATA[Módulo Estadístico]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="65">
+			<staticText>
+				<reportElement x="11" y="24" width="100" height="20" uuid="f35ab23d-37c1-4b68-91dd-07809dfa65df"/>
+				<text><![CDATA[IP cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="251" y="44" width="100" height="20" uuid="b718f815-2f61-4ef5-8f9a-b1b75eae5008"/>
+				<text><![CDATA[Puerto servidor:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="351" y="4" width="100" height="20" uuid="20a85bd9-7951-4229-8dfa-4b6e3df9923e"/>
+				<textFieldExpression><![CDATA[$P{dateEventTo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="251" y="4" width="100" height="20" uuid="aa7eb1d1-bbee-4bcd-910b-74d58cb470b0"/>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="111" y="24" width="100" height="20" uuid="46458194-0264-4930-82d5-75a72e44a05c"/>
+				<textFieldExpression><![CDATA[$P{clientIp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="111" y="44" width="100" height="20" uuid="69c28d57-7b66-4935-b6b5-3251c768c961"/>
+				<textFieldExpression><![CDATA[$P{clientPort}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="4" width="100" height="20" uuid="0450ec30-3e2c-4f78-903e-3b9a70e71a6b"/>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="251" y="24" width="100" height="20" uuid="ffaacae3-2ac7-4fe5-bdd7-61ab6f26e0e9"/>
+				<text><![CDATA[IP servidor:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="351" y="24" width="100" height="20" uuid="eb8cf4ec-6aca-4fbd-af2c-44091d9da040"/>
+				<textFieldExpression><![CDATA[$P{serverIp}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="44" width="100" height="20" uuid="b2d0c4f5-f6d7-45aa-a0e2-c6c8cafb5d26"/>
+				<text><![CDATA[Puerto cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="111" y="4" width="104" height="20" uuid="fae5c8cf-9f6f-46a6-9df9-74c48fc7c889"/>
+				<textFieldExpression><![CDATA[$P{dateEventFrom}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="351" y="44" width="100" height="20" uuid="7bedf452-8ba8-4d65-9cb6-70f6e0e95fc5"/>
+				<textFieldExpression><![CDATA[$P{serverPort}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="64" width="555" height="1" uuid="ae68745b-a595-4558-8de5-c83eb4b22e6b"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement x="11" y="1" width="100" height="20" uuid="ff61c8ea-6ee0-4c5c-8ce1-0d57fb488190"/>
+				<text><![CDATA[Fecha del evento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="111" y="1" width="100" height="20" uuid="4e418355-4844-4d80-a794-8526152693b4"/>
+				<text><![CDATA[IP cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="211" y="1" width="100" height="20" uuid="c8b1be55-f5ee-4812-a517-9fbf4d010d9f"/>
+				<text><![CDATA[Método]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="311" y="1" width="100" height="20" uuid="ed4d638e-195e-4e62-8103-f1ec88dfe5b8"/>
+				<text><![CDATA[Servicio]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField>
+				<reportElement x="11" y="0" width="100" height="20" uuid="167f3e52-e150-4bf4-8b9a-837d9a5ea79e"/>
+				<textFieldExpression><![CDATA[$F{dateEvent}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="111" y="0" width="100" height="20" uuid="0c1bf8e0-a981-4502-ad45-a570b62970c5"/>
+				<textFieldExpression><![CDATA[$F{clientIp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="211" y="0" width="100" height="20" uuid="59c6706f-d0a7-465d-bcc8-a4d5785ab62e"/>
+				<textFieldExpression><![CDATA[$F{method}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="311" y="0" width="111" height="20" uuid="d913cd39-7934-4610-b9c4-2d977c2d2cbc"/>
+				<textFieldExpression><![CDATA[$F{destinationPage}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="550">
+			<pieChart>
+				<chart>
+					<reportElement x="111" y="36" width="332" height="231" uuid="571229fa-11b4-44e1-9af8-c11ec4695006"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset>
+						<datasetRun subDataset="dataset1" uuid="010d10f9-4c97-4031-9358-8211d78b7aa6">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource ($P{listFileNumber})]]></dataSourceExpression>
+						</datasetRun>
+					</dataset>
+					<keyExpression><![CDATA[$F{campo}]]></keyExpression>
+					<valueExpression><![CDATA[$F{valor}]]></valueExpression>
+					<labelExpression><![CDATA[""+$F{valor}]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+			<barChart>
+				<chart>
+					<reportElement x="111" y="307" width="332" height="224" uuid="0ff9f1c8-689f-4086-83c0-b916435efc27"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<dataset>
+						<datasetRun subDataset="dataset2" uuid="e8c0c231-9957-4ea9-83db-3c1d259ce4bf">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listDateNumber})]]></dataSourceExpression>
+						</datasetRun>
+					</dataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Eventos por dia"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{campo}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{valor}]]></valueExpression>
+						<labelExpression><![CDATA[""+$F{valor}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+			<staticText>
+				<reportElement x="169" y="287" width="217" height="20" uuid="fe39622c-e321-462f-97d0-a2fc8cf4ee54"/>
+				<text><![CDATA[Cantidad de eventos detectados por día]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="167" y="17" width="220" height="20" uuid="fcde3b30-2306-49e1-9319-6e72cfdc3171"/>
+				<text><![CDATA[Cantidad de eventos por cada tipo de regla]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="16" width="555" height="1" uuid="12ae4e07-76f3-40e9-8400-32811685143e"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

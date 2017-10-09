@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -178,8 +180,10 @@ public class EventsLogController{
                 }
             }
             //dateVsNumber
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
             Date d = e.getDateEvent();
-            String date = d.toString().substring(0, 10);
+//            String date = d.toString().substring(0, 10);
+            String date = dateFormat.format(d).substring(5, 10);
             if (dateVsNumber.get(date) != null){
                 dateVsNumber.put(date, dateVsNumber.get(date).intValue() + 1);
             }else{
@@ -202,9 +206,9 @@ public class EventsLogController{
         }
         System.out.println("LISTA DE DATE (eventos):");
         List<JasperCharts> listDateNumber = new ArrayList<>();
-        for (Map.Entry<String, Number> entry : dateVsNumber.entrySet()) {
-            System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
-            listDateNumber.add(new JasperCharts(entry.getKey(),entry.getValue()));
+        SortedSet<String> keys = new TreeSet<>(dateVsNumber.keySet());
+        for (String key : keys){
+            listDateNumber.add(new JasperCharts(key,dateVsNumber.get(key)));
         }
         
         //PASO LAS LISTAS AL REPORTE POR PARAMETRO
@@ -241,7 +245,7 @@ public class EventsLogController{
         
         JRDataSource jrDatasource = new JRBeanCollectionDataSource(events);
         
-        InputStream reporte = this.getClass().getClassLoader().getResourceAsStream("report.jasper");
+        InputStream reporte = this.getClass().getClassLoader().getResourceAsStream("report1.jasper");
         JasperPrint jasperPrint = JasperFillManager.fillReport(
                 reporte,
                 parameters,
