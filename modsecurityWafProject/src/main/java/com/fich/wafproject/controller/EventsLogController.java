@@ -228,6 +228,13 @@ public class EventsLogController{
             dateEventTo = "".equals(n1[3]) ? date.toString() : n1[3];
             serverIp = "".equals(n1[4]) ? "Todas" : n1[4];
             serverPort = "".equals(n1[5]) ? "Todas" : n1[5];
+        }else{
+            dateEventFrom = "Inicio de registros";
+            clientIp = "Todas";
+            clientPort = "Todos";
+            dateEventTo = date.toString();
+            serverIp = "Todas";
+            serverPort = "Todas";
         }
         
         Map<String, Object> parameters = new HashMap<String, Object>();
