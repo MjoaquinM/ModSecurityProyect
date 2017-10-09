@@ -54,5 +54,9 @@ public class UserServiceImpl implements UserService{
     public List<Users> findAll(){
         return dao.findAll();
     }
+    
+    public List<Users> findAll(int pageNumber, String[] targets, String[] names, String[] values, boolean pagination){
+        return this.dao.findAll(pageNumber, targets, names, values, pagination);
+    }
  
 }

@@ -14,8 +14,17 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
  
 import com.fich.wafproject.model.Users;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
  
 @Repository("userDao")
 public class UserDaoImpl extends AbstractDao<Long, Users> implements UserDao {
@@ -51,4 +60,56 @@ public class UserDaoImpl extends AbstractDao<Long, Users> implements UserDao {
         return (List<Users>)crit.list();
     }
     
+    public List<Users> findAll(int pageNumber, String[] targets, String[] names, String[] values, boolean pagination){
+        int pageSize = 4;
+        Criteria crit = this.createEntityCriteria();
+        crit.setProjection(Projections.distinct(Projections.property("id")));
+        String dateFrom = "", dateTo = "", targetDate = "";
+        if (names != null) {
+            for (String alias : names) {
+                crit.createAlias(alias, alias);
+            }
+        }
+        int count = 0;
+        if (values != null) {
+            for (String value : values) {
+                if (!value.equals("") && value != null) {
+                    if (targets[count].contains("date")) {
+                        if (dateFrom != "") {
+                            dateTo = value;
+                        } else {
+                            dateFrom = value;
+                            targetDate = targets[count];
+                        }
+                    } else {
+                        crit.add(Restrictions.like(targets[count], "%" + value + "%"));
+                    }
+                }
+                count++;
+            }
+            if (targetDate != "") {
+                if (dateFrom != "" && dateTo == "") {
+                    dateTo = dateFrom;
+                }
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                try {
+                    Date dateF = format.parse(dateFrom);
+                    Date dateT = format.parse(dateTo);
+                    crit.add(Restrictions.between(targetDate, dateF, dateT));
+                } catch (ParseException ex) {
+                    Logger.getLogger(UserDaoImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        if (pagination) {
+            crit.setFirstResult((pageNumber - 1) * pageSize);
+            crit.setMaxResults(pageSize);
+        }
+        List<Users> users = new ArrayList<Users>();
+        for (Object idEvent : crit.list()) {
+            System.out.println(idEvent);
+            users.add(this.findById((Long) idEvent));
+        }
+        return (List<Users>) users;
+    }
 }

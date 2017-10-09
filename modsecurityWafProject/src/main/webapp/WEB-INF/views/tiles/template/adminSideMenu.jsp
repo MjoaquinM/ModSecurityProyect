@@ -16,17 +16,17 @@
                         <li>
                             <a href="<c:url value="/historyUsers" />">User History</a>
                         </li>
-                        <li>
-                            <a href="<c:url value="/chronHistoryUsers" />">Chronological History (que sería esto?)</a>
-                        </li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
                 <li>
-                    <a href="<c:url value="/configurationFiles" />"><i class="fa fa-file fa-fw" aria-hidden="true"></i>Manage Files Configuration</a>
+                    <a><i class="fa fa-file fa-fw" aria-hidden="true"></i>Manage Files Configuration</a>
                 </li>
                 <li class="active">
                     <ul class="nav nav-third-level collapse in" aria-expanded="true" style="">
+                        <li>
+                            <a href="<c:url value="/configurationFiles" />">Files Configuration List</a>
+                        </li>
                         <c:forEach items="${configFiles}" var="configFile">
                             <li>
                                 <a href="<c:url value="/confFileTemp?currentFile=${configFile.name}" />">${configFile.name}</a>

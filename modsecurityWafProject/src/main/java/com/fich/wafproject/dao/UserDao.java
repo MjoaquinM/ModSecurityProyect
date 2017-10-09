@@ -22,6 +22,8 @@ public interface UserDao {
     
     List<Users> findAll();
     
+    List<Users> findAll(int pageNumber, String[] targets, String[] names, String[] values, boolean pagination);
+            
     void update(Users user);
     
     void delete(Long user);

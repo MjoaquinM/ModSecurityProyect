@@ -290,127 +290,127 @@ public class EventsLogController{
         return response;
     }
     
-    @RequestMapping(value = "/jasperEntitiesPDF", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> jasperEntitiesPDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException, FileNotFoundException {
-        System.out.println("ENTRO AL JASPER ENTITIES");
-        /* User home directory location */
-        String userHomeDirectory = System.getProperty("user.home");
-        /* Output file location */
-        String outputFile = userHomeDirectory + java.io.File.separatorChar + "JasperTableExample.pdf";
-
-//        List<Event> lstEvent = eventService.findAllEvents(0);
-        List<Event> lstEvent = new ArrayList<>();
-        
-        Event e = new Event();
-        
-        e.setTransactionId("SOY EL TXID");
-        e.setClientIp("soy el client ip");
-        
-        lstEvent.add(e);
-
-
-        System.out.println("EVENT LIST: " + lstEvent);
-        
-        /* Create Items */
-
-
-//        Item iPad = new Item();
-//        iPad.setName("iPad Pro");
-//        iPad.setPrice(70000.00);
-
-
-
-
-        /* Convert List to JRBeanCollectionDataSource */
-
-        JRBeanCollectionDataSource eventsJRBean = new JRBeanCollectionDataSource(lstEvent);
-
-        /* Map to hold Jasper report Parameters */
-        Map<String, Object> parameters = new HashMap<String, Object>();
-        
-        parameters.put("EventDataSource", eventsJRBean);
-
-        /* Using compiled version(.jasper) of Jasper report to generate PDF */
-        JasperPrint jasperPrint = JasperFillManager.fillReport("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/BlankReport.jasper", parameters, new JREmptyDataSource());
-        
-        //Guardo en el Home del usuario
-        OutputStream outputStream = new FileOutputStream(new java.io.File(outputFile));
-        /* Write content to PDF file */
-        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
-        
-        JasperDesign jd = JRXmlLoader.load("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/BlankReport.jasper");
-        
-        JasperReport report = JasperCompileManager.compileReport(jd);
-        // Rellenamos el informe con la conexion creada y sus parametros establecidos
-        JasperPrint print = JasperFillManager.fillReport(report, parameters, eventsJRBean);
-
-        // Exportamos el informe a formato PDF
-        JasperExportManager.exportReportToPdfFile(print, outputFile);
-
-        
-        
-        
-        byte[] fichero = JasperExportManager.exportReportToPdf(jasperPrint);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        String filename = "output.pdf";
-        headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
-        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
-        return response;
-    }
-    
-    @RequestMapping(value = "/jasperDownloadPDF", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> jasperDownloadPDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException {
-        
-        Connection conexion;
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        conexion = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/waf_project", "root", "mcardoso27"); 
-        Map parameters = new HashMap();
-        //A nuestro informe de prueba le vamos a enviar la fecha de hoy
-        parameters.put("fechainicio", new Date());
-        
-        JasperReport jasperReport;
-        jasperReport= (JasperReport) JRLoader.loadObject("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper");
-        
-        byte[] fichero = JasperRunManager.runReportToPdf("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper", parameters, conexion);
-        
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        String filename = "output.pdf";
-        headers.setContentDispositionFormData(filename, filename);
-        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
-        return response;
-        
-    }
-    
-    @RequestMapping(value = "/jasperInlinePDF", method = RequestMethod.GET)
-    public ResponseEntity<byte[]> jasperInlinePDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException {
-        System.out.println("ENTRO AL JASPER INLINE");        
-    
-        Connection conexion;
-        Class.forName("com.mysql.jdbc.Driver").newInstance();
-        conexion = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/waf_project", "root", "mcardoso27");
-
-        Map parameters = new HashMap();
-        //A nuestro informe de prueba le vamos a enviar la fecha de hoy
-        parameters.put("fechainicio", new Date());
-        
-        JasperReport jasperReport;
-        jasperReport= (JasperReport) JRLoader.loadObject("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper");
-        
-        byte[] fichero = JasperRunManager.runReportToPdf("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper", parameters, conexion);
-        
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        String filename = "output.pdf";
-        headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
-        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
-        return response;
-    }
-    
+//    @RequestMapping(value = "/jasperEntitiesPDF", method = RequestMethod.GET)
+//    public ResponseEntity<byte[]> jasperEntitiesPDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException, FileNotFoundException {
+//        System.out.println("ENTRO AL JASPER ENTITIES");
+//        /* User home directory location */
+//        String userHomeDirectory = System.getProperty("user.home");
+//        /* Output file location */
+//        String outputFile = userHomeDirectory + java.io.File.separatorChar + "JasperTableExample.pdf";
+//
+////        List<Event> lstEvent = eventService.findAllEvents(0);
+//        List<Event> lstEvent = new ArrayList<>();
+//        
+//        Event e = new Event();
+//        
+//        e.setTransactionId("SOY EL TXID");
+//        e.setClientIp("soy el client ip");
+//        
+//        lstEvent.add(e);
+//
+//
+//        System.out.println("EVENT LIST: " + lstEvent);
+//        
+//        /* Create Items */
+//
+//
+////        Item iPad = new Item();
+////        iPad.setName("iPad Pro");
+////        iPad.setPrice(70000.00);
+//
+//
+//
+//
+//        /* Convert List to JRBeanCollectionDataSource */
+//
+//        JRBeanCollectionDataSource eventsJRBean = new JRBeanCollectionDataSource(lstEvent);
+//
+//        /* Map to hold Jasper report Parameters */
+//        Map<String, Object> parameters = new HashMap<String, Object>();
+//        
+//        parameters.put("EventDataSource", eventsJRBean);
+//
+//        /* Using compiled version(.jasper) of Jasper report to generate PDF */
+//        JasperPrint jasperPrint = JasperFillManager.fillReport("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/BlankReport.jasper", parameters, new JREmptyDataSource());
+//        
+//        //Guardo en el Home del usuario
+//        OutputStream outputStream = new FileOutputStream(new java.io.File(outputFile));
+//        /* Write content to PDF file */
+//        JasperExportManager.exportReportToPdfStream(jasperPrint, outputStream);
+//        
+//        JasperDesign jd = JRXmlLoader.load("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/BlankReport.jasper");
+//        
+//        JasperReport report = JasperCompileManager.compileReport(jd);
+//        // Rellenamos el informe con la conexion creada y sus parametros establecidos
+//        JasperPrint print = JasperFillManager.fillReport(report, parameters, eventsJRBean);
+//
+//        // Exportamos el informe a formato PDF
+//        JasperExportManager.exportReportToPdfFile(print, outputFile);
+//
+//        
+//        
+//        
+//        byte[] fichero = JasperExportManager.exportReportToPdf(jasperPrint);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+//        String filename = "output.pdf";
+//        headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
+//        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+//        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
+//        return response;
+//    }
+//    
+//    @RequestMapping(value = "/jasperDownloadPDF", method = RequestMethod.GET)
+//    public ResponseEntity<byte[]> jasperDownloadPDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException {
+//        
+//        Connection conexion;
+//        Class.forName("com.mysql.jdbc.Driver").newInstance();
+//        conexion = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/waf_project", "root", "notengoidea"); 
+//        Map parameters = new HashMap();
+//        //A nuestro informe de prueba le vamos a enviar la fecha de hoy
+//        parameters.put("fechainicio", new Date());
+//        
+//        JasperReport jasperReport;
+//        jasperReport= (JasperReport) JRLoader.loadObject("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper");
+//        
+//        byte[] fichero = JasperRunManager.runReportToPdf("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper", parameters, conexion);
+//        
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+//        String filename = "output.pdf";
+//        headers.setContentDispositionFormData(filename, filename);
+//        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+//        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
+//        return response;
+//        
+//    }
+//    
+//    @RequestMapping(value = "/jasperInlinePDF", method = RequestMethod.GET)
+//    public ResponseEntity<byte[]> jasperInlinePDF(ModelMap model) throws ClassNotFoundException, InstantiationException, SQLException, JRException, IllegalAccessException {
+//        System.out.println("ENTRO AL JASPER INLINE");        
+//    
+//        Connection conexion;
+//        Class.forName("com.mysql.jdbc.Driver").newInstance();
+//        conexion = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/waf_project", "root", "notengoidea");
+//
+//        Map parameters = new HashMap();
+//        //A nuestro informe de prueba le vamos a enviar la fecha de hoy
+//        parameters.put("fechainicio", new Date());
+//        
+//        JasperReport jasperReport;
+//        jasperReport= (JasperReport) JRLoader.loadObject("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper");
+//        
+//        byte[] fichero = JasperRunManager.runReportToPdf("/home/martin/NetBeansProjects/ModSecurityProyect/modsecurityWafProject/src/main/java/jasperReport/report1.jasper", parameters, conexion);
+//        
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.parseMediaType("application/pdf"));
+//        String filename = "output.pdf";
+//        headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
+//        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+//        ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
+//        return response;
+//    }
+//    
 //********************************************  PARSER  ********************************//
     
     /*-------------------------- PARA LOS ALERTAS --------------------------*/
