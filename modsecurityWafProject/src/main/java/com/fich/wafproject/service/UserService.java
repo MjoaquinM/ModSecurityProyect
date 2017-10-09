@@ -26,5 +26,7 @@ public interface UserService {
     Users findByUserName(String user_name);
     
     List<Users> findAll();
+    
+    public List<Users> findAll(int pageNumber, String[] targets, String[] names, String[] values, boolean pagination);
      
 }

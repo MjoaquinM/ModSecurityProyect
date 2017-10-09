@@ -425,6 +425,11 @@ $(document).ready(function () {
     /************************ADMIN FILE CONFIGURATION PAGE END****************************/
     
     /************************MANAGE USERS****************************/
+    
+    $('.user-filter-btn').on('click',function(){
+        $('#user-filter-form').find('#pageNumber').val($(this).val());
+        $('#user-filter-form').submit();
+    });
 
     /**
      * Show add user modal - Get add user form

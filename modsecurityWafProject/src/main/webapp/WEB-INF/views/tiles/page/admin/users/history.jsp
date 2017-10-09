@@ -27,7 +27,6 @@
                     Filters
                 </h3>
                 <button id="show-filter-user-history" data-toggle="collapse" data-target="#filters-containers"><i class="fa fa-angle-double-down" aria-hidden="true"></i></button>
-                <a href="<c:url value="/historyUsers" />" class="btn btn-primary">Reset</a>
             </div>
         </div>
         <div class="panel-body collapse" id="filters-containers">
@@ -76,11 +75,13 @@
                                     <input type="hidden" name="filter-parameters-labels" value="userEmail" />
                                     <input type="text" name="filter-parameters-values" value="${hm.userEmail}" />
                                 </td>
-                                <td></td>
+                                <td colspan="2"></td>
                             </tr>
                             <tr>
+                                <td colspan="5"></td>
                                 <td>
-                                    <button type="submit" class="btn btn-sm btn-success filter-submit">Apply</button>
+                                    <a href="<c:url value="/historyUsers" />" class="btn btn-primary">Reset</a>
+                                    <button type="submit" class="btn btn-md btn-success filter-submit">Apply Filter</button>
                                 </td>
                             </tr>
                         </tbody>

@@ -25,10 +25,7 @@
                 </div>
                 <div class="col-lg-2">
                     <h5>
-                        <a class="btn btn-primary" href="#" id="add-file-configuration-button" >
-                            <i class="fa fa-plus" aria-hidden="true"></i>
-                            Add file
-                        </a>
+                        
                     </h5>
                 </div>
             </div>
@@ -71,6 +68,15 @@
                                 </td>
                             </tr>
                         </c:forEach>
+                            <tr>
+                                <td colspan="4"></td>
+                                <td>
+                                    <a class="btn btn-primary" href="#" id="add-file-configuration-button" >
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                        Add file
+                                    </a>
+                                </td>
+                            </tr>
                     </tbody>
                 </table>
             </div>

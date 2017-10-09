@@ -110,27 +110,60 @@ public class WafProjectController {
     RuleService ruleService;
     
     private boolean flagDebug = true;
-
-    @Autowired
-    private SessionFactory sessionFactory;
     
     /******************************User Module*********************************/
     
     @RequestMapping(value = "/users/list", method = RequestMethod.GET)
-    public String userListPage(ModelMap model, String message) {
-        List<Users> users = userService.findAll();
-        List<ConfigurationFiles> cf = configurationFileService.findAll();
+    public String userListPage(ModelMap model, String message, HttpServletRequest request) {
+        /*Página actual*/
+        int pageNumber = 1;
+        if(request.getParameterMap().containsKey("pageNumber")){
+           pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        }
+        if(pageNumber<1){
+            pageNumber=1;
+        }
+        /*fin*/
+        
+        /*Para mantener los valores ingresados del filtro cuando se recarga la páigna*/
+        String[] n1 = request.getParameterValues("filter-parameters-values");
+        String[] n2 = request.getParameterValues("filter-parameters-labels");
+        HashMap hm = new HashMap<String,String>();        
+        if(n1 != null){
+            int count = 0;
+            for(String val: n1){
+                hm.put(n2[count], val);
+                count++;
+            }
+        }
+        /*fin*/
+        List<Users> usersAux = userService.findAll(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"),request.getParameterValues("filter-parameters-values"),true);
+        /*Me fijo si el resultado es vacío es porque estoy en la última página*/
+        if(usersAux.size() == 0 && pageNumber>1){
+            pageNumber = pageNumber-1;
+            usersAux = userService.findAll(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"),request.getParameterValues("filter-parameters-values"),true);
+        }
+        /*fin*/
+        
         if (flagDebug){
             System.out.println("Listing users...");
+            System.out.println(usersAux.size());            
+//            for(Users u : usersAux){
+//                System.out.println(u.toString());
+//            }
         }
+        
+        List<ConfigurationFiles> cf = configurationFileService.findAll();
+        List<Users> users = userService.findAll();
         /*<Build data modal>*/
         model.addAttribute("idModal", "userModal");
         /*<Build data modal - end>*/
-        model.addAttribute("users", users);
+        model.addAttribute("users", usersAux);
         model.addAttribute("configFiles", cf);
-        
+        model.addAttribute("hm",hm);
         model.addAttribute("user", getPrincipal());
         model.addAttribute("message", message);
+        model.addAttribute("pageNumber",pageNumber);
         return "listUsers";
     }
     
@@ -201,7 +234,7 @@ public class WafProjectController {
      * Delete a user
      */
     @RequestMapping(value = "/users/deleteUser", method = RequestMethod.POST)
-    public String deleteUser(ModelMap model, @RequestParam("id") Long id) {
+    public String deleteUser(ModelMap model, @RequestParam("id") Long id,HttpServletRequest request) {
         String name = userService.findById(id).getUserName();
         String message = "User "+name+" was succefully eliminated.";
         try{
@@ -209,9 +242,9 @@ public class WafProjectController {
             userService.delete(id);
         }catch(Exception e){
             model.addAttribute("messageClass","danger");
-            return this.userListPage(model,"There was an error deleting user "+name+".");
+            return this.userListPage(model,"There was an error deleting user "+name+".",request);
         }
-        return this.userListPage(model,message);
+        return this.userListPage(model,message,request);
     }
     
     /**
@@ -219,7 +252,7 @@ public class WafProjectController {
      */
     @RequestMapping(value = "users/saveNewUser", method = RequestMethod.POST)
     public String saveNewUser(@Valid Users user,
-            BindingResult result, ModelMap model) {
+            BindingResult result, ModelMap model, HttpServletRequest request) {
         String messageSatus = "User "+user.getFirstName()+", "+user.getLastName()+" was succefully added to the system.";
         if (result.hasErrors()) {
             for (Object object : result.getAllErrors()) {
@@ -239,10 +272,10 @@ public class WafProjectController {
             }catch(Exception e){
                 System.out.println(e.getMessage());
                 model.addAttribute("messageClass","danger");
-                return this.userListPage(model,"There was an error saving the user.");
+                return this.userListPage(model,"There was an error saving the user.", request);
             }
         }
-        return this.userListPage(model,"User was saved successfully.");
+        return this.userListPage(model,"User was saved successfully.", request);
     }
     
     /******************************User Module - END*********************************/
