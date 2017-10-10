@@ -47,9 +47,6 @@
                             <a href="<c:url value="/charts" />">Statistical Charts</a>
                         </li>
                         <li>
-                            <a href="<c:url value="/reports" />">Generate Report</a>
-                        </li>
-                        <li>
                             <a href="<c:url value="/eventList" />">List Events</a>
                         </li>
                     </ul>

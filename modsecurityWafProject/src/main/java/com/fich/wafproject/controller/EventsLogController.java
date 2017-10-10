@@ -310,7 +310,8 @@ public class EventsLogController{
             ModelMap model,
             Event event,
             File file) throws IOException{
-                
+        
+        long startTime = System.currentTimeMillis();
         System.out.println("ENTRO AL PUUUUUUUUUUUUUUT: " + new Date().toString());
         
         try {
@@ -457,7 +458,8 @@ public class EventsLogController{
                 System.out.println("ERROR CONNECTION: " + ese.getMessage());
             }
             
-            System.out.println("TERMINO DE GUARDAR TODOOOOOOO");
+            long endTime = System.currentTimeMillis() - startTime;
+            System.out.println("TERMINO DE GUARDAR TODOOOOOOO: " + endTime);
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
             System.out.println(dateFormat.format(date));

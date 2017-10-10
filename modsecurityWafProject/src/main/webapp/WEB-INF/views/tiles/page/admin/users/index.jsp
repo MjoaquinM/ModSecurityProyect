@@ -36,13 +36,13 @@
                 <!--<input type="hidden" name="filterFlag"  value="true" />-->
                 <div class="table-responsive">
                     <table class="table">
-                        <thead>
+<!--                        <thead>
                             <tr>
                                 <th colspan="2">Date</th>
                                 <th colspan="2">User</th>
                                 <th colspan="2">Description</th>
                             </tr>
-                        </thead>
+                        </thead>-->
                         <tbody>
                             <tr>
                                 <td>User Name:</td>
