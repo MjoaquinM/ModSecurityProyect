@@ -127,7 +127,7 @@
                             </td>
                             <td>
                                 <strong>
-                                    <a class="btn btn-danger" href="<c:url value="/deleteAllEvents?event=${e.id}" />">
+                                    <a class="btn btn-danger deleteEvent" data-event-id="${e.id}" data-action="individual">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a> 
                                 </strong>
@@ -143,7 +143,7 @@
                                 </div>
                             </td>
                             <td>
-                                <a ${fn:length(lst)==0 ? "disabled='true'" : ""} href="<c:url value="/deleteAllEvents" />" class="btn btn-danger">Delete All</a>
+                                <a ${fn:length(lst)==0 ? "disabled='true'" : ""} class="btn btn-danger deleteEvent" data-action="all">Delete All</a>
                             </td>
                         </tr>
                 </tbody>

@@ -614,6 +614,39 @@ $(document).ready(function () {
     /************************MANAGE RULES END****************************/
     
     /************************EVENTS****************************/
+    $('.deleteEvent').on('click',function(){
+        /*<VARIABLES>*/
+        var modalTitle = '';
+        var action = $(this).data('action');
+        var url = 'deleteAllEvents';
+        var eventId = $(this).data('event-id');
+        console.log(action + " -- " + eventId);
+        if (!eventId) {
+            eventId = -1;
+        }
+        var modalMessage = '';
+        /*<PREPARE MODAL>*/
+        var modalFooter = "";
+        switch (action) {
+            case 'individual':
+                modalTitle = 'Delete Event';
+                modalFooter = '<a href="deleteAllEvents?event='+eventId+'" class="btn btn-sm btn-danger">Delete</a>';//<button type="button" class="btn btn-primary" id="deleteEvent" data-cfId="'+configFileId+'" data-cfagId="'+configFileAttrGroupId+'" data-action="'+action+'">Delete</button>';
+                modalMessage = '<p> Confirm delete selected event (id: '+eventId+')?</p>';
+                break;
+            default:
+                modalTitle = 'Delete Events';
+                modalFooter = '<a href="deleteAllEvents" class="btn btn-sm btn-danger">Delete</a>';//<button type="button" class="btn btn-primary" id="deleteEvent" data-cfId="'+configFileId+'" data-cfagId="'+configFileAttrGroupId+'" data-action="'+action+'">Delete</button>';
+                modalMessage = '<p> Confirm delete all events? </p>';
+        }
+        modalFooter += '<button type="button" class="btn btn-secondary" data-dismiss="modal" id="configurationFileAttrGroupModalCancel">Cancel</button>';
+        $('#generic-modal-container').find('.modal-footer').html(modalFooter);
+        $('#generic-modal-container').find('.modal-title').html(modalTitle);
+        $('#generic-modal-container').find('.modal-body').html(modalMessage);
+
+        /*<SHOW MODAL>*/
+        $('#eventModal').modal('show');
+    });
+    
     $('.event-filter-btn').on('click',function(){
         $('#event-filter-form').find('#pageNumber').val($(this).val());
         $('#event-filter-form').submit();
