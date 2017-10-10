@@ -1,12 +1,12 @@
-<!--<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="14874671-00d2-4654-8e20-f9856528c156">
 	<property name="ireport.zoom" value="1.7715610000000066"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="569"/>
-	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
-	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
-	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
-	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Title" fontName="Monospaced" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Monospaced" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Monospaced" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Monospaced" fontSize="12"/>
 	<subDataset name="dataset1" uuid="06bf04b9-5d91-46d2-9d55-df4108715b53">
 		<field name="campo" class="java.lang.String"/>
 		<field name="valor" class="java.lang.Number"/>
@@ -288,4 +288,4 @@
 			</line>
 		</band>
 	</summary>
-</jasperReport>-->
+</jasperReport>
