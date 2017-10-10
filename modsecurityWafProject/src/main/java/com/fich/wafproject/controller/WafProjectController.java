@@ -575,7 +575,7 @@ public class WafProjectController {
         String user = getPrincipal();
         model.addAttribute("configFiles",cfs);
         model.addAttribute("user",user);
-        return "adminHome";
+        return "redirect:/eventList";
     }
     
     /**

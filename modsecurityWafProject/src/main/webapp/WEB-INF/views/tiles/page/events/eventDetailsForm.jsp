@@ -31,19 +31,19 @@
         <tr>
             <td>
                 <h4>Rules activated</h4>
-                <c:forEach items="${event.eventRuleList}" var="er">
+                <c:forEach items="${event.rules}" var="r">
                     <div class="form-group col-md-12">
                         <div class="col-md-2 control-lable">
-                            ${er.ruleId.ruleId}
+                            ${r.ruleId}
                         </div>
                         <div class="col-md-5">
-                            ${er.ruleId.message}
+                            ${r.message}
                         </div>
                         <div class="col-md-2">
-                            ${er.ruleId.severity}
+                            ${r.severity}
                         </div>
                         <div class="col-md-3">
-                            ${er.ruleId.fileId.fileName}
+                            ${r.fileId.fileName}
                         </div>
                     </div>
                 </c:forEach>

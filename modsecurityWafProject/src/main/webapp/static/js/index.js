@@ -716,7 +716,7 @@ $(document).ready(function () {
             // settings
             element: 'body',
             position: null,
-            type: "warning",
+            type: "danger",
             allow_dismiss: true,
             newest_on_top: false,
             showProgressbar: false,

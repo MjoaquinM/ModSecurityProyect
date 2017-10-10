@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.hibernate.criterion.CriteriaSpecification;
@@ -45,7 +47,7 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
 
     @Override
     public List<Event> findAllEvent(int pageNumber, String[] targets, String[] names, String[] values, boolean pagination) {
-        int pageSize = 6;
+        int pageSize = 50;
         Criteria crit = this.createEntityCriteria();
         crit.setProjection(Projections.distinct(Projections.property("id")));
         String dateFrom = "", dateTo = "", targetDate = "";
@@ -89,12 +91,22 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
             crit.setFirstResult((pageNumber - 1) * pageSize);
             crit.setMaxResults(pageSize);
         }
-        List<Event> events = new ArrayList<Event>();
+        List<Event> events = new ArrayList<>();
         for (Object idEvent : crit.list()) {
             System.out.println(idEvent);
             events.add(this.findById((Integer) idEvent));
         }
-        return (List<Event>) events;
+        
+        HashMap<Date, Event> dateEvent = new HashMap<>();
+        for (Event e : events){
+            dateEvent.put(e.getDateEvent(), e);
+        }
+        List<Event> ordEvent = new ArrayList<>();
+        SortedSet<Date> keys = new TreeSet<>(dateEvent.keySet());
+        for (Date key : keys){
+            ordEvent.add(dateEvent.get(key));
+        }
+        return (List<Event>) ordEvent;
     }
     
     @Override
