@@ -389,17 +389,18 @@ public class EventsLogController{
                 eventService.saveEvent(event);
                 MessageData md = new MessageData();
                 md.setTransactionId(event.getTransactionId());
-                for(MessageData mdd : PATH_PREFIX){
-                    System.out.println("Transaction id: " + mdd.getTransactionId());
-                }
+//                List<File> f = new ArrayList<File>();
+//                for(Rule r : event.getRules()){
+//                    f.add(r.getFileId());
+//                }
+//                md.setFiles(f);
+//                for(MessageData mdd : PATH_PREFIX){
+//                    System.out.println("Transaction id: " + mdd.getTransactionId());
+//                }
                 PATH_PREFIX.add(md);
-//                md.setClassAttack(event.getEventRuleList().get(0).getFileId().getFileName());
-                //Unicamente muestro la alerta si se guardo exitosamente el evento
-//                PATH_PREFIX.setMessages(mdl);
-                System.out.println("MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA MIRA ");
-                for(MessageData mdd : PATH_PREFIX){
-                    System.out.println("Transaction id: " + mdd.getTransactionId());
-                }
+//                for(MessageData mdd : PATH_PREFIX){
+//                    System.out.println("Transaction id: " + mdd.getTransactionId());
+//                }
                 
             } catch (ConstraintViolationException ese) {
                 System.out.println("ERROR CONSTRAINT: " + ese.getMessage());

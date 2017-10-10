@@ -5,6 +5,10 @@
  */
 package com.fich.wafproject.util;
 
+import com.fich.wafproject.model.File;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author joaquin
@@ -15,17 +19,28 @@ public class MessageData {
     private String author;
     private String transactionId;
     private String classAttack;
+    private List<File> files;
 //    private long time;
 
     public MessageData() {
-        this("","","","");
+        List<File> fileList = new ArrayList<File>();
+        this.files = fileList;
     }
 
-    public MessageData(String author, String message, String transId, String classAtt) {
+    public MessageData(String author, String message, String transId, String classAtt, List<File> f) {
         this.author = author;
         this.message = message;
         this.transactionId = transId;
         this.classAttack = classAtt;
+        this.files = f;
+    }
+    
+    public List<File> getFiles(){
+        return this.files;
+    }
+    
+    public void setFiles(List<File> f){
+        this.files = f;
     }
 
     public String getTransactionId(){
