@@ -106,7 +106,7 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
         for (Date key : keys){
             ordEvent.add(dateEvent.get(key));
         }
-        return (List<Event>) ordEvent;
+        return events;
     }
     
     @Override

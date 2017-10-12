@@ -102,7 +102,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel-body">    
+        <div class="panel-body">
             <c:choose>
                 <c:when test="${flagFilter=='true'}">
                     <div class="table-responsive table-filtered">
@@ -114,32 +114,21 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>n</th>
                             <th>id</th>
                             <th>User</th>
                             <th>Email</th>
                             <th>Description</th>
                             <th>Date/Time</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <c:forEach items="${usersActions}" var="action" varStatus="index">
                         <tr>
-                            <td> ${index.index+1} </td>
                             <td> ${action.id} </td>
                             <td> ${action.user.userName} </td>
                             <td> ${action.user.email} </td>
                             <td> <div class="user-history-description"> ${action.description} </div> </td>
                             <td> ${action.dateEvent} </td>
-                            <td>
-                                <a href="#" class="btn btn-success"  data-action="edit" data-id="">
-                                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                                </a>
-                                <a class="btn btn-danger" data-action="remove" data-id="">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
-                                </a>
-                            </td>
                         </tr>
                         </c:forEach>
                     </tbody>

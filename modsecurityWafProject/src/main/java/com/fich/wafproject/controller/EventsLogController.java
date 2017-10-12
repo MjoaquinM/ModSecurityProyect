@@ -10,6 +10,7 @@ import com.fich.wafproject.service.ConfigurationFileService;
 import com.fich.wafproject.service.EventService;
 import com.fich.wafproject.service.FileService;
 import com.fich.wafproject.service.RuleService;
+import com.fich.wafproject.util.Functions;
 import com.fich.wafproject.util.MessageData;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -100,6 +101,8 @@ public class EventsLogController{
     RuleService ruleService;
     @Autowired
     ConfigurationFileService configurationFileService;
+    
+    private Functions customFunctions = new Functions();
     
     private static List<MessageData> PATH_PREFIX = new ArrayList<MessageData>();// AlertMessages();
     
@@ -627,7 +630,7 @@ public class EventsLogController{
 
             }
         }
-
+        
         result.put("filePath", filePath);
         result.put("fileName", fileName);
         result.put("id", id);
@@ -648,7 +651,7 @@ public class EventsLogController{
         }
         
         List<Event> events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"),request.getParameterValues("filter-parameters-values"),true);
-        if(events.size() == 0){
+        if(events.size() == 0 && pageNumber>1){
             pageNumber = pageNumber-1;
             events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"),true);
         }
@@ -666,7 +669,7 @@ public class EventsLogController{
         }
         
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
-        
+        System.out.println("ESTA ES LA CANTIDAD DE PAGINAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! " + pageNumber);
         model.addAttribute("hm",hm);
         model.addAttribute("configFiles",configurationFilesAll);
         model.addAttribute("lst",events);
@@ -755,5 +758,12 @@ public class EventsLogController{
             userName = principal.toString();
         }
         return userName;
+    }
+    
+    @RequestMapping(value = "/charts", method = RequestMethod.GET)
+    public String chartsPage(ModelMap model) {        
+        //model.addAttribute("users", userService.findAll());
+        model.addAttribute("user", this.customFunctions.getPrincipal());
+        return "charts";
     }
 }

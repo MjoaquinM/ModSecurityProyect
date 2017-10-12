@@ -15,10 +15,10 @@
     </head>
     <body style="background-image: url(http://wallpapercave.com/wp/wp1848383.jpg);">
         <div class="center-elements">
-            <h2 style="margin-top: 0px; padding-top: 100px;"><span class="label label-warning">
+            <h2 style="margin-top: 0px; padding-top: 100px;"><span class="label label-danger">
                     Sory, You are not authorized to access this page.
                 </span></h2>
-            <h2><span class="label label-warning">
+            <h2><span class="label label-danger">
                     <a href="<c:url value="/admin" />">Go to home</a> OR <a href="<c:url value="/logout" />">Logout</a>
                 </span>
             </h2>
