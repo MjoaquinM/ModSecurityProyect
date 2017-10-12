@@ -134,12 +134,17 @@ public class UserController {
         }
         /*fin*/
         String[] values = request.getParameterValues("filter-parameters-values");
-        List<UsersHistory> uh = userHistory.filer(values,request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-targets"), pageNumber);
+        
+        /*Solo el admin puede ver el historial de todos los usuarios, los demás solo pueden ver solo los suyos*/
+        Users currentUser = userService.findByUserName(customFunctions.getPrincipal());
+        String role = "";
+        if (!currentUser.isAdmin()) role = currentUser.getUserName();
+        List<UsersHistory> uh = userHistory.filer(values,request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-targets"), pageNumber, role);
 
         /*Me fijo si el resultado es vacío es porque estoy en la última página*/
         if(uh.size() == 0 && pageNumber>1){
             pageNumber = pageNumber-1;
-            uh = userHistory.filer(values,request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-targets"), pageNumber);
+            uh = userHistory.filer(values,request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-targets"), pageNumber, role);
         }
         /*fin*/
         
@@ -170,6 +175,7 @@ public class UserController {
         model.addAttribute("configFiles",configurationFilesAll);
         model.addAttribute("usersActions", uh);
         model.addAttribute("user", this.customFunctions.getPrincipal());
+        model.addAttribute("isAdmin", role);
         return "historyUsers";
     }
 

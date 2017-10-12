@@ -63,18 +63,20 @@ public class UserHistoryDaoImpl extends AbstractDao<Long, UsersHistory> implemen
         return events;
     }
 
-    public List<UsersHistory> filter(String[] values, String[] names, String[] targets, int pageNumber) {
+    public List<UsersHistory> filter(String[] values, String[] names, String[] targets, int pageNumber, String role) {
         int pageSize = 6;
         int count = 0;
+        boolean filterByUserProperty = false, filterByUserName = false;
         Criteria crit = this.createEntityCriteria();//.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         crit.setProjection(Projections.distinct(Projections.property("id")));
         String dateFrom="",dateTo="",targetDate="";
         if(names != null){
             for(String alias:names){
                 crit.createAlias(alias, alias);
+                if (alias.equals("user")) filterByUserProperty = true;
             }
         }
-        
+        if (!filterByUserProperty && !role.equals("")) crit.createAlias("user", "user");
         if (values != null){
             for(String value : values){
                 if (!value.equals("") && value!=null){    
@@ -86,6 +88,7 @@ public class UserHistoryDaoImpl extends AbstractDao<Long, UsersHistory> implemen
                             targetDate=targets[count];
                         }
                     }else{
+                        if(targets[count].contains("userName")) filterByUserName = true;
                         crit.add(Restrictions.like(targets[count],"%"+value+"%"));
                     }
                 }
@@ -105,7 +108,8 @@ public class UserHistoryDaoImpl extends AbstractDao<Long, UsersHistory> implemen
                 }
             }
         }
-        
+
+        if (!filterByUserName && !role.equals("")) crit.add(Restrictions.like("user.userName",role));
         crit.setFirstResult((pageNumber-1)*pageSize);
         crit.setMaxResults(pageSize);
         List<UsersHistory> events = new ArrayList<UsersHistory>();

@@ -37,7 +37,11 @@
                         <thead>
                             <tr>
                                 <th colspan="2">Date</th>
-                                <th colspan="2">User</th>
+                                <c:choose>
+                                <c:when test="${isAdmin==''}">
+                                    <th colspan="2">User</th>
+                                </c:when>
+                                </c:choose>
                                 <th colspan="2">Description</th>
                             </tr>
                         </thead>
@@ -49,12 +53,16 @@
                                     <input type="hidden" name="filter-parameters-labels" value="dateEventFrom" />
                                     <input type="text" id="datepicker-from" name="filter-parameters-values" value="${hm.dateEventFrom}" />
                                 </td>
-                                <td>Name:</td>
-                                <td>
-                                    <input type="hidden" name="filter-parameters-targets" value="user.userName" />
-                                    <input type="hidden" name="filter-parameters-labels" value="userName" />
-                                    <input type="text" name="filter-parameters-values" value="${hm.userName}" />
-                                </td>
+                                <c:choose>
+                                <c:when test="${isAdmin==''}">
+                                    <td>Name:</td>
+                                    <td>
+                                        <input type="hidden" name="filter-parameters-targets" value="user.userName" />
+                                        <input type="hidden" name="filter-parameters-labels" value="userName" />
+                                        <input type="text" name="filter-parameters-values" value="${hm.userName}" />
+                                    </td>
+                                </c:when>
+                                </c:choose>
                                 <td>Keyword:</td>
                                 <td>
                                     <input type="hidden" name="filter-parameters-targets" value="description" />
@@ -69,12 +77,17 @@
                                     <input type="hidden" name="filter-parameters-labels" value="dateEventTo" />
                                     <input type="text" id="datepicker-to" name="filter-parameters-values" value="${hm.dateEventTo}" />
                                 </td>
-                                <td>Mail:</td>
-                                <td>
-                                    <input type="hidden" name="filter-parameters-targets" value="user.email" />
-                                    <input type="hidden" name="filter-parameters-labels" value="userEmail" />
-                                    <input type="text" name="filter-parameters-values" value="${hm.userEmail}" />
-                                </td>
+                                <c:choose>
+                                <c:when test="${isAdmin==''}">
+                                    <td>Mail:</td>
+                                    <td>
+                                        <input type="hidden" name="filter-parameters-targets" value="user.email" />
+                                        <input type="hidden" name="filter-parameters-labels" value="userEmail" />
+                                        <input type="text" name="filter-parameters-values" value="${hm.userEmail}" />
+                                    </td>
+                                    
+                                </c:when>
+                                </c:choose>
                                 <td colspan="2"></td>
                             </tr>
                             <tr>

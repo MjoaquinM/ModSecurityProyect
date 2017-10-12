@@ -20,7 +20,7 @@ public interface UserHistoryDao {
      
 //    UsersHistory findByName(String name);
     
-    List<UsersHistory> filter(String[] targets, String[] names, String[] values, int pageNumber);
+    List<UsersHistory> filter(String[] targets, String[] names, String[] values, int pageNumber, String role);
     
     List<UsersHistory> findAll(int pageNumber);
     

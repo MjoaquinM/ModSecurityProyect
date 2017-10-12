@@ -44,7 +44,7 @@ public class UsersHistoryServiceImpl implements UsersHistoryService{
         dao.delete(id);
     }
     
-    public List<UsersHistory> filer(String[] targets, String[] names, String[] values, int pageNumber) {
-        return dao.filter(targets, names, values, pageNumber);
+    public List<UsersHistory> filer(String[] targets, String[] names, String[] values, int pageNumber, String role) {
+        return dao.filter(targets, names, values, pageNumber, role);
     }
 }

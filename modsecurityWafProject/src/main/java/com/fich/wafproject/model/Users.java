@@ -172,6 +172,16 @@ public class Users implements Serializable {
     public void setProfiles(List<UserProfiles> profiles){
         this.profiles = profiles;
     }
+    
+    public boolean isAdmin(){
+        boolean isAdmin = false;
+        for(UserProfiles role : this.getProfiles()){
+            if (role.getType().toLowerCase().equals("admin")){
+                isAdmin = true;
+            }
+        }
+        return isAdmin;
+    }
 
     @Override
     public int hashCode() {

@@ -27,5 +27,5 @@ public interface UsersHistoryService {
     
     void delete(Long id);
          
-    List<UsersHistory> filer(String[] targets, String[] names, String[] values, int pageNumber);
+    List<UsersHistory> filer(String[] targets, String[] names, String[] values, int pageNumber, String role);
 }
