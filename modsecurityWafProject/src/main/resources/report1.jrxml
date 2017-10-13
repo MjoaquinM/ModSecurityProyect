@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="14874671-00d2-4654-8e20-f9856528c156">
-	<property name="ireport.zoom" value="1.7715610000000066"/>
+	<property name="ireport.zoom" value="1.3310000000000048"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="569"/>
+	<property name="ireport.y" value="1700"/>
 	<style name="Title" fontName="Monospaced" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Monospaced" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Monospaced" fontSize="12" isBold="true"/>
@@ -14,6 +14,12 @@
 	<subDataset name="dataset2" uuid="f4b857a6-cb26-458c-bcc3-a9bd631b606f">
 		<field name="campo" class="java.lang.String"/>
 		<field name="valor" class="java.lang.Number"/>
+	</subDataset>
+	<subDataset name="dataset3" uuid="d09e90be-4b5c-49a7-86f0-34dfbec79bea">
+		<field name="dateEvent" class="java.lang.String"/>
+		<field name="clientIp" class="java.lang.String"/>
+		<field name="method" class="java.lang.String"/>
+		<field name="destinationPage" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="listFileNumber" class="java.util.List" isForPrompting="false"/>
 	<parameter name="listDateNumber" class="java.util.List" isForPrompting="false"/>
@@ -32,219 +38,119 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="70" splitType="Stretch">
-			<image>
-				<reportElement x="275" y="0" width="300" height="64" uuid="e0625dbf-1df1-48ff-bb13-f9e009b689e0"/>
-				<imageExpression><![CDATA["leaf_banner_green.png"]]></imageExpression>
-			</image>
+		<band height="728" splitType="Stretch">
 			<staticText>
-				<reportElement style="Title" x="0" y="13" width="351" height="33" uuid="1876b419-55a7-4556-9609-d7f181828ad2"/>
+				<reportElement style="Title" x="102" y="226" width="351" height="33" uuid="1876b419-55a7-4556-9609-d7f181828ad2"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Monospaced"/>
 				</textElement>
 				<text><![CDATA[Reporte de ModSecurity]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="SubTitle" x="100" y="46" width="174" height="22" uuid="d766fa4d-93a6-4cd2-a615-5edada10b4bf"/>
+				<reportElement style="SubTitle" x="179" y="270" width="196" height="22" uuid="d766fa4d-93a6-4cd2-a615-5edada10b4bf"/>
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
 				<text><![CDATA[Módulo Estadístico]]></text>
 			</staticText>
-		</band>
-	</title>
-	<pageHeader>
-		<band height="65">
-			<staticText>
-				<reportElement x="11" y="24" width="100" height="20" uuid="f35ab23d-37c1-4b68-91dd-07809dfa65df"/>
+			<textField>
+				<reportElement x="364" y="458" width="186" height="20" uuid="765b5d0d-ff46-4f59-9f96-d9cdf9ee1f48"/>
 				<textElement>
-					<font fontName="Monospaced"/>
+					<font fontName="Monospaced" isBold="true"/>
 				</textElement>
-				<text><![CDATA[IP cliente:]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA[$P{dateEventTo}]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement x="251" y="44" width="100" height="20" uuid="b718f815-2f61-4ef5-8f9a-b1b75eae5008"/>
+				<reportElement x="264" y="498" width="100" height="20" uuid="4a686125-25dc-435c-9f20-39972d7502cc"/>
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
 				<text><![CDATA[Puerto servidor:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="351" y="4" width="186" height="20" uuid="20a85bd9-7951-4229-8dfa-4b6e3df9923e"/>
+				<reportElement x="124" y="478" width="140" height="20" uuid="1037b0c9-c350-49a8-a387-092cd3a51e07"/>
+				<textElement>
+					<font fontName="Monospaced" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{clientIp}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="498" width="100" height="20" uuid="8c1f8d9c-9d2d-42ef-9d58-820d8f4dcc38"/>
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{dateEventTo}]]></textFieldExpression>
+				<text><![CDATA[Puerto cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="478" width="100" height="20" uuid="bf7a48c3-94b9-434b-9d3a-dbaf7385e246"/>
+				<textElement>
+					<font fontName="Monospaced"/>
+				</textElement>
+				<text><![CDATA[IP servidor:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="478" width="100" height="20" uuid="88c2b054-4ca9-498d-8951-f5de4bf0d3cc"/>
+				<textElement>
+					<font fontName="Monospaced"/>
+				</textElement>
+				<text><![CDATA[IP cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="124" y="458" width="140" height="20" uuid="4ce3b145-0f87-4fbe-9b3f-5e811e071737"/>
+				<textElement>
+					<font fontName="Monospaced" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dateEventFrom}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="251" y="4" width="100" height="20" uuid="aa7eb1d1-bbee-4bcd-910b-74d58cb470b0"/>
+				<reportElement x="264" y="458" width="100" height="20" uuid="f62ef0bc-c788-43f3-b819-0251b26b2834"/>
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
 				<text><![CDATA[Hasta:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="111" y="24" width="140" height="20" uuid="46458194-0264-4930-82d5-75a72e44a05c"/>
+				<reportElement x="364" y="478" width="186" height="20" uuid="e02ba02e-5894-44cd-98e2-b552e14029f5"/>
 				<textElement>
-					<font fontName="Monospaced"/>
+					<font fontName="Monospaced" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{clientIp}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{serverIp}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="111" y="44" width="140" height="20" uuid="69c28d57-7b66-4935-b6b5-3251c768c961"/>
+				<reportElement x="364" y="498" width="186" height="20" uuid="c2a91509-fdb1-4ace-b157-4b3484f49d09"/>
 				<textElement>
-					<font fontName="Monospaced"/>
+					<font fontName="Monospaced" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{clientPort}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{serverPort}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="11" y="4" width="100" height="20" uuid="0450ec30-3e2c-4f78-903e-3b9a70e71a6b"/>
+				<reportElement x="24" y="458" width="100" height="20" uuid="da17ee9b-b752-4fef-afcd-2bbbd3ac5f65"/>
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
 				<text><![CDATA[Desde:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="251" y="24" width="100" height="20" uuid="ffaacae3-2ac7-4fe5-bdd7-61ab6f26e0e9"/>
-				<textElement>
-					<font fontName="Monospaced"/>
-				</textElement>
-				<text><![CDATA[IP servidor:]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="351" y="24" width="186" height="20" uuid="eb8cf4ec-6aca-4fbd-af2c-44091d9da040"/>
+				<reportElement x="124" y="498" width="140" height="20" uuid="48e7087c-16d2-4ded-aad8-15183deb6b64"/>
 				<textElement>
-					<font fontName="Monospaced"/>
+					<font fontName="Monospaced" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{serverIp}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="11" y="44" width="100" height="20" uuid="b2d0c4f5-f6d7-45aa-a0e2-c6c8cafb5d26"/>
-				<textElement>
-					<font fontName="Monospaced"/>
-				</textElement>
-				<text><![CDATA[Puerto cliente:]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="111" y="4" width="140" height="20" uuid="fae5c8cf-9f6f-46a6-9df9-74c48fc7c889"/>
-				<textElement>
-					<font fontName="Monospaced"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{dateEventFrom}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="351" y="44" width="186" height="20" uuid="7bedf452-8ba8-4d65-9cb6-70f6e0e95fc5"/>
-				<textElement>
-					<font fontName="Monospaced"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{serverPort}]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="64" width="555" height="1" uuid="ae68745b-a595-4558-8de5-c83eb4b22e6b"/>
-				<graphicElement>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-				</graphicElement>
-			</line>
-		</band>
-	</pageHeader>
-	<columnHeader>
-		<band height="21" splitType="Stretch">
-			<staticText>
-				<reportElement x="11" y="1" width="100" height="20" uuid="ff61c8ea-6ee0-4c5c-8ce1-0d57fb488190"/>
-				<textElement>
-					<font fontName="Monospaced"/>
-				</textElement>
-				<text><![CDATA[Fecha del evento]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="111" y="1" width="100" height="20" uuid="4e418355-4844-4d80-a794-8526152693b4"/>
-				<textElement>
-					<font fontName="Monospaced"/>
-				</textElement>
-				<text><![CDATA[IP cliente]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="211" y="1" width="100" height="20" uuid="c8b1be55-f5ee-4812-a517-9fbf4d010d9f"/>
-				<textElement>
-					<font fontName="Monospaced"/>
-				</textElement>
-				<text><![CDATA[Método]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="311" y="1" width="100" height="20" uuid="ed4d638e-195e-4e62-8103-f1ec88dfe5b8"/>
-				<textElement>
-					<font fontName="Monospaced"/>
-				</textElement>
-				<text><![CDATA[Servicio]]></text>
-			</staticText>
-		</band>
-	</columnHeader>
-	<detail>
-		<band height="20">
-			<textField>
-				<reportElement x="11" y="0" width="100" height="20" uuid="167f3e52-e150-4bf4-8b9a-837d9a5ea79e"/>
-				<textElement>
-					<font fontName="Monospaced"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{dateEvent}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="111" y="0" width="100" height="20" uuid="0c1bf8e0-a981-4502-ad45-a570b62970c5"/>
-				<textElement>
-					<font fontName="Monospaced"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{clientIp}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="211" y="0" width="100" height="20" uuid="59c6706f-d0a7-465d-bcc8-a4d5785ab62e"/>
-				<textElement>
-					<font fontName="Monospaced"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{method}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="311" y="0" width="111" height="20" uuid="d913cd39-7934-4610-b9c4-2d977c2d2cbc"/>
-				<textElement>
-					<font fontName="Monospaced"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{destinationPage}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{clientPort}]]></textFieldExpression>
 			</textField>
 		</band>
-	</detail>
-	<summary>
-		<band height="550">
-			<pieChart>
-				<chart>
-					<reportElement x="111" y="36" width="332" height="231" uuid="571229fa-11b4-44e1-9af8-c11ec4695006"/>
-					<chartTitle/>
-					<chartSubtitle/>
-					<chartLegend/>
-				</chart>
-				<pieDataset>
-					<dataset>
-						<datasetRun subDataset="dataset1" uuid="010d10f9-4c97-4031-9358-8211d78b7aa6">
-							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource ($P{listFileNumber})]]></dataSourceExpression>
-						</datasetRun>
-					</dataset>
-					<keyExpression><![CDATA[$F{campo}]]></keyExpression>
-					<valueExpression><![CDATA[$F{valor}]]></valueExpression>
-					<labelExpression><![CDATA[""+$F{valor}]]></labelExpression>
-				</pieDataset>
-				<piePlot>
-					<plot/>
-					<itemLabel/>
-				</piePlot>
-			</pieChart>
+	</title>
+	<lastPageFooter>
+		<band height="802">
 			<barChart>
 				<chart>
-					<reportElement x="111" y="307" width="332" height="224" uuid="0ff9f1c8-689f-4086-83c0-b916435efc27"/>
+					<reportElement x="111" y="301" width="332" height="224" uuid="bf77eb69-a60c-43f5-ae37-e2afceea6392"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
 				</chart>
 				<categoryDataset>
 					<dataset>
-						<datasetRun subDataset="dataset2" uuid="e8c0c231-9957-4ea9-83db-3c1d259ce4bf">
+						<datasetRun subDataset="dataset2" uuid="5a3669f6-9180-4bab-b684-4f0f3bd4ee24">
 							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listDateNumber})]]></dataSourceExpression>
 						</datasetRun>
 					</dataset>
@@ -267,25 +173,135 @@
 				</barPlot>
 			</barChart>
 			<staticText>
-				<reportElement x="156" y="287" width="242" height="20" uuid="fe39622c-e321-462f-97d0-a2fc8cf4ee54"/>
+				<reportElement x="139" y="11" width="276" height="20" uuid="4fb84999-f86e-45c7-a868-9fc15632e1b1"/>
+				<textElement>
+					<font fontName="Monospaced"/>
+				</textElement>
+				<text><![CDATA[Cantidad de eventos por cada tipo de regla]]></text>
+			</staticText>
+			<pieChart>
+				<chart>
+					<reportElement x="111" y="30" width="332" height="231" uuid="f60e545d-45fb-4c83-9d97-6acca1a1bef8"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset>
+						<datasetRun subDataset="dataset1" uuid="7353da9b-a61b-4a92-b1c1-0618efc8e010">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource ($P{listFileNumber})]]></dataSourceExpression>
+						</datasetRun>
+					</dataset>
+					<keyExpression><![CDATA[$F{campo}]]></keyExpression>
+					<valueExpression><![CDATA[$F{valor}]]></valueExpression>
+					<labelExpression><![CDATA[""+$F{valor}]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+			<staticText>
+				<reportElement x="156" y="281" width="242" height="20" uuid="9228e364-b6f8-4248-a938-178b25839706"/>
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
 				<text><![CDATA[Cantidad de eventos detectados por día]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="139" y="17" width="276" height="20" uuid="fcde3b30-2306-49e1-9319-6e72cfdc3171"/>
+				<reportElement x="139" y="535" width="276" height="20" uuid="a65d2aa6-2638-4e49-8a73-61e7c595bbc5"/>
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
 				<text><![CDATA[Cantidad de eventos por cada tipo de regla]]></text>
 			</staticText>
-			<line>
-				<reportElement positionType="FixRelativeToBottom" x="0" y="16" width="555" height="1" uuid="12ae4e07-76f3-40e9-8400-32811685143e"/>
-				<graphicElement>
-					<pen lineWidth="0.5" lineColor="#999999"/>
-				</graphicElement>
-			</line>
+			<pieChart>
+				<chart>
+					<reportElement x="111" y="554" width="332" height="231" uuid="328bcd1f-ef61-4946-a6a9-4a6c26d2846a"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset>
+						<datasetRun subDataset="dataset1" uuid="457c3f51-e359-4c92-b384-9574885782f2">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource ($P{listFileNumber})]]></dataSourceExpression>
+						</datasetRun>
+					</dataset>
+					<keyExpression><![CDATA[$F{campo}]]></keyExpression>
+					<valueExpression><![CDATA[$F{valor}]]></valueExpression>
+					<labelExpression><![CDATA[""+$F{valor}]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="109">
+			<componentElement>
+				<reportElement x="24" y="71" width="473" height="25" uuid="db193492-6b40-4e32-a205-41afa5e3bfc0"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="dataset3" uuid="d576127c-4d4b-4f7c-874a-d6f66aaa3b68">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{events})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="25" width="473">
+						<textField>
+							<reportElement x="0" y="0" width="111" height="20" uuid="3d1c7489-e398-4731-8fe0-bacd78e913e0"/>
+							<textFieldExpression><![CDATA[$F{dateEvent}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="140" y="0" width="100" height="20" uuid="4583c984-0a2a-4706-976a-f754461c28e3"/>
+							<textFieldExpression><![CDATA[$F{clientIp}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="240" y="0" width="100" height="20" uuid="e7b1ba1d-d0d5-42fd-881c-00b17185b026"/>
+							<textFieldExpression><![CDATA[$F{method}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="340" y="0" width="121" height="20" uuid="3a1c2cd5-68da-49b3-8e4c-15ec4fbfd182"/>
+							<textFieldExpression><![CDATA[$F{destinationPage}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement x="264" y="51" width="100" height="20" uuid="d9e3f12a-eb46-4165-81f5-e29490d13747"/>
+				<textElement>
+					<font fontName="Monospaced"/>
+				</textElement>
+				<text><![CDATA[Método]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="364" y="51" width="100" height="20" uuid="d1bd18a2-425b-4b47-9348-40ed7bcd6f3c"/>
+				<textElement>
+					<font fontName="Monospaced"/>
+				</textElement>
+				<text><![CDATA[Servicio]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="164" y="51" width="100" height="20" uuid="3b1e65b4-7053-41e0-95f6-4a1b7946c7c6"/>
+				<textElement>
+					<font fontName="Monospaced"/>
+				</textElement>
+				<text><![CDATA[IP cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="51" width="100" height="20" uuid="900394d3-d4ed-4518-850b-67b32793376a"/>
+				<textElement>
+					<font fontName="Monospaced"/>
+				</textElement>
+				<text><![CDATA[Fecha del evento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="167" y="25" width="220" height="20" uuid="bb1779fb-3120-4803-8c80-a9475d660027"/>
+				<textElement>
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[LISTADO DE EVENTOS]]></text>
+			</staticText>
 		</band>
 	</summary>
 </jasperReport>
