@@ -9,12 +9,15 @@ import org.springframework.stereotype.Repository;
 import com.fich.wafproject.model.Event;
 import com.fich.wafproject.model.Users;
 import java.io.Serializable;
+import java.sql.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -49,7 +52,10 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
     public List<Event> findAllEvent(int pageNumber, String[] targets, String[] names, String[] values, boolean pagination) {
         int pageSize = 50;
         Criteria crit = this.createEntityCriteria();
-        crit.setProjection(Projections.distinct(Projections.property("id")));
+        crit.setProjection(Projections.projectionList()
+                .add(Projections.distinct(Projections.property("id")))
+                .add(Projections.property("dateEvent")));
+        crit.addOrder(Order.asc("dateEvent"));
         String dateFrom = "", dateTo = "", targetDate = "";
         if (names != null) {
             for (String alias : names) {
@@ -91,21 +97,35 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
             crit.setFirstResult((pageNumber - 1) * pageSize);
             crit.setMaxResults(pageSize);
         }
+        
         List<Event> events = new ArrayList<>();
-        for (Object idEvent : crit.list()) {
-            System.out.println(idEvent);
-            events.add(this.findById((Integer) idEvent));
+        List l=crit.list(); //Salida de projection -> es un arreglo de objetos
+        Iterator it=l.iterator();
+        while(it.hasNext())
+        {
+//            System.out.println("MIRAAAAAAAAAAAAAAAAAAAA");
+//            System.out.println(ob[0]+"--------"+ob[1]);            
+            Object ob[] = (Object[])it.next();
+            events.add(this.findById((Integer) ob[0]));
         }
         
-        HashMap<Date, Event> dateEvent = new HashMap<>();
-        for (Event e : events){
-            dateEvent.put(e.getDateEvent(), e);
-        }
-        List<Event> ordEvent = new ArrayList<>();
-        SortedSet<Date> keys = new TreeSet<>(dateEvent.keySet());
-        for (Date key : keys){
-            ordEvent.add(dateEvent.get(key));
-        }
+        
+//        System.out.println("MIRAMEEEEEEEEEEEEEEEEEEEEEEEEEEEEE "+projectionReturn);
+//        for (HashMap<Integer,String> idEvent : crit.list()) {
+//        for (idEvent : crit.list()) {
+//            System.out.println(idEvent);
+//            events.add(this.findById((Integer) idEvent));
+//        }
+        
+//        HashMap<Date, Event> dateEvent = new HashMap<>();
+//        for (Event e : events){
+//            dateEvent.put(e.getDateEvent(), e);
+//        }
+//        List<Event> ordEvent = new ArrayList<>();
+//        SortedSet<Date> keys = new TreeSet<>(dateEvent.keySet());
+//        for (Date key : keys){
+//            ordEvent.add(dateEvent.get(key));
+//        }
         return events;
     }
     
