@@ -55,7 +55,7 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
         crit.setProjection(Projections.projectionList()
                 .add(Projections.distinct(Projections.property("id")))
                 .add(Projections.property("dateEvent")));
-        crit.addOrder(Order.asc("dateEvent"));
+        crit.addOrder(Order.desc("dateEvent"));
         String dateFrom = "", dateTo = "", targetDate = "";
         if (names != null) {
             for (String alias : names) {

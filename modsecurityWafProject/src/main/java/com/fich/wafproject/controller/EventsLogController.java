@@ -309,7 +309,7 @@ public class EventsLogController{
     /*-------------------------- PARA LOS ALERTAS END!!!!!!!!!!!!!!!!!!!!!!--------------------------*/
 
     @RequestMapping(value = "/put", method = RequestMethod.PUT)
-    public void sayHelloAgainPut(HttpServletRequest request,
+    public ResponseEntity<byte[]> sayHelloAgainPut(HttpServletRequest request,
             ModelMap model,
             Event event,
             File file) throws IOException{
@@ -470,7 +470,8 @@ public class EventsLogController{
         } catch (IOException e) {
             System.out.println("¡¡¡¡¡¡¡  NO SE PUDO ESCRIBIR  !!!!");
         }        
-        
+        ResponseEntity responseEntity = new ResponseEntity(HttpStatus.OK);
+        return responseEntity;
     }
     
     private HashMap<String, Object> analizerPartA(String str) {
