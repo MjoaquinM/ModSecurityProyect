@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -73,9 +72,12 @@ public class ModsecurityController {
         return "reqBodyConfig";
     }
 
-    @RequestMapping(value = "/applyRequestBodyHandlingChanges", method = RequestMethod.POST)
+    @RequestMapping(value = "/configurationFiles/applyRequestBodyHandlingChanges", method = RequestMethod.POST)
     public String applyReqBodyChanges(@Valid ConfigurationFiles ccf,
             BindingResult result, ModelMap model) throws IOException, InterruptedException {
+        
+        System.out.println(" MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME");
+        
         configurationFileService.save(ccf);
         ccf=configurationFileService.findById(ccf.getId());
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();

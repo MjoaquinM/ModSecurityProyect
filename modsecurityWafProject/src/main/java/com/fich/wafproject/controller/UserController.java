@@ -235,7 +235,7 @@ public class UserController {
      * @param request
      * @return list user view with message action status
      */
-    @RequestMapping(value = "users/saveNewUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/saveNewUser", method = RequestMethod.POST)
     public String saveNewUser(@Valid Users user,
             BindingResult result, ModelMap model, HttpServletRequest request) {
         if (result.hasErrors() && flagDebug) {

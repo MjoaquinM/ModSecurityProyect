@@ -80,7 +80,7 @@
                             <tr>
                                 <td colspan="5"></td>
                                 <td>
-                                    <a href="<c:url value="/eventList" />" class="btn btn-primary">Reset</a>
+                                    <a href="<c:url value="/control/eventList" />" class="btn btn-primary">Reset</a>
                                     <button type="submit" class="btn btn-md btn-success filter-submit">Apply</button>
                                 </td>
                             </tr>

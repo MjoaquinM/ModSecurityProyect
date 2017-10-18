@@ -57,9 +57,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.authorizeRequests()
         .antMatchers("/admin-test","/EventList","/jasperHTML","/jasperPDF","/jasperXLS","/put").permitAll()
-        .antMatchers("/", "/home").access("hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')")
-        .antMatchers("/admin/**").permitAll()
-        .antMatchers("/users/**").access("hasRole('ADMIN')")
+        .antMatchers("/", "/home","/admin","/control/**","/configurationFiles/**","/users").access("hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')")       
+        .antMatchers("/users/list").access("hasRole('ADMIN')")
+        .antMatchers("/ascync").permitAll()
         .and().formLogin().loginPage("/login").successHandler(customSuccessHandler)
         .usernameParameter("user_name").passwordParameter("password")
 //        .and().csrf()

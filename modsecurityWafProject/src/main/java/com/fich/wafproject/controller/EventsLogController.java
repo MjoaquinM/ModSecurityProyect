@@ -105,7 +105,7 @@ public class EventsLogController {
 
     private static List<MessageData> PATH_PREFIX = new ArrayList<MessageData>();// AlertMessages();
 
-    @RequestMapping(value = "/jrreport", method = RequestMethod.GET)
+    @RequestMapping(value = "/control/jrreport", method = RequestMethod.GET)
     public ResponseEntity<byte[]> printWelcome(ModelMap model, HttpServletRequest request) throws JRException, FileNotFoundException, IOException {
 
         System.out.println("ENTRO AL REPORT");
@@ -758,7 +758,7 @@ public class EventsLogController {
         return "eventDetailsForm";
     }
 
-    @RequestMapping(value = "/deleteAllEvents", method = RequestMethod.GET)
+    @RequestMapping(value = "/control/deleteAllEvents", method = RequestMethod.GET)
     public String deleteAllEvents(ModelMap model, HttpServletRequest request) {
 
         if (request.getParameterMap().containsKey("event")) {
@@ -788,8 +788,10 @@ public class EventsLogController {
     }
     
     @RequestMapping(value = "/control/charts", method = RequestMethod.GET)
-    public String chartsPage(ModelMap model) {        
+    public String chartsPage(ModelMap model) {
         //model.addAttribute("users", userService.findAll());
+        List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
+        model.addAttribute("configFiles", configurationFilesAll);
         model.addAttribute("user", this.customFunctions.getPrincipal());
         return "charts";
     }

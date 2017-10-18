@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="panel-body collapse" id="filters-containers">
-            <form method="GET" id="event-filter-jasper-form" action="<c:url value="/jrreport" />">
+            <form method="GET" id="event-filter-jasper-form" action="<c:url value="/control/jrreport" />">
                 <input type="hidden" name="filterFlag"  value="true" />
                 <div class="table-responsive">
                     <table class="table">
@@ -84,7 +84,7 @@
     </div>
                                 
     <div class="row" style="text-align: center">
-        <a class="btn btn-lg btn-primary" href="<c:url value="/jrreport" />">Generate Report</a>
+        <a class="btn btn-lg btn-primary" href="<c:url value="/control/jrreport" />">Generate Report</a>
     </div>
     
 </div>
