@@ -88,11 +88,10 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 /* PARA TAREAS PLANIFICADAS */
 import org.springframework.scheduling.annotation.Scheduled;
 
-
 @Controller
 @RequestMapping("/")
-public class EventsLogController{
-     
+public class EventsLogController {
+
     @Autowired
     EventService eventService;
     @Autowired
@@ -101,119 +100,149 @@ public class EventsLogController{
     RuleService ruleService;
     @Autowired
     ConfigurationFileService configurationFileService;
-    
+
     private Functions customFunctions = new Functions();
-    
+
     private static List<MessageData> PATH_PREFIX = new ArrayList<MessageData>();// AlertMessages();
-    
+
     @RequestMapping(value = "/jrreport", method = RequestMethod.GET)
     public ResponseEntity<byte[]> printWelcome(ModelMap model, HttpServletRequest request) throws JRException, FileNotFoundException, IOException {
-        
+
         System.out.println("ENTRO AL REPORT");
-        
+
         int pageNumber = 1;
-//        if(request.getParameterMap().containsKey("pageNumber")){
-//           pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-//        }
-        
-//        if(pageNumber<1){
-//            pageNumber=1;
-//        }
-        List<Event> events = eventService.findAllEvents(1, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"),request.getParameterValues("filter-parameters-values"),false);
-//        if(events.size() == 0){
-//            pageNumber = pageNumber-1;
-//            events = eventService.findAllEvents(1, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"),false);
-//        }
-        
+
+        List<Event> events = eventService.findAllEvents(1, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"), false);
+
         String[] n1 = request.getParameterValues("filter-parameters-values");
-        String[] n2 = request.getParameterValues("filter-parameters-labels");
-        HashMap hm = new HashMap<String,String>();
-        
-//        if(n1 != null){
-//            int count = 0;
-//            for(String val: n1){
-//                hm.put(n2[count], val);
-//                System.out.println("EN EL HASHMAP => PARAMETER: " + n2[count] +"    VALOR: " + val);
-//                count++;
-//            }
-//        }
-        
+
         //Tomo la lista de eventos
-//        List<Event> events = eventService.findAllEvents();
         List<Rule> rules = ruleService.findAllRules();
         List<File> files = fileService.findAllFiles();
-        
+
         //Solo para ver q trajo
         System.out.println("LAS LISTAS QUE TRAJO SON");
-        for (Event e : events){
+        for (Event e : events) {
             System.out.println("EVENT: " + e.getTransactionId());
         }
-        for (Rule r : rules){
+        for (Rule r : rules) {
             System.out.println("RULE: " + r.getRuleId());
         }
-        for (File f : files){
+        for (File f : files) {
             System.out.println("FILE: " + f.getFileName());
         }
-        
+
         //INICIALIZO MAPAS PARA CADA GRAFICO
-        Map<Rule, Number> ruleVsNumber = new HashMap<>();   //cantidad de ataques por cada regla
-        Map<File, Number> fileVsNumber = new HashMap<>();   //cantidad de ataques por cada clase de ataque
+        Map<Rule, Number> ruleVsNumber = new HashMap<>();   //cantidad de ataques por cada regla.
+        Map<File, Number> fileVsNumber = new HashMap<>();   //cantidad de ataques por cada clase de ataque.
+        Map<File, Map<String, Number>> fileMap = new HashMap<>(); //ataques por clase y por ip.
         Map<String, Number> dateVsNumber = new HashMap<>();
-        for (Rule r : rules){
-            if (!("949".equals(r.getRuleId().substring(0, 3)) || "980".equals(r.getRuleId().substring(0, 3))))
-                ruleVsNumber.put(r, 0);
-        }
-        for (File f : files){
-            if (!(f.getFileName().contains("949") || f.getFileName().contains("980"))){
-                fileVsNumber.put(f, 0);
-            }
-        }
-        
-        //CARGO LOS MAPAS CON LOS DATOS
-        for (Event e : events){
+
+        for (Event e : events) {
             //ruleVsNumber y fileVsNumber
             System.out.println("ENTRO AL FOR DE LOS EVENTOS");
             List<Rule> eventRules = e.getRules();
-            for (Rule r : eventRules){
-                if (!("949".equals(r.getRuleId().substring(0, 3)) || "980".equals(r.getRuleId().substring(0, 3)))){
-                    ruleVsNumber.put(r, ruleVsNumber.get(r).intValue() + 1 );
+            
+            Rule ultimoRule = null;
+            File ultimoFile = null;
+            for (Rule r : eventRules) {
+                if (!(("949".equals(r.getRuleId().substring(0, 3)) || "959".equals(r.getRuleId().substring(0, 3)) || "980".equals(r.getRuleId().substring(0, 3))))
+                        && r != ultimoRule) {
+                    if (ruleVsNumber.get(r) != null) {
+                        ruleVsNumber.put(r, ruleVsNumber.get(r).intValue() + 1);
+                    } else {
+                        ruleVsNumber.put(r, 1);
+                    }
                 }
-                if (!(r.getFileId().getFileName().contains("949") || r.getFileId().getFileName().contains("980"))){
-                    fileVsNumber.put(r.getFileId(), fileVsNumber.get(r.getFileId()).intValue() + 1 );
+                if (!((r.getFileId().getFileName().contains("949") || r.getFileId().getFileName().contains("959") || r.getFileId().getFileName().contains("980")))
+                        && r.getFileId() != ultimoFile) {
+                    ultimoFile = r.getFileId();
+                    if (fileVsNumber.get(r.getFileId()) != null) {
+                        fileVsNumber.put(r.getFileId(), fileVsNumber.get(r.getFileId()).intValue() + 1);
+                    } else {
+                        fileVsNumber.put(r.getFileId(), 1);
+                    }
+                    
+                    String ip = e.getClientIp();
+                    if (fileMap.get(r.getFileId()) != null){
+                        if (fileMap.get(r.getFileId()).get(ip) != null){
+                            fileMap.get(r.getFileId()).put(ip, fileMap.get(r.getFileId()).get(ip).intValue() + 1);
+                        }else{
+                            fileMap.get(r.getFileId()).put(ip, 1);
+                        }
+                    }else{
+                        HashMap aux = new HashMap<String, Number>();
+                        aux.put(ip, 1);
+                        fileMap.put(r.getFileId(), aux);
+                    }
                 }
+                ultimoFile = r.getFileId();
+                ultimoRule = r;
             }
+
             //dateVsNumber
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
             Date d = e.getDateEvent();
-//            String date = d.toString().substring(0, 10);
             String date = dateFormat.format(d).substring(5, 10);
-            if (dateVsNumber.get(date) != null){
+            if (dateVsNumber.get(date) != null) {
                 dateVsNumber.put(date, dateVsNumber.get(date).intValue() + 1);
-            }else{
+            } else {
                 dateVsNumber.put(date, 1);
             }
         }
+        
+        List<JasperCharts> list903_9001 = new ArrayList();
+        List<JasperCharts> list903_9002 = new ArrayList();
+        List<JasperCharts> list905 = new ArrayList();
+        List<JasperCharts> list910 = new ArrayList();
+        List<JasperCharts> list911 = new ArrayList();
+        List<JasperCharts> list912 = new ArrayList();
+        List<JasperCharts> list913 = new ArrayList();
+        List<JasperCharts> list920 = new ArrayList();
+        List<JasperCharts> list921 = new ArrayList();
+        List<JasperCharts> list930 = new ArrayList();
+        List<JasperCharts> list931 = new ArrayList();
+        List<JasperCharts> list932 = new ArrayList();
+        List<JasperCharts> list933 = new ArrayList();
+        List<JasperCharts> list941 = new ArrayList();
+        List<JasperCharts> list942 = new ArrayList();
+        List<JasperCharts> list943 = new ArrayList();
+        List<JasperCharts> list950 = new ArrayList();
+        List<JasperCharts> list951 = new ArrayList();
+        List<JasperCharts> list952 = new ArrayList();
+        List<JasperCharts> list953 = new ArrayList();
+        List<JasperCharts> list954 = new ArrayList();
+        
+        List<JasperCharts> fileMapList = new ArrayList<>();
+        File file = fileService.findByFilePath("/usr/share/modsecurity-crs/rules/REQUEST-942-APPLICATION-ATTACK-SQLI.conf");
+        HashMap<String, Number> prueba1 = (HashMap<String, Number>) fileMap.get(file);
+        for (Map.Entry<String, Number> entry : prueba1.entrySet()) {
+            System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
+            fileMapList.add(new JasperCharts(entry.getKey(), entry.getValue()));
+        }
+        
+        
         
         //TRANSFORMO LOS MAPAS A LISTAS
         List<JasperCharts> listRuleNumber = new ArrayList<>();
         System.out.println("LISTA DE RULE:");
         for (Map.Entry<Rule, Number> entry : ruleVsNumber.entrySet()) {
             System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
-            listRuleNumber.add(new JasperCharts(entry.getKey().getRuleId(),entry.getValue()));
+            listRuleNumber.add(new JasperCharts(entry.getKey().getRuleId(), entry.getValue()));
         }
         System.out.println("LISTA DE FILE:");
         List<JasperCharts> listFileNumber = new ArrayList<>();
         for (Map.Entry<File, Number> entry : fileVsNumber.entrySet()) {
             System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
-            listFileNumber.add(new JasperCharts(entry.getKey().getFileName(),entry.getValue()));
+            listFileNumber.add(new JasperCharts(entry.getKey().getFileName(), entry.getValue()));
         }
         System.out.println("LISTA DE DATE (eventos):");
         List<JasperCharts> listDateNumber = new ArrayList<>();
         SortedSet<String> keys = new TreeSet<>(dateVsNumber.keySet());
-        for (String key : keys){
-            listDateNumber.add(new JasperCharts(key,dateVsNumber.get(key)));
+        for (String key : keys) {
+            listDateNumber.add(new JasperCharts(key, dateVsNumber.get(key)));
         }
-        
+
         //PASO LAS LISTAS AL REPORTE POR PARAMETRO
         String dateEventFrom = null,
                 clientIp = null,
@@ -221,8 +250,7 @@ public class EventsLogController{
                 dateEventTo = null,
                 serverIp = null,
                 serverPort = null;
-        
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
         Date date = new Date();
         if (n1 != null) {
             dateEventFrom = "".equals(n1[0]) ? "Inicio de registros" : n1[0];
@@ -231,7 +259,7 @@ public class EventsLogController{
             dateEventTo = "".equals(n1[3]) ? date.toString() : n1[3];
             serverIp = "".equals(n1[4]) ? "Todas" : n1[4];
             serverPort = "".equals(n1[5]) ? "Todas" : n1[5];
-        }else{
+        } else {
             dateEventFrom = "Inicio de registros";
             clientIp = "Todas";
             clientPort = "Todos";
@@ -239,7 +267,7 @@ public class EventsLogController{
             serverIp = "Todas";
             serverPort = "Todas";
         }
-        
+
         Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("listRuleNumber", listRuleNumber);
         parameters.put("listFileNumber", listFileNumber);
@@ -252,15 +280,15 @@ public class EventsLogController{
         parameters.put("dateEventTo", dateEventTo);
         parameters.put("serverIp", serverIp);
         parameters.put("serverPort", serverPort);
-        
+
         JRDataSource jrDatasource = new JRBeanCollectionDataSource(events);
-        
+
         InputStream reporte = this.getClass().getClassLoader().getResourceAsStream("report1.jasper");
         JasperPrint jasperPrint = JasperFillManager.fillReport(
                 reporte,
                 parameters,
                 jrDatasource);
-        
+
 //        //Guardo en el Home del usuario
 //        String userHomeDirectory = System.getProperty("user.home");
 //        /* Output file location */
@@ -277,12 +305,9 @@ public class EventsLogController{
 //
 //        // Exportamos el informe a formato PDF
 //        JasperExportManager.exportReportToPdfFile(print, outputFile);
-        
 //        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 //            Date date = new Date();
 //            System.out.println(dateFormat.format(date));
-            System.out.println("SALIDA DEL JASPER");
-
         byte[] fichero = JasperExportManager.exportReportToPdf(jasperPrint);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
@@ -290,35 +315,38 @@ public class EventsLogController{
         headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);
+        
+        System.out.println("SALIDA DEL JASPER");
+        
         return response;
     }
-    
+
 //********************************************  PARSER  ********************************//
-    
     /*-------------------------- PARA LOS ALERTAS --------------------------*/
     @MessageMapping("/alertMessages")
     @SendTo("/topic/messages")
-      public List<MessageData> borraresto() throws Exception{
+    public List<MessageData> borraresto() throws Exception {
         List<MessageData> currentAlerts = new ArrayList<MessageData>();
-        for(MessageData md : PATH_PREFIX){
+        for (MessageData md : PATH_PREFIX) {
             currentAlerts.add(md);
         }
         PATH_PREFIX.clear();
         return currentAlerts;
     }
+
     /*-------------------------- PARA LOS ALERTAS END!!!!!!!!!!!!!!!!!!!!!!--------------------------*/
 
     @RequestMapping(value = "/put", method = RequestMethod.PUT)
     public ResponseEntity<byte[]> sayHelloAgainPut(HttpServletRequest request,
             ModelMap model,
             Event event,
-            File file) throws IOException{
-        
+            File file) throws IOException {
+
         long startTime = System.currentTimeMillis();
         System.out.println("ENTRO AL PUUUUUUUUUUUUUUT: " + new Date().toString());
-        
+
         try {
-            
+
             //Tomo las cabeceras
             Enumeration<String> e = request.getHeaderNames();
             while (e.hasMoreElements()) {
@@ -376,10 +404,10 @@ public class EventsLogController{
             HashMap<String, Object> MapPartA = this.analizerPartA(parts[0]);
             HashMap<String, String> MapPartB = this.analizerPartB(parts[1]);
             HashMap<String, List<String>> MapPartH = this.analizerPartH(parts[7]);
-            
+
             event.setDateEvent((Date) MapPartA.get("date"));
             event.setTransactionId((String) MapPartA.get("transactionId"));
-            event.setClientIp((String)MapPartA.get("clientIp"));
+            event.setClientIp((String) MapPartA.get("clientIp"));
             event.setClientPort((String) MapPartA.get("clientPort"));
             event.setServerIp((String) MapPartA.get("serverIp"));
             event.setServerPort((String) MapPartA.get("serverPort"));
@@ -405,29 +433,29 @@ public class EventsLogController{
 //                for(MessageData mdd : PATH_PREFIX){
 //                    System.out.println("Transaction id: " + mdd.getTransactionId());
 //                }
-                
+
             } catch (ConstraintViolationException ese) {
                 System.out.println("ERROR CONSTRAINT: " + ese.getMessage());
             } catch (JDBCConnectionException ese) {
                 System.out.println("ERROR CONNECTION: " + ese.getMessage());
             }
             int cant = MapPartH.get("filePath").size();//cant de reglas act. filePath esta siempre presente. 
-            
+
             List<Rule> rules = new ArrayList<Rule>();
-            
+
             for (int i = 0; i < cant; i++) {
                 System.out.println("Vuelta Nrooooooooooooooooooooooooooooooooooooooooooooooooooo: " + i);
 
                 String filePath = MapPartH.get("filePath").get(i);
                 File fileExists = fileService.findByFilePath(filePath);
-                if ( fileExists == null ) {
+                if (fileExists == null) {
                     file.setFilePath(MapPartH.get("filePath").get(i));
                     file.setFileName(MapPartH.get("fileName").get(i));
                     fileService.saveFile(file);
-                }else{
+                } else {
                     file = fileExists;
                 }
-                
+
                 String ruleId = MapPartH.get("id").get(i);
                 System.out.println("VA A BUSCAR POR EL RULEID: " + ruleId);
                 Rule ruleExists = ruleService.findByRuleId(ruleId);
@@ -443,13 +471,13 @@ public class EventsLogController{
                     System.out.println("ruleId: " + rule.getRuleId());
                     System.out.println(rule.getId());
                     ruleService.saveRule(rule);
-                }else{
+                } else {
                     rule = ruleExists;
                 }
                 rules.add(rule);
                 System.out.println("LISTO GUARDO BIEN");
             }
-            
+
             //Asocio El evento con el conjunto de reglas corerspondientes
             event.setRules(rules);
             try {
@@ -460,7 +488,7 @@ public class EventsLogController{
             } catch (JDBCConnectionException ese) {
                 System.out.println("ERROR CONNECTION: " + ese.getMessage());
             }
-            
+
             long endTime = System.currentTimeMillis() - startTime;
             System.out.println("TERMINO DE GUARDAR TODOOOOOOO: " + endTime);
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -469,11 +497,11 @@ public class EventsLogController{
 
         } catch (IOException e) {
             System.out.println("¡¡¡¡¡¡¡  NO SE PUDO ESCRIBIR  !!!!");
-        }        
+        }
         ResponseEntity responseEntity = new ResponseEntity(HttpStatus.OK);
         return responseEntity;
     }
-    
+
     private HashMap<String, Object> analizerPartA(String str) {
 //        HashMap<String, String> result = new HashMap<String, String>();
         HashMap<String, Object> result = new HashMap<String, Object>();
@@ -483,7 +511,7 @@ public class EventsLogController{
         int indx = str.indexOf(']');
         result.put("date", this.parseDate(str.substring(1, indx)));
         str = str.substring(indx + 2);
-        
+
         //Ahora quedo el transactionId, clientIp, clientPort, serverIp, serverPort
         String[] info = str.split(" ");
         result.put("transactionId", info[0]);
@@ -494,50 +522,50 @@ public class EventsLogController{
 
         return result;
     }
-    
-    private Date parseDate(String dateString){
-        String time = dateString.substring(dateString.indexOf(':')+1,dateString.indexOf(' '));
-        String date = dateString.substring(0,dateString.indexOf(':'));
-        String[] dateSplitted  = date.split("/");
+
+    private Date parseDate(String dateString) {
+        String time = dateString.substring(dateString.indexOf(':') + 1, dateString.indexOf(' '));
+        String date = dateString.substring(0, dateString.indexOf(':'));
+        String[] dateSplitted = date.split("/");
         String month = "";
-        switch(dateSplitted[1]) {
-            case "Jan" :
-               month = "01";
-               break; 
-            case "Feb" :
-               month = "02";
-               break; 
-            case "Mar" :
-               month = "03";
-               break; 
-            case "Apr" :
-               month = "04";
-               break; 
-            case "May" :
-               month = "05";
-               break; 
-            case "Jun" :
+        switch (dateSplitted[1]) {
+            case "Jan":
+                month = "01";
+                break;
+            case "Feb":
+                month = "02";
+                break;
+            case "Mar":
+                month = "03";
+                break;
+            case "Apr":
+                month = "04";
+                break;
+            case "May":
+                month = "05";
+                break;
+            case "Jun":
                 month = "06";
                 break;
-            case "Jul" :
+            case "Jul":
                 month = "07";
                 break;
-            case "Aug" :
+            case "Aug":
                 month = "08";
-                break; 
-            case "Sep" :
-               month = "09";
-               break; 
-            case "Oct" :
-               month = "10";
-               break; 
-            case "Nov" :
-               month = "11";
-               break; 
-            default :
-               month = "12";
-         }
-        date = dateSplitted[2]+"-"+month+"-"+dateSplitted[0]+" "+time;
+                break;
+            case "Sep":
+                month = "09";
+                break;
+            case "Oct":
+                month = "10";
+                break;
+            case "Nov":
+                month = "11";
+                break;
+            default:
+                month = "12";
+        }
+        date = dateSplitted[2] + "-" + month + "-" + dateSplitted[0] + " " + time;
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
         Date currentDate = new Date();
         try {
@@ -631,7 +659,7 @@ public class EventsLogController{
 
             }
         }
-        
+
         result.put("filePath", filePath);
         result.put("fileName", fileName);
         result.put("id", id);
@@ -641,107 +669,106 @@ public class EventsLogController{
     }
 
     @RequestMapping(value = "/eventList", method = RequestMethod.GET)
-    public String EventList(ModelMap model,HttpServletRequest request) {
+    public String EventList(ModelMap model, HttpServletRequest request) {
         int pageNumber = 1;
-        if(request.getParameterMap().containsKey("pageNumber")){
-           pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        if (request.getParameterMap().containsKey("pageNumber")) {
+            pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
         }
-        
-        if(pageNumber<1){
-            pageNumber=1;
+
+        if (pageNumber < 1) {
+            pageNumber = 1;
         }
-        
-        List<Event> events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"),request.getParameterValues("filter-parameters-values"),true);
-        if(events.size() == 0 && pageNumber>1){
-            pageNumber = pageNumber-1;
-            events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"),true);
+
+        List<Event> events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"), true);
+        if (events.size() == 0 && pageNumber > 1) {
+            pageNumber = pageNumber - 1;
+            events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"), true);
         }
-        
+
         String[] n1 = request.getParameterValues("filter-parameters-values");
         String[] n2 = request.getParameterValues("filter-parameters-labels");
-        HashMap hm = new HashMap<String,String>();
-        
-        if(n1 != null){
+        HashMap hm = new HashMap<String, String>();
+
+        if (n1 != null) {
             int count = 0;
-            for(String val: n1){
+            for (String val : n1) {
                 hm.put(n2[count], val);
                 count++;
             }
         }
-        
+
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
         System.out.println("ESTA ES LA CANTIDAD DE PAGINAS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! " + pageNumber);
-        model.addAttribute("hm",hm);
-        model.addAttribute("configFiles",configurationFilesAll);
-        model.addAttribute("lst",events);
-        model.addAttribute("pageNumber",pageNumber);
+        model.addAttribute("hm", hm);
+        model.addAttribute("configFiles", configurationFilesAll);
+        model.addAttribute("lst", events);
+        model.addAttribute("pageNumber", pageNumber);
         model.addAttribute("idModal", "eventModal");
-        model.addAttribute("user",this.getPrincipal());
+        model.addAttribute("user", this.getPrincipal());
         return "eventsList";
     }
-    
-     @RequestMapping(value = "/eventDetailsForm", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/eventDetailsForm", method = RequestMethod.GET)
     public String getAddUserForm(ModelMap model, @RequestParam("transactionId") String transactionId) {
         System.out.println("ENTRO A DETAILS FORM: " + transactionId);
         model.addAttribute("idModal", "eventModal");
-        
+
         Event event = eventService.findByTransactionId(transactionId);
         List<Rule> rules = event.getRules();
         List<File> files = new ArrayList<>();
-        for (Rule r : rules){
+        for (Rule r : rules) {
             files.add(r.getFileId());
         }
-        
-                
-        event.setPartA(event.getPartA().substring(event.getPartA().indexOf("A--")+4).replace("\n", "<br/>"));
-        
-        if (!(event.getPartB() == null)){
-            event.setPartB(event.getPartB().substring(event.getPartB().indexOf("B--")+4).replace("\n", "<br/>"));
+
+        event.setPartA(event.getPartA().substring(event.getPartA().indexOf("A--") + 4).replace("\n", "<br/>"));
+
+        if (!(event.getPartB() == null)) {
+            event.setPartB(event.getPartB().substring(event.getPartB().indexOf("B--") + 4).replace("\n", "<br/>"));
         }
-        if (!(event.getPartC() == null)){
-            event.setPartC(event.getPartC().substring(event.getPartC().indexOf("C--")+4).replace("\n", "<br/>"));
+        if (!(event.getPartC() == null)) {
+            event.setPartC(event.getPartC().substring(event.getPartC().indexOf("C--") + 4).replace("\n", "<br/>"));
         }
-        if (!(event.getPartD() == null)){
-            event.setPartD(event.getPartD().substring(event.getPartD().indexOf("D--")+4).replace("\n", "<br/>"));
+        if (!(event.getPartD() == null)) {
+            event.setPartD(event.getPartD().substring(event.getPartD().indexOf("D--") + 4).replace("\n", "<br/>"));
         }
-        if (!(event.getPartE() == null)){
-            event.setPartE(event.getPartE().substring(event.getPartE().indexOf("E--")+4).replace("\n", "<br/>"));
+        if (!(event.getPartE() == null)) {
+            event.setPartE(event.getPartE().substring(event.getPartE().indexOf("E--") + 4).replace("\n", "<br/>"));
         }
-        if (!(event.getPartF() == null)){
-            event.setPartF(event.getPartF().substring(event.getPartF().indexOf("F--")+4).replace("\n", "<br/>"));
+        if (!(event.getPartF() == null)) {
+            event.setPartF(event.getPartF().substring(event.getPartF().indexOf("F--") + 4).replace("\n", "<br/>"));
         }
-        if (!(event.getPartG() == null)){
-            event.setPartG(event.getPartG().substring(event.getPartG().indexOf("G--")+4).replace("\n", "<br/>"));
+        if (!(event.getPartG() == null)) {
+            event.setPartG(event.getPartG().substring(event.getPartG().indexOf("G--") + 4).replace("\n", "<br/>"));
         }
-        if (!(event.getPartH() == null)){
-            event.setPartH(event.getPartH().substring(event.getPartH().indexOf("H--")+4).replace("\n", "<br/>"));
+        if (!(event.getPartH() == null)) {
+            event.setPartH(event.getPartH().substring(event.getPartH().indexOf("H--") + 4).replace("\n", "<br/>"));
         }
-        if (!(event.getPartI() == null)){
-            event.setPartI(event.getPartI().substring(event.getPartI().indexOf("I--")+4).replace("\n", "<br/>"));
+        if (!(event.getPartI() == null)) {
+            event.setPartI(event.getPartI().substring(event.getPartI().indexOf("I--") + 4).replace("\n", "<br/>"));
         }
-        if (!(event.getPartJ() == null)){
-            event.setPartJ(event.getPartJ().substring(event.getPartJ().indexOf("J--")+4).replace("\n", "<br/>"));
+        if (!(event.getPartJ() == null)) {
+            event.setPartJ(event.getPartJ().substring(event.getPartJ().indexOf("J--") + 4).replace("\n", "<br/>"));
         }
-        if (!(event.getPartK() == null)){
-            event.setPartK(event.getPartK().substring(event.getPartK().indexOf("K--")+4).replace("\n", "<br/>"));
+        if (!(event.getPartK() == null)) {
+            event.setPartK(event.getPartK().substring(event.getPartK().indexOf("K--") + 4).replace("\n", "<br/>"));
         }
-        
-        model.addAttribute("event",event);
-        model.addAttribute("rules",rules);
-        model.addAttribute("files",files);
+
+        model.addAttribute("event", event);
+        model.addAttribute("rules", rules);
+        model.addAttribute("files", files);
         return "eventDetailsForm";
     }
-    
+
     @RequestMapping(value = "/deleteAllEvents", method = RequestMethod.GET)
     public String deleteAllEvents(ModelMap model, HttpServletRequest request) {
-        
-        if(request.getParameterMap().containsKey("event")){
-           Integer eventId = Integer.parseInt(request.getParameter("event"));
-           eventService.delete(eventId);
-        }else{
+
+        if (request.getParameterMap().containsKey("event")) {
+            Integer eventId = Integer.parseInt(request.getParameter("event"));
+            eventService.delete(eventId);
+        } else {
             eventService.deleteAll();
         }
-        
+
         String[] aux = {};
         request.setAttribute("filter-parameters-targets", aux);
         request.setAttribute("filter-parameters-names", aux);
@@ -749,20 +776,20 @@ public class EventsLogController{
         return this.EventList(model, request);
     }
 
-    private String getPrincipal(){
+    private String getPrincipal() {
         String userName = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (principal instanceof UserDetails) {
-            userName = ((UserDetails)principal).getUsername();
+            userName = ((UserDetails) principal).getUsername();
         } else {
             userName = principal.toString();
         }
         return userName;
     }
-    
+
     @RequestMapping(value = "/charts", method = RequestMethod.GET)
-    public String chartsPage(ModelMap model) {        
+    public String chartsPage(ModelMap model) {
         //model.addAttribute("users", userService.findAll());
         model.addAttribute("user", this.customFunctions.getPrincipal());
         return "charts";

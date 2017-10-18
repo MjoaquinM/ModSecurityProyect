@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="14874671-00d2-4654-8e20-f9856528c156">
 	<property name="ireport.zoom" value="1.3310000000000048"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1700"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Monospaced" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Monospaced" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Monospaced" fontSize="12" isBold="true"/>
@@ -141,37 +141,6 @@
 	</title>
 	<lastPageFooter>
 		<band height="802">
-			<barChart>
-				<chart>
-					<reportElement x="111" y="301" width="332" height="224" uuid="bf77eb69-a60c-43f5-ae37-e2afceea6392"/>
-					<chartTitle/>
-					<chartSubtitle/>
-					<chartLegend/>
-				</chart>
-				<categoryDataset>
-					<dataset>
-						<datasetRun subDataset="dataset2" uuid="5a3669f6-9180-4bab-b684-4f0f3bd4ee24">
-							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{listDateNumber})]]></dataSourceExpression>
-						</datasetRun>
-					</dataset>
-					<categorySeries>
-						<seriesExpression><![CDATA["Eventos por dia"]]></seriesExpression>
-						<categoryExpression><![CDATA[$F{campo}]]></categoryExpression>
-						<valueExpression><![CDATA[$F{valor}]]></valueExpression>
-						<labelExpression><![CDATA[""+$F{valor}]]></labelExpression>
-					</categorySeries>
-				</categoryDataset>
-				<barPlot>
-					<plot/>
-					<itemLabel/>
-					<categoryAxisFormat>
-						<axisFormat/>
-					</categoryAxisFormat>
-					<valueAxisFormat>
-						<axisFormat/>
-					</valueAxisFormat>
-				</barPlot>
-			</barChart>
 			<staticText>
 				<reportElement x="139" y="11" width="276" height="20" uuid="4fb84999-f86e-45c7-a868-9fc15632e1b1"/>
 				<textElement>
@@ -181,7 +150,7 @@
 			</staticText>
 			<pieChart>
 				<chart>
-					<reportElement x="111" y="30" width="332" height="231" uuid="f60e545d-45fb-4c83-9d97-6acca1a1bef8"/>
+					<reportElement x="10" y="30" width="540" height="534" uuid="f60e545d-45fb-4c83-9d97-6acca1a1bef8"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
@@ -201,53 +170,17 @@
 					<itemLabel/>
 				</piePlot>
 			</pieChart>
-			<staticText>
-				<reportElement x="156" y="281" width="242" height="20" uuid="9228e364-b6f8-4248-a938-178b25839706"/>
-				<textElement>
-					<font fontName="Monospaced"/>
-				</textElement>
-				<text><![CDATA[Cantidad de eventos detectados por día]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="139" y="535" width="276" height="20" uuid="a65d2aa6-2638-4e49-8a73-61e7c595bbc5"/>
-				<textElement>
-					<font fontName="Monospaced"/>
-				</textElement>
-				<text><![CDATA[Cantidad de eventos por cada tipo de regla]]></text>
-			</staticText>
-			<pieChart>
-				<chart>
-					<reportElement x="111" y="554" width="332" height="231" uuid="328bcd1f-ef61-4946-a6a9-4a6c26d2846a"/>
-					<chartTitle/>
-					<chartSubtitle/>
-					<chartLegend/>
-				</chart>
-				<pieDataset>
-					<dataset>
-						<datasetRun subDataset="dataset1" uuid="457c3f51-e359-4c92-b384-9574885782f2">
-							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource ($P{listFileNumber})]]></dataSourceExpression>
-						</datasetRun>
-					</dataset>
-					<keyExpression><![CDATA[$F{campo}]]></keyExpression>
-					<valueExpression><![CDATA[$F{valor}]]></valueExpression>
-					<labelExpression><![CDATA[""+$F{valor}]]></labelExpression>
-				</pieDataset>
-				<piePlot>
-					<plot/>
-					<itemLabel/>
-				</piePlot>
-			</pieChart>
 		</band>
 	</lastPageFooter>
 	<summary>
-		<band height="109">
+		<band height="97">
 			<componentElement>
-				<reportElement x="24" y="71" width="473" height="25" uuid="db193492-6b40-4e32-a205-41afa5e3bfc0"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<reportElement x="24" y="71" width="500" height="20" uuid="db193492-6b40-4e32-a205-41afa5e3bfc0"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="dataset3" uuid="d576127c-4d4b-4f7c-874a-d6f66aaa3b68">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{events})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="25" width="473">
+					<jr:listContents height="20" width="500">
 						<textField>
 							<reportElement x="0" y="0" width="111" height="20" uuid="3d1c7489-e398-4731-8fe0-bacd78e913e0"/>
 							<textFieldExpression><![CDATA[$F{dateEvent}]]></textFieldExpression>
