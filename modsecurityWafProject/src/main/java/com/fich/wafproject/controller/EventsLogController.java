@@ -640,7 +640,7 @@ public class EventsLogController{
         return result;
     }
 
-    @RequestMapping(value = "/eventList", method = RequestMethod.GET)
+    @RequestMapping(value = "/control/eventList", method = RequestMethod.GET)
     public String EventList(ModelMap model,HttpServletRequest request) {
         int pageNumber = 1;
         if(request.getParameterMap().containsKey("pageNumber")){
@@ -761,7 +761,7 @@ public class EventsLogController{
         return userName;
     }
     
-    @RequestMapping(value = "/charts", method = RequestMethod.GET)
+    @RequestMapping(value = "/control/charts", method = RequestMethod.GET)
     public String chartsPage(ModelMap model) {        
         //model.addAttribute("users", userService.findAll());
         model.addAttribute("user", this.customFunctions.getPrincipal());

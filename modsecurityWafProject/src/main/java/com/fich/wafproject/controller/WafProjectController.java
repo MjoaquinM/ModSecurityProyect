@@ -70,7 +70,7 @@ public class WafProjectController {
         String user = this.customFunctions.getPrincipal();
         model.addAttribute("configFiles",cfs);
         model.addAttribute("user",user);
-        return "redirect:/eventList";
+        return "redirect:/control/eventList";
     }
     
     @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)

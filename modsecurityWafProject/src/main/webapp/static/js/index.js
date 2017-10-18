@@ -301,8 +301,27 @@ $(document).ready(function () {
                             $('#value').attr('disabled',true);
                             $('#generic-modal-container').find('.options-row-header').removeClass('hidden');
                             var nOptions = $('#generic-modal-container').find('.options-row').length;
-                            var htmlBlock = '<tr class="options-row added"><td><input id="configurationFileAttributeOptions'+(nOptions)+'.name" name="configurationFileAttributeOptions['+(nOptions)+'].name" class="form-control input-sm attr-opt" value="" type="text"><div class="has-error"></div></td><td><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><input type="radio" name="radio-options" class="radio-options"></td></tr>\n\
-                                             <tr><td>Description</td><td><textarea id="configurationFileAttributeOptions'+(nOptions)+'.description" name="configurationFileAttributeOptions['+(nOptions)+'].description" type="text" class="form-control input-sm" rows="2" cols="30"></textarea></td></tr>';
+                            var htmlBlock = '<tr class="options-row added">\n\
+                                                <td>\n\
+                                                Name: \n\
+                                                </td>\n\
+                                                <td>\n\
+                                                    <input id="configurationFileAttributeOptions'+(nOptions)+'.name" name="configurationFileAttributeOptions['+(nOptions)+'].name" class="form-control input-sm attr-opt" value="" type="text">\n\
+                                                    <div class="has-error"></div>\n\
+                                                </td>\n\
+                                                <td>\n\
+                                                    <a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove">\n\
+                                                        <i class="fa fa-times" aria-hidden="true"></i>\n\
+                                                    </a>\n\
+                                                    <input type="radio" name="radio-options" class="radio-options">\n\
+                                                </td>\n\
+                                             </tr>\n\
+                                             <tr class="options-row added">\n\
+                                                <td>Description</td>\n\
+                                                <td>\n\
+                                                    <textarea id="configurationFileAttributeOptions'+(nOptions)+'.description" name="configurationFileAttributeOptions['+(nOptions)+'].description" type="text" class="form-control input-sm" rows="2" cols="30"></textarea>\n\
+                                                </td>\n\
+                                             </tr>';
                             $(this).closest('tbody').append(htmlBlock);
                             $('.radio-options').trigger('click');
                         }else{
@@ -354,8 +373,29 @@ $(document).ready(function () {
     $('#fileConfigurationTemplateModal').on('click','#add-file-attribute-option-button',function(){
         var nOptions = $('#generic-modal-container').find('.options-row').length;
         var isChecked = (nOptions==0) ? 'checked' : '';
-        var htmlBlock = '<tr class="options-row added"><td><input id="configurationFileAttributeOptions'+(nOptions)+'.name" name="configurationFileAttributeOptions['+(nOptions)+'].name" class="form-control input-sm attr-opt" value="" type="text"><div class="has-error"></div></td><td><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><input type="radio" name="radio-options" class="radio-options"></td></tr>\n\
-                                             <tr><td>Description</td><td><textarea id="configurationFileAttributeOptions'+(nOptions)+'.description" name="configurationFileAttributeOptions['+(nOptions)+'].description" type="text" class="form-control input-sm" rows="2" cols="30"></textarea></td></tr>';
+        //var htmlBlock = '<tr class="options-row added"><td><input id="configurationFileAttributeOptions'+(nOptions)+'.name" name="configurationFileAttributeOptions['+(nOptions)+'].name" class="form-control input-sm attr-opt" value="" type="text"><div class="has-error"></div></td><td><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove"><i class="fa fa-times" aria-hidden="true"></i></a><input type="radio" name="radio-options" class="radio-options"></td></tr>\n\
+        //                                    <tr><td>Description</td><td><textarea id="configurationFileAttributeOptions'+(nOptions)+'.description" name="configurationFileAttributeOptions['+(nOptions)+'].description" type="text" class="form-control input-sm" rows="2" cols="30"></textarea></td></tr>';
+        var htmlBlock = '<tr class="options-row added">\n\
+                                                <td>\n\
+                                                Name: \n\
+                                                </td>\n\
+                                                <td>\n\
+                                                    <input id="configurationFileAttributeOptions'+(nOptions)+'.name" name="configurationFileAttributeOptions['+(nOptions)+'].name" class="form-control input-sm attr-opt" value="" type="text">\n\
+                                                    <div class="has-error"></div>\n\
+                                                </td>\n\
+                                                <td>\n\
+                                                    <a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove">\n\
+                                                        <i class="fa fa-times" aria-hidden="true"></i>\n\
+                                                    </a>\n\
+                                                    <input type="radio" name="radio-options" class="radio-options">\n\
+                                                </td>\n\
+                                             </tr>\n\
+                                             <tr>\n\
+                                                <td>Description</td>\n\
+                                                <td>\n\
+                                                    <textarea id="configurationFileAttributeOptions'+(nOptions)+'.description" name="configurationFileAttributeOptions['+(nOptions)+'].description" type="text" class="form-control input-sm" rows="2" cols="30"></textarea>\n\
+                                                </td>\n\
+                                             </tr>';
         $(this).closest('tbody').append(htmlBlock);
         if (nOptions==0){
             $('.radio-options').trigger('click');

@@ -14,7 +14,7 @@
                             <a href="<c:url value="/users/list" />">User List</a>
                         </li>
                         <li>
-                            <a href="<c:url value="/historyUsers" />">User History</a>
+                            <a href="<c:url value="/users/history" />">User History</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->
@@ -25,15 +25,15 @@
                 <li class="active">
                     <ul class="nav nav-third-level collapse in" aria-expanded="true" style="">
                         <li>
-                            <a href="<c:url value="/configurationFiles" />">Files Configuration List</a>
+                            <a href="<c:url value="/configurationFiles/list" />">Files Configuration List</a>
                         </li>
                         <c:forEach items="${configFiles}" var="configFile">
                             <li>
-                                <a href="<c:url value="/confFileTemp?currentFile=${configFile.name}" />">${configFile.name}</a>
+                                <a href="<c:url value="/configurationFiles/confFileTemp?currentFile=${configFile.name}" />">${configFile.name}</a>
                             </li>
                         </c:forEach>
                         <li>
-                            <a href="<c:url value="/rulesConf" />">Manage Rules</a>
+                            <a href="<c:url value="/configurationFiles/rulesManagement" />">Manage Rules</a>
                         </li>
                     </ul>
                     <!-- /.nav-third-level -->
@@ -44,10 +44,10 @@
                 <li class="active">
                     <ul class="nav nav-third-level collapse in" aria-expanded="true" style="">
                         <li>
-                            <a href="<c:url value="/charts" />">Statistical Charts</a>
+                            <a href="<c:url value="/control/charts" />">Statistical Charts</a>
                         </li>
                         <li>
-                            <a href="<c:url value="/eventList" />">List Events</a>
+                            <a href="<c:url value="/control/eventList" />">List Events</a>
                         </li>
                     </ul>
                     <!-- /.nav-third-level -->

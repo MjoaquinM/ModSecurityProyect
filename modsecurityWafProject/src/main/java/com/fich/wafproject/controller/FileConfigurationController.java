@@ -159,7 +159,7 @@ public class FileConfigurationController {
     /**
      * Configuration Files Page
     **/
-    @RequestMapping(value = { "/configurationFiles" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/configurationFiles/list" }, method = RequestMethod.GET)
     public String configurationFilesList(ModelMap model) {
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
         /*<Build data modal>*/
@@ -173,7 +173,7 @@ public class FileConfigurationController {
     /**
      * Configuration Files Template
     **/
-    @RequestMapping(value = { "/confFileTemp" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/configurationFiles/confFileTemp" }, method = RequestMethod.GET)
     public String configurationPageTemplate(ModelMap model, @RequestParam("currentFile") String currentFile) {
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
         ConfigurationFiles currentConfigFile = configurationFileService.findByName(currentFile);
@@ -345,7 +345,7 @@ public class FileConfigurationController {
         return this.configurationPageTemplate(model,cfag.getConfigurationFiles().getName());
     }
     
-    @RequestMapping(value = "/rulesConf", method = RequestMethod.GET)
+    @RequestMapping(value = "/configurationFiles/rulesManagement", method = RequestMethod.GET)
     public String rulesConfigurationPage(ModelMap model) {
         
         List<String> ls = new ArrayList<String>();

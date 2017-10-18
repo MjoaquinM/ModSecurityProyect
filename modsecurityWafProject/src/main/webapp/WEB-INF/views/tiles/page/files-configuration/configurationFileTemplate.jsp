@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <div id="page-wrapper">
     <c:choose>
         <c:when test="${not empty message!=''}">
@@ -148,20 +149,52 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${attr.configurationFileAttributeType.name == 'single-select'}">
-                                            <form:select path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeOptions"  multiple="false" itemValue="id" itemLabel="name" cssClass="file-config-page-select-attr">
-                                                <c:forEach items="${attr.configurationFileAttributeOptions}" var="opt" varStatus="loopOpt">
-                                                    <form:option value="${opt.name}" title="${opt.description}"></form:option>
-                                                </c:forEach>
-                                            </form:select>
+                                            <c:choose>
+                                                <c:when test="${attr.configurationFileAttributeStates.name == 'LOCKED'}">
+                                                    <form:select path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeOptions"  multiple="false" itemValue="id" itemLabel="name" cssClass="file-config-page-select-attr"  disabled="true">
+                                                        <c:forEach items="${attr.configurationFileAttributeOptions}" var="opt" varStatus="loopOpt" >
+                                                            <form:option value="${opt.name}" title="${opt.description}" ></form:option>
+                                                        </c:forEach>
+                                                    </form:select>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <form:select path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeOptions"  multiple="false" itemValue="id" itemLabel="name" cssClass="file-config-page-select-attr"  disabled="false" >
+                                                        <c:forEach items="${attr.configurationFileAttributeOptions}" var="opt" varStatus="loopOpt" >
+                                                            <form:option value="${opt.name}" title="${opt.description}" ></form:option>
+                                                        </c:forEach>
+                                                    </form:select>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:when>
                                         <c:when test="${attr.configurationFileAttributeType.name == 'multiple-select'}">
-                                            <form:select path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeOptions" items="${attr.configurationFileAttributeOptions}" multiple="true" itemValue="id" itemLabel="name" cssClass="file-config-page-select-attr"  />
+                                            <c:choose>
+                                                <c:when test="${attr.configurationFileAttributeStates.name == 'LOCKED'}">
+                                                    <form:select path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeOptions" items="${attr.configurationFileAttributeOptions}" multiple="true" itemValue="id" itemLabel="name" cssClass="file-config-page-select-attr" disabled="true" />
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <form:select path="configurationFileAttributeGroups[${loopGroup.index}].configurationFilesAttributes[${loopAttr.index}].configurationFileAttributeOptions" items="${attr.configurationFileAttributeOptions}" multiple="true" itemValue="id" itemLabel="name" cssClass="file-config-page-select-attr" disabled="false"/>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:when>
                                         <c:when test="${attr.configurationFileAttributeType.name == 'numeric-input'}">
-                                            <input type="number" value="${attr.value}" class="file-config-page-text-number-attr">
+                                            <c:choose>
+                                                <c:when test="${attr.configurationFileAttributeStates.name == 'LOCKED'}">
+                                                    <input type="number" value="${attr.value}" class="file-config-page-text-number-attr" disabled>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <input type="number" value="${attr.value}" class="file-config-page-text-number-attr">
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:when>
                                         <c:when test="${attr.configurationFileAttributeType.name == 'input-text'}">
-                                            <input type="text" value="${attr.value}" class="file-config-page-text-number-attr">
+                                            <c:choose>
+                                                <c:when test="${attr.configurationFileAttributeStates.name == 'LOCKED'}">
+                                                    <input type="text" value="${fn:replace(attr.value, "\"", "'")}" class="file-config-page-text-number-attr" disabled >
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <input type="text" value="${fn:replace(attr.value, "\"", "'")}" class="file-config-page-text-number-attr" >
+                                                </c:otherwise>
+                                            </c:choose>                                            
                                         </c:when>
                                         <c:otherwise>
                                             Option Undefined    

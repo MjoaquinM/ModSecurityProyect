@@ -94,12 +94,14 @@ public class ModsecurityController {
                     for(ConfigurationFilesAttributes cfa : attrs){
                         if (line.contains(cfa.getName()+" ")){
                             line = line.replaceAll("#", "");
-                            if(cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED")){
-                                msgToHistoryLog = msgToHistoryLog + " - "+cfa.getName()+" was blocked \n";
-                                line = "# "+line;
-                            }else{
+                            if(!cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED")){
                                 msgToHistoryLog = msgToHistoryLog + " - Setup "+cfa.getName()+" Attribute: "+line.replaceAll(cfa.getName(), "").trim()+" to "+cfa.getValue()+"\n";
                                 line = cfa.getName()+" "+cfa.getValue();
+//                                msgToHistoryLog = msgToHistoryLog + " - "+cfa.getName()+" was blocked \n";
+//                                line = "# "+line;
+//                            }else{
+//                                msgToHistoryLog = msgToHistoryLog + " - Setup "+cfa.getName()+" Attribute: "+line.replaceAll(cfa.getName(), "").trim()+" to "+cfa.getValue()+"\n";
+//                                line = cfa.getName()+" "+cfa.getValue();
                             }
                         }
                     }

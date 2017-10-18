@@ -122,7 +122,7 @@ public class UserController {
      * @param request
      * @return Histroy Users View
      */
-    @RequestMapping(value = "/historyUsers", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/history", method = RequestMethod.GET)
     public String userHistoryPage(ModelMap model, HttpServletRequest request) {
         /*Página actual*/
         int pageNumber = 1;
