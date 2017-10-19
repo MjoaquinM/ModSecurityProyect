@@ -23,6 +23,9 @@ import com.fich.wafproject.service.ConfigurationFileAttributeService;
 import com.fich.wafproject.service.ConfigurationFileAttributeOptionsService;
 import com.fich.wafproject.service.UsersHistoryService;
 import com.fich.wafproject.util.Functions;
+import javax.servlet.ServletException;
+import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
+import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
  
 @Controller
 @RequestMapping("/")
@@ -70,7 +73,7 @@ public class WafProjectController {
         String user = this.customFunctions.getPrincipal();
         model.addAttribute("configFiles",cfs);
         model.addAttribute("user",user);
-        return "redirect:/eventList";
+        return "redirect:/control/eventList";
     }
     
     @RequestMapping(value = "/Access_Denied", method = RequestMethod.GET)
@@ -85,11 +88,16 @@ public class WafProjectController {
     }
     
     @RequestMapping(value="/logout", method = RequestMethod.GET)
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+    public String logoutPage (HttpServletRequest request, HttpServletResponse response) throws ServletException{
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("aca estoy en el logout 1");
         if (auth != null){    
+            System.out.println("aca estoy en el logout 2");
             new SecurityContextLogoutHandler().logout(request, response, auth);
+            new CookieClearingLogoutHandler(AbstractRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY).logout(request, response, null);
         }
+        request.logout();
+        
         return "redirect:/login?logout";
     }
 }

@@ -91,7 +91,7 @@ public class FileConfigurationController {
     /**
      * Return configuration file form
     **/
-    @RequestMapping(value = "/addFileConfigurationForm", method = RequestMethod.GET)
+    @RequestMapping(value = "/configurationFiles/addFileConfigurationForm", method = RequestMethod.GET)
     public String getAddFileConfigurationForm(ModelMap model, @RequestParam("id") Long id) {
         ConfigurationFiles cf = new ConfigurationFiles();
         cf.setConfigurationFileStates(new ConfigurationFileStates());
@@ -108,7 +108,7 @@ public class FileConfigurationController {
     /**
      * Save new configuration file or update one
      */
-    @RequestMapping(value = "/saveNewFileConfiguration", method = RequestMethod.POST)
+    @RequestMapping(value = "/configurationFiles/saveNewFileConfiguration", method = RequestMethod.POST)
     public String saveNewFileConfiguration(@Valid ConfigurationFiles cf,
             BindingResult result, ModelMap model, @RequestParam("redirectTo") String redirect) {
         if (result.hasErrors()) {
@@ -142,7 +142,7 @@ public class FileConfigurationController {
     /**
      * Delete a configuration file
      */
-    @RequestMapping(value = "/deleteFileconfiguration")//, method = RequestMethod.POST)
+    @RequestMapping(value = "/configurationFiles/deleteFileconfiguration")//, method = RequestMethod.POST)
     public String deleteFileconfiguration(ModelMap model, @RequestParam("id") Long id) {
         String message = "File Configuration "+configurationFileService.findById(id).getName()+" was succefully deleted.";
         try{
@@ -159,7 +159,7 @@ public class FileConfigurationController {
     /**
      * Configuration Files Page
     **/
-    @RequestMapping(value = { "/configurationFiles" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/configurationFiles/list" }, method = RequestMethod.GET)
     public String configurationFilesList(ModelMap model) {
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
         /*<Build data modal>*/
@@ -173,7 +173,7 @@ public class FileConfigurationController {
     /**
      * Configuration Files Template
     **/
-    @RequestMapping(value = { "/confFileTemp" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/configurationFiles/confFileTemp" }, method = RequestMethod.GET)
     public String configurationPageTemplate(ModelMap model, @RequestParam("currentFile") String currentFile) {
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
         ConfigurationFiles currentConfigFile = configurationFileService.findByName(currentFile);
@@ -191,7 +191,7 @@ public class FileConfigurationController {
     /**
      * Configuration Files Attribute Group Form
     **/
-    @RequestMapping(value = { "/addFileConfigurationAttrGroupForm" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/configurationFiles/addFileConfigurationAttrGroupForm" }, method = RequestMethod.GET)
     public String addFileConfigurationAttrGroupForm(ModelMap model, @RequestParam("cfag-id") Long cfagId, @RequestParam("cfa-id") Long cfId) {
         ConfigurationFileAttributeGroups cfag = new ConfigurationFileAttributeGroups();
         if (cfagId != -1){
@@ -211,7 +211,7 @@ public class FileConfigurationController {
     /**
      * Save new configuration file attribute group or update one
      */
-    @RequestMapping(value = "/manageFileConfigurationAttrGroup", method = RequestMethod.POST)
+    @RequestMapping(value = "/configurationFiles/manageFileConfigurationAttrGroup", method = RequestMethod.POST)
     public String manageConfigurationAttrGroup(@Valid ConfigurationFileAttributeGroups cfag,
             BindingResult result, ModelMap model, @RequestParam("action") String action, @RequestParam("cfag-id") Long id, @RequestParam("cf-id") Long cfid) {
         if (result.hasErrors()) {
@@ -242,7 +242,7 @@ public class FileConfigurationController {
     /**
      * Delete configuration file attribute group
      */
-    @RequestMapping(value = "/deleteFileConfigurationAttrGroup", method = RequestMethod.POST)
+    @RequestMapping(value = "/configurationFiles/deleteFileConfigurationAttrGroup", method = RequestMethod.POST)
     public String deleteFileConfigurationAttrGroup(ModelMap model, @RequestParam("cfag-id") Long id) {
         ConfigurationFileAttributeGroups cfag = configurationFileAttributeGroupsService.findById(id);
         ConfigurationFiles currentConfigFile = cfag.getConfigurationFiles();
@@ -264,7 +264,7 @@ public class FileConfigurationController {
     /**
      * Configuration Files Attribute Form
     **/
-    @RequestMapping(value = { "/addFileConfigurationAttrForm" }, method = RequestMethod.GET)
+    @RequestMapping(value = { "/configurationFiles/addFileConfigurationAttrForm" }, method = RequestMethod.GET)
     public String addFileConfigurationAttrForm(ModelMap model, @RequestParam("cfag-id") Long cfagId, @RequestParam("cfa-id") Long cfaId) {
         ConfigurationFilesAttributes cfa = new ConfigurationFilesAttributes();
         ConfigurationFileAttributeGroups currentCfag = configurationFileAttributeGroupsService.findById(cfagId);
@@ -287,7 +287,7 @@ public class FileConfigurationController {
     /**
      * Save new configuration file attribute or update one
      */
-    @RequestMapping(value = "/saveNewFileConfigurationAttr", method = RequestMethod.POST)
+    @RequestMapping(value = "/configurationFiles/saveNewFileConfigurationAttr", method = RequestMethod.POST)
     public String saveNewFileConfigurationAttr(@Valid ConfigurationFilesAttributes cfa,
             BindingResult result, ModelMap model, @RequestParam("currentConfigFile") Long cfId){
         if (result.hasErrors()) {
@@ -329,7 +329,7 @@ public class FileConfigurationController {
     /**
      * Delete a configuration file attribute
      */
-    @RequestMapping(value = "/deleteFileconfigurationAttr")//, method = RequestMethod.POST)
+    @RequestMapping(value = "/configurationFiles/deleteFileconfigurationAttr")//, method = RequestMethod.POST)
     public String deleteFileconfigurationAttr(ModelMap model, @RequestParam("id") Long id) {
         ConfigurationFilesAttributes cfaToDelete = configurationFileAttributeService.findById(id);
         ConfigurationFileAttributeGroups cfag = cfaToDelete.getConfigurationFileAttributeGroups();
@@ -345,7 +345,7 @@ public class FileConfigurationController {
         return this.configurationPageTemplate(model,cfag.getConfigurationFiles().getName());
     }
     
-    @RequestMapping(value = "/rulesConf", method = RequestMethod.GET)
+    @RequestMapping(value = "/configurationFiles/rulesManagement", method = RequestMethod.GET)
     public String rulesConfigurationPage(ModelMap model) {
         
         List<String> ls = new ArrayList<String>();
@@ -415,7 +415,7 @@ public class FileConfigurationController {
     /**
      * Check file uploaded
      */
-    @RequestMapping(value = "/checkFile", method = RequestMethod.POST)
+    @RequestMapping(value = "/configurationFiles/checkFile", method = RequestMethod.POST)
     @ResponseBody public List<String> checkFile(@RequestParam("path") String path){
         //logic
         List<String> ls = new ArrayList<String>();
@@ -440,7 +440,7 @@ public class FileConfigurationController {
         return ls;
     }
     
-    @RequestMapping(value = "/blockRules", method = RequestMethod.POST)
+    @RequestMapping(value = "/configurationFiles/blockRules", method = RequestMethod.POST)
     public String blockRules(@Valid ConfigurationFilesAttributes cfa,
             BindingResult result, ModelMap model) throws IOException, InterruptedException {
         String value = cfa.getValue();

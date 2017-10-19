@@ -122,7 +122,7 @@ public class UserController {
      * @param request
      * @return Histroy Users View
      */
-    @RequestMapping(value = "/historyUsers", method = RequestMethod.GET)
+    @RequestMapping(value = "/users/history", method = RequestMethod.GET)
     public String userHistoryPage(ModelMap model, HttpServletRequest request) {
         /*Página actual*/
         int pageNumber = 1;
@@ -235,7 +235,7 @@ public class UserController {
      * @param request
      * @return list user view with message action status
      */
-    @RequestMapping(value = "users/saveNewUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/saveNewUser", method = RequestMethod.POST)
     public String saveNewUser(@Valid Users user,
             BindingResult result, ModelMap model, HttpServletRequest request) {
         if (result.hasErrors() && flagDebug) {

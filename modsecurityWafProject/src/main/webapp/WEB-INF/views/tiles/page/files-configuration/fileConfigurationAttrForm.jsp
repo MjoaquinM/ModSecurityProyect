@@ -94,6 +94,9 @@
                         <c:forEach items="${options}" var="opt" varStatus="loop">
                             <tr class="options-row added">
                                 <td>
+                                    Name:
+                                </td>
+                                <td>
                                     <input id="configurationFileAttributeOptions${loop.index}.name" name="configurationFileAttributeOptions[${loop.index}].name" class="form-control input-sm attr-opt" value="${opt.name}" type="text">
                                     <div class="has-error"></div>
                                 </td>
@@ -101,10 +104,6 @@
                                     <a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove">
                                         <i class="fa fa-times" aria-hidden="true"></i>
                                     </a>
-                                    <a class="btn btn-primary" id="remove-config-file-attr-opt" data-action="remove">
-                                            <i class="fa fa-times" aria-hidden="true"></i>
-                                    </a>
-                                    
                                     <c:choose>
                                         <c:when test="${configFileAttr.value == opt.name}">
                                             <input type="radio" name="radio-options" class="radio-options" checked>
@@ -117,7 +116,10 @@
                             </tr>
                             <tr>
                                 <td>
-                                <form:textarea type="text" path="configurationFileAttributeOptions[${loop.index}].description" class="form-control input-sm" rows="2" cols="30"/>
+                                    Description: 
+                                </td>
+                                <td>
+                                    <form:textarea type="text" path="configurationFileAttributeOptions[${loop.index}].description" class="form-control input-sm" rows="2" cols="30"/>
                                 </td>
                             </tr>
                         </c:forEach>
