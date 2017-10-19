@@ -25,6 +25,14 @@ public class FileDaoImpl extends AbstractDao<Integer, File> implements FileDao {
     }
     
     @Override
+    public File findByFileName(String name) {
+        Criteria crit = createEntityCriteria();
+        crit.add(Restrictions.eq("fileName", name));
+        File file = (File) crit.uniqueResult();
+        return file;
+    }
+    
+    @Override
     public File findById(Integer id) {
         return getByKey(id);
     }

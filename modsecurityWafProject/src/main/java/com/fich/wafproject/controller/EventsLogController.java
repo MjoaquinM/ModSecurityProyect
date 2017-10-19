@@ -213,8 +213,9 @@ public class EventsLogController {
         List<JasperCharts> list953 = new ArrayList();
         List<JasperCharts> list954 = new ArrayList();
         
+        //TRANSFORMO LOS MAPAS A LISTAS *******
         List<JasperCharts> fileMapList = new ArrayList<>();
-        File file = fileService.findByFilePath("/usr/share/modsecurity-crs/rules/REQUEST-942-APPLICATION-ATTACK-SQLI.conf");
+        File file = fileService.findByFileName("REQUEST-942-APPLICATION-ATTACK-SQLI");
         HashMap<String, Number> prueba1 = (HashMap<String, Number>) fileMap.get(file);
         for (Map.Entry<String, Number> entry : prueba1.entrySet()) {
             System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
@@ -222,8 +223,6 @@ public class EventsLogController {
         }
         
         
-        
-        //TRANSFORMO LOS MAPAS A LISTAS
         List<JasperCharts> listRuleNumber = new ArrayList<>();
         System.out.println("LISTA DE RULE:");
         for (Map.Entry<Rule, Number> entry : ruleVsNumber.entrySet()) {
@@ -272,6 +271,7 @@ public class EventsLogController {
         parameters.put("listRuleNumber", listRuleNumber);
         parameters.put("listFileNumber", listFileNumber);
         parameters.put("listDateNumber", listDateNumber);
+        parameters.put("fileMapList", fileMapList);
         parameters.put("events", events);
         //Parametros del filtrado
         parameters.put("dateEventFrom", dateEventFrom);

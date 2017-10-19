@@ -27,6 +27,12 @@ public class FileServiceImpl implements FileService {
     }
     
     @Override
+    public File findByFileName(String fn) {
+        File file = dao.findByFileName(fn);
+        return file;
+    }
+    
+    @Override
     public List<File> findAllFiles() {
         return dao.findAllFiles();
     }

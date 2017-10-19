@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="14874671-00d2-4654-8e20-f9856528c156">
 	<property name="ireport.zoom" value="1.3310000000000048"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="1422"/>
 	<style name="Title" fontName="Monospaced" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Monospaced" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Monospaced" fontSize="12" isBold="true"/>
@@ -21,6 +21,10 @@
 		<field name="method" class="java.lang.String"/>
 		<field name="destinationPage" class="java.lang.String"/>
 	</subDataset>
+	<subDataset name="dataset4" uuid="2e4abde3-8183-4980-bab1-eff9283c22b8">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
 	<parameter name="listFileNumber" class="java.util.List" isForPrompting="false"/>
 	<parameter name="listDateNumber" class="java.util.List" isForPrompting="false"/>
 	<parameter name="events" class="java.util.List" isForPrompting="false"/>
@@ -30,6 +34,7 @@
 	<parameter name="dateEventTo" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="serverIp" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="serverPort" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="fileMapList" class="java.util.List" isForPrompting="false"/>
 	<field name="dateEvent" class="java.lang.String"/>
 	<field name="destinationPage" class="java.lang.String"/>
 	<field name="clientIp" class="java.lang.String"/>
@@ -170,6 +175,24 @@
 					<itemLabel/>
 				</piePlot>
 			</pieChart>
+			<componentElement>
+				<reportElement x="51" y="595" width="406" height="94" uuid="22ff1d02-ba1b-4242-8c22-b81c12487293"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="dataset4" uuid="ac231875-a81f-4c56-bbd2-414a95b3717e">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{fileMapList})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="94" width="406">
+						<textField>
+							<reportElement x="38" y="22" width="100" height="20" uuid="1bc604a0-41ae-443a-abd8-550c052794c1"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="236" y="22" width="100" height="20" uuid="aeeee62d-b3f8-488e-bb91-c6b5ac5f8f3e"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
 		</band>
 	</lastPageFooter>
 	<summary>
