@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="14874671-00d2-4654-8e20-f9856528c156">
-	<property name="ireport.zoom" value="1.3310000000000048"/>
+	<property name="ireport.zoom" value="1.3310000000000057"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="1422"/>
+	<property name="ireport.y" value="1945"/>
 	<style name="Title" fontName="Monospaced" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Monospaced" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Monospaced" fontSize="12" isBold="true"/>
@@ -21,7 +21,7 @@
 		<field name="method" class="java.lang.String"/>
 		<field name="destinationPage" class="java.lang.String"/>
 	</subDataset>
-	<subDataset name="dataset4" uuid="2e4abde3-8183-4980-bab1-eff9283c22b8">
+	<subDataset name="list941" uuid="f6f45f8f-f13f-4841-adaa-743b01faeb5b">
 		<field name="campo" class="java.lang.String"/>
 		<field name="valor" class="java.lang.String"/>
 	</subDataset>
@@ -34,7 +34,25 @@
 	<parameter name="dateEventTo" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="serverIp" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="serverPort" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="fileMapList" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list905" class="java.lang.String"/>
+	<parameter name="list910" class="java.lang.String"/>
+	<parameter name="list911" class="java.lang.String"/>
+	<parameter name="list912" class="java.lang.String"/>
+	<parameter name="list913" class="java.lang.String"/>
+	<parameter name="list920" class="java.lang.String"/>
+	<parameter name="list921" class="java.lang.String"/>
+	<parameter name="list930" class="java.lang.String"/>
+	<parameter name="list931" class="java.lang.String"/>
+	<parameter name="list932" class="java.lang.String"/>
+	<parameter name="list933" class="java.lang.String"/>
+	<parameter name="list941" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list942" class="java.lang.String"/>
+	<parameter name="list943" class="java.lang.String"/>
+	<parameter name="list950" class="java.lang.String"/>
+	<parameter name="list951" class="java.lang.String"/>
+	<parameter name="list952" class="java.lang.String"/>
+	<parameter name="list953" class="java.lang.String"/>
+	<parameter name="list954" class="java.lang.String"/>
 	<field name="dateEvent" class="java.lang.String"/>
 	<field name="destinationPage" class="java.lang.String"/>
 	<field name="clientIp" class="java.lang.String"/>
@@ -145,7 +163,7 @@
 		</band>
 	</title>
 	<lastPageFooter>
-		<band height="802">
+		<band height="797">
 			<staticText>
 				<reportElement x="139" y="11" width="276" height="20" uuid="4fb84999-f86e-45c7-a868-9fc15632e1b1"/>
 				<textElement>
@@ -176,29 +194,7 @@
 				</piePlot>
 			</pieChart>
 			<componentElement>
-				<reportElement x="51" y="595" width="406" height="94" uuid="22ff1d02-ba1b-4242-8c22-b81c12487293"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="dataset4" uuid="ac231875-a81f-4c56-bbd2-414a95b3717e">
-						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{fileMapList})]]></dataSourceExpression>
-					</datasetRun>
-					<jr:listContents height="94" width="406">
-						<textField>
-							<reportElement x="38" y="22" width="100" height="20" uuid="1bc604a0-41ae-443a-abd8-550c052794c1"/>
-							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
-						</textField>
-						<textField>
-							<reportElement x="236" y="22" width="100" height="20" uuid="aeeee62d-b3f8-488e-bb91-c6b5ac5f8f3e"/>
-							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
-						</textField>
-					</jr:listContents>
-				</jr:list>
-			</componentElement>
-		</band>
-	</lastPageFooter>
-	<summary>
-		<band height="97">
-			<componentElement>
-				<reportElement x="24" y="71" width="500" height="20" uuid="db193492-6b40-4e32-a205-41afa5e3bfc0"/>
+				<reportElement x="23" y="692" width="500" height="20" uuid="db193492-6b40-4e32-a205-41afa5e3bfc0"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="dataset3" uuid="d576127c-4d4b-4f7c-874a-d6f66aaa3b68">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{events})]]></dataSourceExpression>
@@ -224,39 +220,68 @@
 				</jr:list>
 			</componentElement>
 			<staticText>
-				<reportElement x="264" y="51" width="100" height="20" uuid="d9e3f12a-eb46-4165-81f5-e29490d13747"/>
+				<reportElement x="263" y="672" width="100" height="20" uuid="d9e3f12a-eb46-4165-81f5-e29490d13747"/>
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
 				<text><![CDATA[Método]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="364" y="51" width="100" height="20" uuid="d1bd18a2-425b-4b47-9348-40ed7bcd6f3c"/>
+				<reportElement x="363" y="672" width="100" height="20" uuid="d1bd18a2-425b-4b47-9348-40ed7bcd6f3c"/>
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
 				<text><![CDATA[Servicio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="164" y="51" width="100" height="20" uuid="3b1e65b4-7053-41e0-95f6-4a1b7946c7c6"/>
+				<reportElement x="163" y="672" width="100" height="20" uuid="3b1e65b4-7053-41e0-95f6-4a1b7946c7c6"/>
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
 				<text><![CDATA[IP cliente]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="24" y="51" width="100" height="20" uuid="900394d3-d4ed-4518-850b-67b32793376a"/>
+				<reportElement x="23" y="672" width="100" height="20" uuid="900394d3-d4ed-4518-850b-67b32793376a"/>
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
 				<text><![CDATA[Fecha del evento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="167" y="25" width="220" height="20" uuid="bb1779fb-3120-4803-8c80-a9475d660027"/>
+				<reportElement x="166" y="646" width="220" height="20" uuid="bb1779fb-3120-4803-8c80-a9475d660027"/>
 				<textElement>
 					<font size="14" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[LISTADO DE EVENTOS]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="802">
+			<componentElement>
+				<reportElement x="23" y="368" width="499" height="20" uuid="73c65b08-59a7-4799-ab1c-3ea4d2ba3a2b"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="list941" uuid="ab4a50ff-bc6c-43b8-93de-7a4a7ee7d474">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list941})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="499">
+						<textField>
+							<reportElement x="0" y="0" width="100" height="20" uuid="c053df1c-67e5-403b-bb8f-ad10f2c970af"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement x="207" y="0" width="100" height="20" uuid="9eb9bf4c-21dc-44f1-ac3a-e910f78a8a3f"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement x="23" y="348" width="165" height="20" uuid="7365ad3a-48ad-4e2e-b19a-936b99c99cb4"/>
+				<textElement>
+					<font size="12" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[APPLICATION-ATTACK-XSS]]></text>
 			</staticText>
 		</band>
 	</summary>
