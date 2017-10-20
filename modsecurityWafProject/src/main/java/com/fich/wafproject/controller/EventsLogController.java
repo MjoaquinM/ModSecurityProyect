@@ -213,17 +213,157 @@ public class EventsLogController {
         List<JasperCharts> list953 = new ArrayList();
         List<JasperCharts> list954 = new ArrayList();
         
-        List<JasperCharts> fileMapList = new ArrayList<>();
-        File file = fileService.findByFilePath("/usr/share/modsecurity-crs/rules/REQUEST-942-APPLICATION-ATTACK-SQLI.conf");
-        HashMap<String, Number> prueba1 = (HashMap<String, Number>) fileMap.get(file);
-        for (Map.Entry<String, Number> entry : prueba1.entrySet()) {
-            System.out.println("Item : " + entry.getKey() + " Count : " + entry.getValue());
-            fileMapList.add(new JasperCharts(entry.getKey(), entry.getValue()));
-        }
+        HashMap<String, Number> auxMap;
+        File file;
         
+        file = fileService.findByFileName("REQUEST-903.9001-DRUPAL-EXCLUSION-RULES");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list903_9001.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list903_9001.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("REQUEST-903.9002-WORDPRESS-EXCLUSION-RULES");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list903_9002.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list903_9002.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("REQUEST-905-COMMON-EXCEPTIONS");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list905.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list905.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("REQUEST-910-IP-REPUTATION");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list910.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list910.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("REQUEST-911-METHOD-ENFORCEMENT");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list911.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list911.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("REQUEST-912-DOS-PROTECTION");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list912.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list912.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("REQUEST-913-SCANNER-DETECTION");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list913.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list913.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("REQUEST-920-PROTOCOL-ENFORCEMENT");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list920.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list920.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("REQUEST-921-PROTOCOL-ATTACK");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list921.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list921.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("REQUEST-930-APPLICATION-ATTACK-LFI");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list930.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list930.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("REQUEST-931-APPLICATION-ATTACK-RFI");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list931.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list931.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("REQUEST-932-APPLICATION-ATTACK-RCE");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list932.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list932.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("REQUEST-933-APPLICATION-ATTACK-PHP");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list933.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list933.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("REQUEST-941-APPLICATION-ATTACK-XSS");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list941.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list941.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("REQUEST-942-APPLICATION-ATTACK-SQLI");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list942.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list942.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list943.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list943.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("RESPONSE-950-DATA-LEAKAGES");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list950.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list950.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("RESPONSE-951-DATA-LEAKAGES-SQL");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list951.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list951.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("RESPONSE-952-DATA-LEAKAGES-JAVA");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list952.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list952.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("RESPONSE-953-DATA-LEAKAGES-PHP.");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list953.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list953.add(new JasperCharts("No se registraron ataques", 0));}
+        file = fileService.findByFileName("RESPONSE-954-DATA-LEAKAGES-IIS");
+        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        if (auxMap != null) {
+            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+                list954.add(new JasperCharts(entry.getKey(), entry.getValue()));
+            }
+        }else{list954.add(new JasperCharts("No se registraron ataques", 0));}
         
-        
-        //TRANSFORMO LOS MAPAS A LISTAS
         List<JasperCharts> listRuleNumber = new ArrayList<>();
         System.out.println("LISTA DE RULE:");
         for (Map.Entry<Rule, Number> entry : ruleVsNumber.entrySet()) {
@@ -242,7 +382,8 @@ public class EventsLogController {
         for (String key : keys) {
             listDateNumber.add(new JasperCharts(key, dateVsNumber.get(key)));
         }
-
+        
+        
         //PASO LAS LISTAS AL REPORTE POR PARAMETRO
         String dateEventFrom = null,
                 clientIp = null,
@@ -273,6 +414,29 @@ public class EventsLogController {
         parameters.put("listFileNumber", listFileNumber);
         parameters.put("listDateNumber", listDateNumber);
         parameters.put("events", events);
+        
+        parameters.put("list903_9001", list903_9001);
+        parameters.put("list903_9002", list903_9002);
+        parameters.put("list905", list905);
+        parameters.put("list910", list910);
+        parameters.put("list911", list911);
+        parameters.put("list912", list912);
+        parameters.put("list913", list913);
+        parameters.put("list920", list920);
+        parameters.put("list921", list921);
+        parameters.put("list930", list930);
+        parameters.put("list931", list931);
+        parameters.put("list932", list932);
+        parameters.put("list933", list933);
+        parameters.put("list941", list941);
+        parameters.put("list942", list942);
+        parameters.put("list943", list943);
+        parameters.put("list950", list950);
+        parameters.put("list951", list951);
+        parameters.put("list952", list952);
+        parameters.put("list953", list953);
+        parameters.put("list954", list954);
+        
         //Parametros del filtrado
         parameters.put("dateEventFrom", dateEventFrom);
         parameters.put("clientIp", clientIp);

@@ -9,6 +9,8 @@ public interface FileService {
     
     File findByFilePath(String fp);
     
+    public File findByFileName(String fn);
+    
     public List<File> findAllFiles();
      
 }

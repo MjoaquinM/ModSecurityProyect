@@ -10,6 +10,8 @@ public interface FileDao {
     
     public File findByPath(String path);
     
+    public File findByFileName(String name);
+    
     public File findById(Integer id);
     
     public List<File> findAllFiles();
