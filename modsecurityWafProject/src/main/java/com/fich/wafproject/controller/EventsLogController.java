@@ -418,21 +418,6 @@ public class EventsLogController {
 
             try {
                 eventService.saveEvent(event);
-                MessageData md = new MessageData();
-                md.setTransactionId(event.getTransactionId());
-//                List<File> f = new ArrayList<File>();
-//                for(Rule r : event.getRules()){
-//                    f.add(r.getFileId());
-//                }
-//                md.setFiles(f);
-//                for(MessageData mdd : PATH_PREFIX){
-//                    System.out.println("Transaction id: " + mdd.getTransactionId());
-//                }
-                PATH_PREFIX.add(md);
-//                for(MessageData mdd : PATH_PREFIX){
-//                    System.out.println("Transaction id: " + mdd.getTransactionId());
-//                }
-
             } catch (ConstraintViolationException ese) {
                 System.out.println("ERROR CONSTRAINT: " + ese.getMessage());
             } catch (JDBCConnectionException ese) {
@@ -482,6 +467,22 @@ public class EventsLogController {
             try {
                 //Actualizo relaciones
                 eventService.saveEvent(event);
+                MessageData md = new MessageData();
+                md.setTransactionId(event.getTransactionId());
+                md.setClientIp(event.getClientIp());
+                md.setDestinationPage(event.getDestinationPage());
+                List<String> files = new ArrayList<String>();
+                System.out.println("AFUERA DEL BUCLEEEEEEEEEEEEEEEEEE");
+                if(event.getRules() != null){
+                    for(Rule r : event.getRules()){
+                        System.out.println("regla");
+                        System.out.println(r);
+                        files.add(r.getFileId().getFileName());
+                    }
+                }
+                md.setRule(files);
+//                md.setRule(event.getRules());
+                PATH_PREFIX.add(md);
             } catch (ConstraintViolationException ese) {
                 System.out.println("ERROR CONSTRAINT: " + ese.getMessage());
             } catch (JDBCConnectionException ese) {
@@ -707,8 +708,8 @@ public class EventsLogController {
         return "eventsList";
     }
 
-    @RequestMapping(value = "/eventDetailsForm", method = RequestMethod.GET)
-    public String getAddUserForm(ModelMap model, @RequestParam("transactionId") String transactionId) {
+    @RequestMapping(value = "/control/eventDetailsForm", method = RequestMethod.GET)
+    public String getAddUserForm(ModelMap model, @RequestParam("transactionId") String transactionId, @RequestParam("view") boolean returnView) {
         System.out.println("ENTRO A DETAILS FORM: " + transactionId);
         model.addAttribute("idModal", "eventModal");
 
@@ -755,7 +756,15 @@ public class EventsLogController {
         model.addAttribute("event", event);
         model.addAttribute("rules", rules);
         model.addAttribute("files", files);
-        return "eventDetailsForm";
+        
+        String ret = "eventDetailsForm";
+        if(returnView){
+            ret = "eventDetailsFormPage";
+            model.addAttribute("title", "Event-Details");
+            model.addAttribute("idPageWrapper", "page-wrapper");
+        }
+        
+        return ret;
     }
 
     @RequestMapping(value = "/control/deleteAllEvents", method = RequestMethod.GET)

@@ -701,7 +701,7 @@ $(document).ready(function () {
         if (!txid) {
             txid = "";
         }
-        data = {transactionId: txid};
+        data = {transactionId: txid, view: false};
         /*<PREPARE MODAL>*/
         var modalFooter = '<button type="button" class="btn btn-secondary" data-dismiss="modal" id="eventDetailsCancel">Close</button>';
         $('#generic-modal-container').find('.modal-title').html(modalTitle);
@@ -757,16 +757,28 @@ $(document).ready(function () {
             (flagLog == true) ? console.log(messageOutput) : console.log("");
             for(var obj in messageOutput){
                 console.log(messageOutput[obj].transactionId);
+                console.log('REGLAS: '+messageOutput[obj].rules);
             }
+            var message =
+                    '<br><strong>Transaction Id: </strong>'+messageOutput[obj].transactionId+'<br>'+
+                    '<strong>Client IP: </strong>'+messageOutput[obj].clientIp+
+                    '<br><strong>Target: </strong>'+messageOutput[obj].destinationPage;
+            
+            for(var obj in messageOutput){
+                if (messageOutput[obj].rules.length>0){
+                    message += '<br><strong>Rules: </strong><br>';
+                    for(var file in messageOutput[obj].rules){
+                        message += messageOutput[obj].rules[file]+'<br>';
+                    }
+                }
+            }
+
             showMessageAlert(
-                    '<br><strong>Transaction Id: </strong>'+messageOutput[obj].transactionId
+                    message,
+                    'eventDetailsForm?view=true&transactionId='+messageOutput[obj].transactionId
                     );
         }
     }
-    
-    $('#sendMessage').on('click',function(){
-        showMessageAlert("TE ESTOY MOSTRANDO UN MENSAJE");
-    });
     
     /*Conect to websocket on load page*/
     connect();
@@ -777,13 +789,13 @@ $(document).ready(function () {
     });
     
     /*Notify plugin - to show alerts*/
-    function showMessageAlert(message){
+    function showMessageAlert(message,url){
         $.notify({
             // options
 //            icon: 'glyphicon glyphicon-warning-sign',
             title: 'Alert: ',
             message: message,
-            url: 'https://github.com/mouse0270/bootstrap-notify',
+            url: url,
             target: '_blank'
         },{
             // settings
@@ -800,7 +812,7 @@ $(document).ready(function () {
             offset: 20,
             spacing: 10,
             z_index: 1031,
-            delay: 10000,
+            delay: 10000000,
             timer: 1000,
             url_target: '_blank',
             mouse_over: null,

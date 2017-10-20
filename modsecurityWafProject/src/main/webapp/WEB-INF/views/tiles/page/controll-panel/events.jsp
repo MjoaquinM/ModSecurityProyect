@@ -110,7 +110,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach items="${lst}" var="e">
+                    <c:forEach items="${lst}" var="e" varStatus="i">
                         <tr>
                             <td>${e.dateEvent}</td>
                             <td>${e.clientIp}</td>

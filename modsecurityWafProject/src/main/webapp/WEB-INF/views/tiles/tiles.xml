@@ -153,12 +153,18 @@
    
     <!-- Request Show Reports Main Page -> Controller Admin -->
    <definition name="eventsList" extends="admin-layout">  
-       <put-attribute name="title" value="Events" />  
+       <put-attribute name="title" value="Events" />
        <put-attribute name="body" value="/WEB-INF/views/tiles/page/controll-panel/events.jsp" />
        <put-attribute name="modal" value="/WEB-INF/views/tiles/template/modal.jsp" />  
    </definition>
    
+   <!-- Show Event Details On Modal -->
    <definition name="eventDetailsForm" template="/WEB-INF/views/tiles/page/events/eventDetailsForm.jsp">
+   </definition>
+   
+   <!-- Show Event Details Page -->
+   <definition name="eventDetailsFormPage" extends="admin-layout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/events/eventDetailsForm.jsp" />
    </definition>
    
    <!--****************** CONTROL PANEL MODULE - END ******************-->

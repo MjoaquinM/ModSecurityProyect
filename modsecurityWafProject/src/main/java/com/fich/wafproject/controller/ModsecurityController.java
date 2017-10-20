@@ -75,9 +75,6 @@ public class ModsecurityController {
     @RequestMapping(value = "/configurationFiles/applyRequestBodyHandlingChanges", method = RequestMethod.POST)
     public String applyReqBodyChanges(@Valid ConfigurationFiles ccf,
             BindingResult result, ModelMap model) throws IOException, InterruptedException {
-        
-        System.out.println(" MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME MIRAME");
-        
         configurationFileService.save(ccf);
         ccf=configurationFileService.findById(ccf.getId());
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
@@ -90,13 +87,18 @@ public class ModsecurityController {
             FileWriter w = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(w);
             PrintWriter wr = new PrintWriter(bw);
-            String msgToHistoryLog = "ModSecurity.conf setup";
+            String msgToHistoryLog = ccf.getName()+" setup";
             while ((line = br.readLine()) != null) {
                 if (!line.isEmpty()) {
+                    String aux = line;
+                    if (aux.indexOf(" ")>=0){
+                        aux = aux.substring(0, aux.indexOf(" ")+1);
+                    }
                     for(ConfigurationFilesAttributes cfa : attrs){
-                        if (line.contains(cfa.getName()+" ")){
-                            line = line.replaceAll("#", "");
+                        System.out.println(aux + " -- " + cfa.getName());
+                        if (aux.contains(cfa.getName()+" ")){
                             if(!cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED")){
+                                line = line.replaceAll("#", "");
                                 msgToHistoryLog = msgToHistoryLog + " - Setup "+cfa.getName()+" Attribute: "+line.replaceAll(cfa.getName(), "").trim()+" to "+cfa.getValue()+"\n";
                                 line = cfa.getName()+" "+cfa.getValue();
 //                                msgToHistoryLog = msgToHistoryLog + " - "+cfa.getName()+" was blocked \n";
