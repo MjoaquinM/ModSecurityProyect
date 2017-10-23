@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="14874671-00d2-4654-8e20-f9856528c156">
 	<property name="ireport.zoom" value="1.6105100000000139"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="2335"/>
+	<property name="ireport.x" value="172"/>
+	<property name="ireport.y" value="1108"/>
 	<style name="Title" fontName="Monospaced" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Monospaced" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Monospaced" fontSize="12" isBold="true"/>
@@ -233,9 +233,9 @@
 	<lastPageFooter>
 		<band height="758">
 			<staticText>
-				<reportElement x="139" y="11" width="276" height="20" uuid="4fb84999-f86e-45c7-a868-9fc15632e1b1"/>
+				<reportElement x="108" y="10" width="376" height="20" uuid="4fb84999-f86e-45c7-a868-9fc15632e1b1"/>
 				<textElement>
-					<font fontName="Monospaced"/>
+					<font fontName="Monospaced" size="14" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[Cantidad de eventos por cada tipo de regla]]></text>
 			</staticText>
@@ -284,16 +284,16 @@
 				</jr:list>
 			</componentElement>
 			<staticText>
-				<reportElement positionType="Float" x="55" y="454" width="307" height="20" uuid="7365ad3a-48ad-4e2e-b19a-936b99c99cb4"/>
+				<reportElement positionType="Float" x="55" y="458" width="307" height="16" uuid="7365ad3a-48ad-4e2e-b19a-936b99c99cb4"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[REQUEST-941-APPLICATION-ATTACK-XSS]]></text>
 			</staticText>
 			<staticText>
 				<reportElement positionType="Float" x="55" y="56" width="283" height="16" uuid="e01a2781-de11-4177-92f9-f99dd0c95d94"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[REQUEST-910-IP-REPUTATION]]></text>
 			</staticText>
@@ -318,7 +318,7 @@
 			<staticText>
 				<reportElement positionType="Float" x="56" y="96" width="283" height="16" uuid="2ed839fb-e209-46dc-870a-0ac6df4bb736"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[REQUEST-911-METHOD-ENFORCEMENT]]></text>
 			</staticText>
@@ -343,7 +343,7 @@
 			<staticText>
 				<reportElement positionType="Float" x="56" y="137" width="283" height="16" uuid="d634f410-7ea9-4542-8566-04b25379acd6"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[REQUEST-912-DOS-PROTECTION]]></text>
 			</staticText>
@@ -368,7 +368,7 @@
 			<staticText>
 				<reportElement positionType="Float" x="56" y="177" width="283" height="16" uuid="db7911d8-2f07-4079-93b7-1c0a91e35bdc"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[REQUEST-913-SCANNER-DETECTION]]></text>
 			</staticText>
@@ -393,7 +393,7 @@
 			<staticText>
 				<reportElement positionType="Float" x="56" y="217" width="283" height="16" uuid="f2a34973-6917-40d4-be7d-6a1944da6c44"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[REQUEST-920-PROTOCOL-ENFORCEMENT]]></text>
 			</staticText>
@@ -418,7 +418,7 @@
 			<staticText>
 				<reportElement positionType="Float" x="56" y="257" width="283" height="16" uuid="ec995a3b-e986-4b0a-8afd-49875a517764"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[REQUEST-921-PROTOCOL-ATACK]]></text>
 			</staticText>
@@ -443,7 +443,7 @@
 			<staticText>
 				<reportElement positionType="Float" x="56" y="297" width="307" height="16" uuid="83af1d81-86a1-428f-9aa0-a9391c3e0b9c"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[REQUEST-930-APPLICATION-ATTACK-LFI]]></text>
 			</staticText>
@@ -468,7 +468,7 @@
 			<staticText>
 				<reportElement positionType="Float" x="57" y="337" width="307" height="16" uuid="e2dcb224-6760-4685-b4d6-f7295a7a5f27"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[REQUEST-931-APPLICATION-ATTACK-RFI]]></text>
 			</staticText>
@@ -493,7 +493,7 @@
 			<staticText>
 				<reportElement positionType="Float" x="56" y="377" width="307" height="16" uuid="f2978fc2-7007-4d95-8503-652f910a27b5"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[REQUEST-932-APPLICATION-ATTACK-RCE]]></text>
 			</staticText>
@@ -516,9 +516,9 @@
 				</jr:list>
 			</componentElement>
 			<staticText>
-				<reportElement positionType="Float" x="57" y="414" width="307" height="20" uuid="12a59c5a-9b4c-4d69-bccc-1d8edfc0bd30"/>
+				<reportElement positionType="Float" x="57" y="418" width="307" height="16" uuid="12a59c5a-9b4c-4d69-bccc-1d8edfc0bd30"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[REQUEST-933-APPLICATION-ATTACK-PHP]]></text>
 			</staticText>
@@ -541,9 +541,9 @@
 				</jr:list>
 			</componentElement>
 			<staticText>
-				<reportElement positionType="Float" x="57" y="494" width="305" height="20" uuid="a1a26f1b-f06e-4488-a973-89fe9568872e"/>
+				<reportElement positionType="Float" x="56" y="501" width="305" height="16" uuid="a1a26f1b-f06e-4488-a973-89fe9568872e"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[REQUEST-942-APPLICATION-ATTACK-SQLI]]></text>
 			</staticText>
@@ -566,15 +566,15 @@
 				</jr:list>
 			</componentElement>
 			<staticText>
-				<reportElement positionType="Float" x="57" y="537" width="350" height="20" uuid="860d32b3-4ba8-43c5-99d5-2acc03dca937"/>
+				<reportElement positionType="Float" x="57" y="541" width="379" height="16" uuid="860d32b3-4ba8-43c5-99d5-2acc03dca937"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION]]></text>
 			</staticText>
 			<componentElement>
 				<reportElement positionType="Float" x="55" y="557" width="429" height="20" uuid="2bbd90dc-c4ed-4c92-b951-86308b56cb64"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="list943" uuid="a8038ef4-ca5c-4b84-b703-bb5bd7cad4db">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list943})]]></dataSourceExpression>
 					</datasetRun>
@@ -591,15 +591,15 @@
 				</jr:list>
 			</componentElement>
 			<staticText>
-				<reportElement positionType="Float" x="57" y="577" width="350" height="20" uuid="cc4dfb72-3320-4c78-b950-b075e37f2562"/>
+				<reportElement positionType="Float" x="57" y="581" width="350" height="16" uuid="cc4dfb72-3320-4c78-b950-b075e37f2562"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[RESPONSE-950-DATA-LEAKAGES]]></text>
 			</staticText>
 			<componentElement>
 				<reportElement positionType="Float" x="57" y="597" width="427" height="20" uuid="1c7c440f-dbc9-4966-8673-97870a1b37a2"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="list950" uuid="985c4467-0ed1-4824-8102-69808d98d13f">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list950})]]></dataSourceExpression>
 					</datasetRun>
@@ -616,15 +616,15 @@
 				</jr:list>
 			</componentElement>
 			<staticText>
-				<reportElement positionType="Float" x="57" y="617" width="350" height="20" uuid="091f5815-efe3-48d7-9b3e-6711d3ded174"/>
+				<reportElement positionType="Float" x="57" y="621" width="350" height="16" uuid="091f5815-efe3-48d7-9b3e-6711d3ded174"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[RESPONSE-951-DATA-LEAKAGES-SQL]]></text>
 			</staticText>
 			<componentElement>
 				<reportElement positionType="Float" x="57" y="637" width="427" height="20" uuid="5fc2717b-0a88-460b-8b5e-650d0a9906ec"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="list951" uuid="2aca78de-49fe-4769-ab8c-b5e48e47493c">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list951})]]></dataSourceExpression>
 					</datasetRun>
@@ -641,15 +641,15 @@
 				</jr:list>
 			</componentElement>
 			<staticText>
-				<reportElement positionType="Float" x="57" y="657" width="350" height="20" uuid="08b44f2d-a7f9-4230-b99a-87039ce1bdc6"/>
+				<reportElement positionType="Float" x="57" y="661" width="350" height="16" uuid="08b44f2d-a7f9-4230-b99a-87039ce1bdc6"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[RESPONSE-952-DATA-LEAKAGES-JAVA]]></text>
 			</staticText>
 			<componentElement>
 				<reportElement positionType="Float" x="57" y="677" width="427" height="20" uuid="f621142a-54a4-4e23-9de7-0355b4fbd95c"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="list952" uuid="55a2d43e-bf1e-4d18-9809-cd52bf72c2c3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list952})]]></dataSourceExpression>
 					</datasetRun>
@@ -666,15 +666,15 @@
 				</jr:list>
 			</componentElement>
 			<staticText>
-				<reportElement positionType="Float" x="55" y="697" width="350" height="20" uuid="dd9ee240-3aa8-451c-814e-8c68429090bb"/>
+				<reportElement positionType="Float" x="55" y="701" width="350" height="16" uuid="dd9ee240-3aa8-451c-814e-8c68429090bb"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[RESPONSE-953-DATA-LEAKAGES-PHP]]></text>
 			</staticText>
 			<componentElement>
 				<reportElement positionType="Float" x="56" y="717" width="428" height="20" uuid="941dfdb5-4b01-4ec7-bda1-43bfcaf85952"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="list953" uuid="f5db1351-d314-4f6d-8d8f-8064e493c18a">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list953})]]></dataSourceExpression>
 					</datasetRun>
@@ -691,15 +691,15 @@
 				</jr:list>
 			</componentElement>
 			<staticText>
-				<reportElement positionType="Float" x="57" y="737" width="350" height="20" uuid="520f114f-ee32-4747-986d-b461c7dd032b"/>
+				<reportElement positionType="Float" x="57" y="741" width="350" height="16" uuid="520f114f-ee32-4747-986d-b461c7dd032b"/>
 				<textElement>
-					<font size="12" isUnderline="true"/>
+					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
 				<text><![CDATA[RESPONSE-954-DATA-LEAKAGES-IIS]]></text>
 			</staticText>
 			<componentElement>
 				<reportElement positionType="Float" x="55" y="757" width="429" height="20" uuid="01a6c5a0-3019-43b9-a4cd-0c3fcf55f79f"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="list954" uuid="ea44af0d-333b-4087-8f97-224c9e86746c">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list954})]]></dataSourceExpression>
 					</datasetRun>
