@@ -32,6 +32,10 @@ public class MessageData {
         this.rules = new ArrayList<String>();
     }
     
+    public void addRule(String r){
+        this.rules.add(r);
+    }
+    
     public List<String> getRules(){
         return this.rules;
     }

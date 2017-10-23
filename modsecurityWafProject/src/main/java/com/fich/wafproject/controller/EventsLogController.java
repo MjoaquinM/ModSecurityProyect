@@ -103,7 +103,7 @@ public class EventsLogController {
 
     private Functions customFunctions = new Functions();
 
-    private static List<MessageData> PATH_PREFIX = new ArrayList<MessageData>();// AlertMessages();
+    private static List<MessageData> ALERTS = new ArrayList<MessageData>();// AlertMessages();
 
     @RequestMapping(value = "/control/jrreport", method = RequestMethod.GET)
     public ResponseEntity<byte[]> printWelcome(ModelMap model, HttpServletRequest request) throws JRException, FileNotFoundException, IOException {
@@ -491,10 +491,14 @@ public class EventsLogController {
     @SendTo("/topic/messages")
     public List<MessageData> borraresto() throws Exception {
         List<MessageData> currentAlerts = new ArrayList<MessageData>();
-        for (MessageData md : PATH_PREFIX) {
+        int count = 0;
+        for (MessageData md : ALERTS) {
             currentAlerts.add(md);
+            if(++count==3){
+                break;
+            }
         }
-        PATH_PREFIX.clear();
+        ALERTS.clear();
         return currentAlerts;
     }
     /*-------------------------- PARA LOS ALERTAS END!!!!!!!!!!!!!!!!!!!!!!--------------------------*/
@@ -635,18 +639,16 @@ public class EventsLogController {
                 md.setTransactionId(event.getTransactionId());
                 md.setClientIp(event.getClientIp());
                 md.setDestinationPage(event.getDestinationPage());
-                List<String> files = new ArrayList<String>();
-                System.out.println("AFUERA DEL BUCLEEEEEEEEEEEEEEEEEE");
+                int count = 0;
                 if(event.getRules() != null){
                     for(Rule r : event.getRules()){
-                        System.out.println("regla");
-                        System.out.println(r);
-                        files.add(r.getFileId().getFileName());
+                        md.addRule(r.getFileId().getFileName());
+                        if(++count==3){
+                            break;
+                        }
                     }
                 }
-                md.setRule(files);
-//                md.setRule(event.getRules());
-                PATH_PREFIX.add(md);
+                ALERTS.add(md);
             } catch (ConstraintViolationException ese) {
                 System.out.println("ERROR CONSTRAINT: " + ese.getMessage());
             } catch (JDBCConnectionException ese) {
