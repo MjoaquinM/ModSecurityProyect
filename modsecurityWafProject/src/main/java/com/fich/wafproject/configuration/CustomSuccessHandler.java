@@ -139,7 +139,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler{
         uh.setUser(user);
         uh.setDateEvent(new Date());
         userHistoryService.save(uh);
-        System.out.println("MSG: " + msg + " -- " + "CURRENT USER: " + currentUsr);
+//        System.out.println("MSG: " + msg + " -- " + "CURRENT USER: " + currentUsr);
     }
     
     

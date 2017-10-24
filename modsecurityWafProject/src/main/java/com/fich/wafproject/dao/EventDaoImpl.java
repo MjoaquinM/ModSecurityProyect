@@ -50,7 +50,7 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
 
     @Override
     public List<Event> findAllEvent(int pageNumber, String[] targets, String[] names, String[] values, boolean pagination) {
-        int pageSize = 50;
+        int pageSize = 30;
         Criteria crit = this.createEntityCriteria();
         crit.setProjection(Projections.projectionList()
                 .add(Projections.distinct(Projections.property("id")))

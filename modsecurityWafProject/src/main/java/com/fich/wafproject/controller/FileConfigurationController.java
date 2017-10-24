@@ -115,7 +115,7 @@ public class FileConfigurationController {
             for (Object object : result.getAllErrors()) {
                 if(object instanceof FieldError) {
                     FieldError fieldError = (FieldError) object;
-                    System.out.println(object.toString());
+//                    System.out.println(object.toString());
                 }
                 if(object instanceof ObjectError) {
                     ObjectError objectError = (ObjectError) object;
@@ -218,11 +218,11 @@ public class FileConfigurationController {
             for (Object object : result.getAllErrors()) {
                 if(object instanceof FieldError) {
                     FieldError fieldError = (FieldError) object;
-                    System.out.println(fieldError.getCode());
+//                    System.out.println(fieldError.getCode());
                 }
                 if(object instanceof ObjectError) {
                     ObjectError objectError = (ObjectError) object;
-                    System.out.println(objectError.getCode());
+//                    System.out.println(objectError.getCode());
                 }
             }
         }else{
@@ -294,11 +294,11 @@ public class FileConfigurationController {
             for (Object object : result.getAllErrors()) {
                 if(object instanceof FieldError) {
                     FieldError fieldError = (FieldError) object;
-                    System.out.println(fieldError.getCode());
+//                    System.out.println(fieldError.getCode());
                 }
                 if(object instanceof ObjectError) {
                     ObjectError objectError = (ObjectError) object;
-                    System.out.println(objectError.getCode());
+//                    System.out.println(objectError.getCode());
                 }
             }
         }else{
@@ -490,7 +490,7 @@ public class FileConfigurationController {
             buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
             line = "";
         } catch (IOException e) {
-            System.out.println(e);
+//            System.out.println(e);
             this.persistEvent("There was an error trying to blocking rules - "+e);
         }
         return this.rulesConfigurationPage(model);

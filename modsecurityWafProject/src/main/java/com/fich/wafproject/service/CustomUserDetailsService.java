@@ -35,7 +35,7 @@ public class CustomUserDetailsService implements UserDetailsService{
     throws UsernameNotFoundException {
         Users user = userService.findByUserName(user_name);
         if(user==null){
-            System.out.println("User not found");
+//            System.out.println("User not found");
             throw new UsernameNotFoundException("Username not found");
         }
         return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), 
@@ -46,7 +46,7 @@ public class CustomUserDetailsService implements UserDetailsService{
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
          
         for(UserProfiles userProfile : user.getProfiles()){
-            System.out.println("UserProfile : "+userProfile.getType());
+//            System.out.println("UserProfile : "+userProfile.getType());
             authorities.add(new SimpleGrantedAuthority("ROLE_"+userProfile.getType()));
         }
         System.out.print("authorities :"+authorities);

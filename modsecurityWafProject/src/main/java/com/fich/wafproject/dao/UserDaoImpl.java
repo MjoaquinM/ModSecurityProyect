@@ -107,7 +107,7 @@ public class UserDaoImpl extends AbstractDao<Long, Users> implements UserDao {
         }
         List<Users> users = new ArrayList<Users>();
         for (Object idEvent : crit.list()) {
-            System.out.println(idEvent);
+//            System.out.println(idEvent);
             users.add(this.findById((Long) idEvent));
         }
         return (List<Users>) users;

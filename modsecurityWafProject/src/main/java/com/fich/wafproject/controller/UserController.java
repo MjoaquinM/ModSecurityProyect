@@ -98,7 +98,7 @@ public class UserController {
             System.out.println("Listing users...");
             System.out.println("Number of users: " + usersAux.size());
             for(Users u : usersAux){
-                System.out.println(u.toString());
+//                System.out.println(u.toString());
             }
         }
         
@@ -161,10 +161,10 @@ public class UserController {
         /*fin*/
         
         if (flagDebug){
-            System.out.println("Listing user histories...");
-            System.out.println("Number of histories: " + uh.size());
+//            System.out.println("Listing user histories...");
+//            System.out.println("Number of histories: " + uh.size());
             for(UsersHistory u : uh){
-                System.out.println(u.toString());
+//                System.out.println(u.toString());
             }
         }
         
@@ -194,12 +194,12 @@ public class UserController {
             user = userService.findById(id);
             actionMessage = "--- Editing User Form: "+user.getUserName();
             for(UserProfiles up : user.getProfiles()){
-                System.out.println(up.getType());
+//                System.out.println(up.getType());
             }
         }else{
             actionMessage = "--- Creating User Form";
         }
-        if(flagDebug) System.out.println("Action Message on User Form: " + actionMessage);
+//        if(flagDebug) System.out.println("Action Message on User Form: " + actionMessage);
         model.addAttribute("user", user);
         model.addAttribute("userStates", userStates);
         model.addAttribute("action","saveNewUser");
@@ -239,15 +239,15 @@ public class UserController {
     public String saveNewUser(@Valid Users user,
             BindingResult result, ModelMap model, HttpServletRequest request) {
         if (result.hasErrors() && flagDebug) {
-            System.out.println("There was errors saving user: ");
+//            System.out.println("There was errors saving user: ");
             for (Object object : result.getAllErrors()) {
                 if(object instanceof FieldError) {
                     FieldError fieldError = (FieldError) object;
-                    System.out.println(fieldError.getCode());
+//                    System.out.println(fieldError.getCode());
                 }
                 if(object instanceof ObjectError) {
                     ObjectError objectError = (ObjectError) object;
-                    System.out.println(objectError.getCode());
+//                    System.out.println(objectError.getCode());
                 }
             }
         }else{
@@ -255,7 +255,7 @@ public class UserController {
                 userService.save(user);
                 model.addAttribute("messageClass","success");
             }catch(Exception e){
-                if(flagDebug) System.out.println(e.getMessage());
+//                if(flagDebug) System.out.println(e.getMessage());
                 model.addAttribute("messageClass","danger");
                 return this.userListPage(model,"There was an error saving the user.", request);
             }

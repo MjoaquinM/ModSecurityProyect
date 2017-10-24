@@ -143,7 +143,7 @@
                                 </div>
                             </td>
                             <td>
-                                <a ${fn:length(lst)==0 ? "disabled='true'" : ""} class="btn btn-danger deleteEvent" data-action="all">Delete All</a>
+                                <!--<a ${fn:length(lst)==0 ? "disabled='true'" : ""} class="btn btn-danger deleteEvent" data-action="all">Delete All</a>-->
                             </td>
                         </tr>
                 </tbody>

@@ -57,7 +57,7 @@ public class UserHistoryDaoImpl extends AbstractDao<Long, UsersHistory> implemen
         
         List<UsersHistory> events = new ArrayList<UsersHistory>();
         for(Object idUsersHistory : crit.list()){
-            System.out.println(idUsersHistory);
+//            System.out.println(idUsersHistory);
             events.add(this.findById((Long) idUsersHistory));
         }
         return events;

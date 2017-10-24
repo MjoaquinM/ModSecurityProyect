@@ -90,9 +90,9 @@ public class WafProjectController {
     @RequestMapping(value="/logout", method = RequestMethod.GET)
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) throws ServletException{
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("aca estoy en el logout 1");
+//        System.out.println("aca estoy en el logout 1");
         if (auth != null){    
-            System.out.println("aca estoy en el logout 2");
+//            System.out.println("aca estoy en el logout 2");
             new SecurityContextLogoutHandler().logout(request, response, auth);
             new CookieClearingLogoutHandler(AbstractRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY).logout(request, response, null);
         }

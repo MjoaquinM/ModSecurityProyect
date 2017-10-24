@@ -95,7 +95,7 @@ public class ModsecurityController {
                         aux = aux.substring(0, aux.indexOf(" ")+1);
                     }
                     for(ConfigurationFilesAttributes cfa : attrs){
-                        System.out.println(aux + " -- " + cfa.getName());
+//                        System.out.println(aux + " -- " + cfa.getName());
                         if (aux.contains(cfa.getName()+" ")){
                             if(!cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED")){
                                 line = line.replaceAll("#", "");
@@ -130,7 +130,7 @@ public class ModsecurityController {
             line = "";
             
         } catch (IOException e) {
-            System.out.println(e);
+//            System.out.println(e);
         }
         
         /*<Build data modal>*/
