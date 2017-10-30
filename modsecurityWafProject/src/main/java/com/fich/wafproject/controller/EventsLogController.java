@@ -114,17 +114,20 @@ public class EventsLogController {
 //        
 //    }
     private static LinkedHashMap<String, Number> sortHashMapJasper(HashMap<String, Number> originalHashMap) {
-        LinkedHashMap<String, Number> sortedHashMapByKeys = new LinkedHashMap<>(); //maintains the order of putting
-        TreeMap<String, Number> originalTreeMap = new TreeMap<>(originalHashMap); //sorts based on keys
-        for (Map.Entry<String, Number> map: originalTreeMap.entrySet()) {
-            sortedHashMapByKeys.put(map.getKey(), map.getValue());
-        }
-
+        //ordena por keys
+//        LinkedHashMap<String, Number> sortedHashMapByKeys = new LinkedHashMap<>(); //maintains the order of putting
+//        TreeMap<String, Number> originalTreeMap = new TreeMap<>(originalHashMap); //sorts based on keys
+//        for (Map.Entry<String, Number> map: originalTreeMap.entrySet()) {
+//            sortedHashMapByKeys.put(map.getKey(), map.getValue());
+//        }
+        
+        //al ordenamiento anterior lo pone con valor,clave
         LinkedHashMap<Number, String> reversedOfSortedLinkedHashMap = new LinkedHashMap<>();
-        for (Map.Entry<String, Number> map: sortedHashMapByKeys.entrySet()) {
+        for (Map.Entry<String, Number> map: originalHashMap.entrySet()) {
             reversedOfSortedLinkedHashMap.put(map.getValue(), map.getKey());
         }
-
+        
+        
         LinkedHashMap<String, Number> finalMap = new LinkedHashMap<>();
         TreeMap<Number, String> treeMapOfReversedOfSortedLinkedHashMap = new TreeMap<>(reversedOfSortedLinkedHashMap);
         for (Map.Entry<Number, String> map: treeMapOfReversedOfSortedLinkedHashMap.entrySet()) {
@@ -354,6 +357,7 @@ public class EventsLogController {
         file = fileService.findByFileName("REQUEST-942-APPLICATION-ATTACK-SQLI");
         auxMap = (HashMap<String, Number>) fileMap.get(file);
         if (auxMap != null) {
+            auxMap = this.sortHashMapJasper(auxMap);
             for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
                 list942.add(new JasperCharts(entry.getKey(), entry.getValue()));
             }
