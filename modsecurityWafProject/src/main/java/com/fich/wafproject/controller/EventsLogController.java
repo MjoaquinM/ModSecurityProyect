@@ -113,7 +113,7 @@ public class EventsLogController {
 //    private sortHashMapJasper(HashMap<String, Number> map){
 //        
 //    }
-    private static LinkedHashMap<String, Number> sortHashMapJasper(HashMap<String, Number> originalHashMap) {
+    private static LinkedHashMap<String, Integer> sortHashMapJasper(HashMap<String, Integer> originalHashMap) {
         //ordena por keys
 //        LinkedHashMap<String, Number> sortedHashMapByKeys = new LinkedHashMap<>(); //maintains the order of putting
 //        TreeMap<String, Number> originalTreeMap = new TreeMap<>(originalHashMap); //sorts based on keys
@@ -122,18 +122,34 @@ public class EventsLogController {
 //        }
         
         //al ordenamiento anterior lo pone con valor,clave
-        LinkedHashMap<Number, String> reversedOfSortedLinkedHashMap = new LinkedHashMap<>();
-        for (Map.Entry<String, Number> map: originalHashMap.entrySet()) {
+        LinkedHashMap<Integer, String> reversedOfSortedLinkedHashMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Integer> map: originalHashMap.entrySet()) {
             reversedOfSortedLinkedHashMap.put(map.getValue(), map.getKey());
         }
         
         
-        LinkedHashMap<String, Number> finalMap = new LinkedHashMap<>();
-        TreeMap<Number, String> treeMapOfReversedOfSortedLinkedHashMap = new TreeMap<>(reversedOfSortedLinkedHashMap);
-        for (Map.Entry<Number, String> map: treeMapOfReversedOfSortedLinkedHashMap.entrySet()) {
+        LinkedHashMap<String, Integer> finalMap = new LinkedHashMap<>();
+        TreeMap<Integer, String> treeMapOfReversedOfSortedLinkedHashMap = new TreeMap<>(reversedOfSortedLinkedHashMap);
+        for (Map.Entry<Integer, String> map: treeMapOfReversedOfSortedLinkedHashMap.entrySet()) {
             finalMap.put(map.getValue(), map.getKey()); //sort and swap
         }
         return finalMap;
+    }
+    
+    public static <K, V extends Comparable<? super V>> HashMap<K, V> 
+        sortByValue(HashMap<K, V> map) {
+        List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(map.entrySet());
+        Collections.sort( list, new Comparator<Map.Entry<K, V>>() {
+            public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
+                return (o1.getValue()).compareTo( o2.getValue() );
+            }
+        });
+
+        HashMap<K, V> result = new LinkedHashMap<K, V>();
+        for (Map.Entry<K, V> entry : list) {
+            result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
     }
     
     
@@ -167,7 +183,7 @@ public class EventsLogController {
         //INICIALIZO MAPAS PARA CADA GRAFICO
         Map<Rule, Number> ruleVsNumber = new HashMap<>();   //cantidad de ataques por cada regla.
         Map<File, Number> fileVsNumber = new HashMap<>();   //cantidad de ataques por cada clase de ataque.
-        Map<File, Map<String, Number>> fileMap = new HashMap<>(); //ataques por clase y por ip.
+        Map<File, Map<String, Integer>> fileMap = new HashMap<>(); //ataques por clase y por ip.
         Map<String, Number> dateVsNumber = new HashMap<>();
 
         for (Event e : events) {
@@ -245,165 +261,166 @@ public class EventsLogController {
         List<JasperCharts> list953 = new ArrayList();
         List<JasperCharts> list954 = new ArrayList();
         
-        HashMap<String, Number> auxMap;
+        HashMap<String, Integer> auxMap;
         Map<String, Number> auxMap1;
         File file;
         
-        file = fileService.findByFileName("REQUEST-903.9001-DRUPAL-EXCLUSION-RULES");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list903_9001.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{
-            list903_9001.add(new JasperCharts("No se registraron ataques", 0));
-        }
-        
-        file = fileService.findByFileName("REQUEST-903.9002-WORDPRESS-EXCLUSION-RULES");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list903_9002.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list903_9002.add(new JasperCharts("No se registraron ataques", 0));}
-        
-        file = fileService.findByFileName("REQUEST-905-COMMON-EXCEPTIONS");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list905.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list905.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("REQUEST-910-IP-REPUTATION");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list910.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list910.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("REQUEST-911-METHOD-ENFORCEMENT");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list911.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list911.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("REQUEST-912-DOS-PROTECTION");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list912.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list912.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("REQUEST-913-SCANNER-DETECTION");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list913.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list913.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("REQUEST-903.9001-DRUPAL-EXCLUSION-RULES");
+//        auxMap = (HashMap<String, Integer>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Integer> entry : auxMap.entrySet()) {
+//                list903_9001.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{
+//            list903_9001.add(new JasperCharts("No se registraron ataques", 0));
+//        }
+//        
+//        file = fileService.findByFileName("REQUEST-903.9002-WORDPRESS-EXCLUSION-RULES");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list903_9002.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list903_9002.add(new JasperCharts("No se registraron ataques", 0));}
+//        
+//        file = fileService.findByFileName("REQUEST-905-COMMON-EXCEPTIONS");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list905.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list905.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("REQUEST-910-IP-REPUTATION");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list910.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list910.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("REQUEST-911-METHOD-ENFORCEMENT");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list911.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list911.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("REQUEST-912-DOS-PROTECTION");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list912.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list912.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("REQUEST-913-SCANNER-DETECTION");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list913.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list913.add(new JasperCharts("No se registraron ataques", 0));}
         
         file = fileService.findByFileName("REQUEST-920-PROTOCOL-ENFORCEMENT");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        auxMap = (HashMap<String, Integer>) fileMap.get(file);
         if (auxMap != null) {
-            auxMap = this.sortHashMapJasper(auxMap);
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//            auxMap = this.sortHashMapJasper(auxMap);
+            auxMap = this.sortByValue(auxMap);
+            for (Map.Entry<String, Integer> entry : auxMap.entrySet()) {
                 list920.add(new JasperCharts(entry.getKey(), entry.getValue()));
             }
         }else{list920.add(new JasperCharts("No se registraron ataques", 0));}
         
-        file = fileService.findByFileName("REQUEST-921-PROTOCOL-ATTACK");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list921.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list921.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("REQUEST-930-APPLICATION-ATTACK-LFI");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list930.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list930.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("REQUEST-931-APPLICATION-ATTACK-RFI");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list931.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list931.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("REQUEST-932-APPLICATION-ATTACK-RCE");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list932.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list932.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("REQUEST-933-APPLICATION-ATTACK-PHP");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list933.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list933.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("REQUEST-941-APPLICATION-ATTACK-XSS");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list941.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list941.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("REQUEST-942-APPLICATION-ATTACK-SQLI");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            auxMap = this.sortHashMapJasper(auxMap);
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list942.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list942.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list943.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list943.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("RESPONSE-950-DATA-LEAKAGES");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list950.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list950.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("RESPONSE-951-DATA-LEAKAGES-SQL");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list951.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list951.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("RESPONSE-952-DATA-LEAKAGES-JAVA");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list952.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list952.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("RESPONSE-953-DATA-LEAKAGES-PHP.");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list953.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list953.add(new JasperCharts("No se registraron ataques", 0));}
-        file = fileService.findByFileName("RESPONSE-954-DATA-LEAKAGES-IIS");
-        auxMap = (HashMap<String, Number>) fileMap.get(file);
-        if (auxMap != null) {
-            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-                list954.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list954.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("REQUEST-921-PROTOCOL-ATTACK");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list921.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list921.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("REQUEST-930-APPLICATION-ATTACK-LFI");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list930.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list930.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("REQUEST-931-APPLICATION-ATTACK-RFI");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list931.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list931.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("REQUEST-932-APPLICATION-ATTACK-RCE");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list932.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list932.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("REQUEST-933-APPLICATION-ATTACK-PHP");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list933.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list933.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("REQUEST-941-APPLICATION-ATTACK-XSS");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list941.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list941.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("REQUEST-942-APPLICATION-ATTACK-SQLI");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            auxMap = this.sortHashMapJasper(auxMap);
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list942.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list942.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list943.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list943.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("RESPONSE-950-DATA-LEAKAGES");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list950.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list950.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("RESPONSE-951-DATA-LEAKAGES-SQL");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list951.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list951.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("RESPONSE-952-DATA-LEAKAGES-JAVA");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list952.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list952.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("RESPONSE-953-DATA-LEAKAGES-PHP.");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list953.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list953.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("RESPONSE-954-DATA-LEAKAGES-IIS");
+//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+//        if (auxMap != null) {
+//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
+//                list954.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list954.add(new JasperCharts("No se registraron ataques", 0));}
         
         List<JasperCharts> listRuleNumber = new ArrayList<>();
 //        System.out.println("LISTA DE RULE:");
