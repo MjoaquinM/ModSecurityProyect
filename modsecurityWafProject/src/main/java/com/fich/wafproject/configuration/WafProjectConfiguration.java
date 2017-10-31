@@ -9,19 +9,27 @@ package com.fich.wafproject.configuration;
  *
  * @author r3ng0
  */
+import java.util.Collections;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
  
 @Configuration
+@EnableScheduling
 @EnableWebMvc
 @ComponentScan(basePackages = "com.fich.wafproject")
 public class WafProjectConfiguration extends WebMvcConfigurerAdapter {
@@ -36,13 +44,11 @@ public class WafProjectConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     public TilesConfigurer tilesConfigurer(){
         TilesConfigurer tilesConfigurer = new TilesConfigurer();
-        tilesConfigurer.setDefinitions(new String[] {"/WEB-INF/views/**/tiles.xml"});
+        tilesConfigurer.setDefinitions(new String[] {"/WEB-INF/views/**/tiles.xml","/WEB-INF/views/"});
         tilesConfigurer.setCheckRefresh(true);
         return tilesConfigurer;
     }
     
-    
-     
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
 //        InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -70,6 +76,13 @@ public class WafProjectConfiguration extends WebMvcConfigurerAdapter {
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(roleToUserProfileConverter);
+    }
+    
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver resolver=new CommonsMultipartResolver();
+        resolver.setDefaultEncoding("utf-8");
+        return resolver;
     }
     
 }

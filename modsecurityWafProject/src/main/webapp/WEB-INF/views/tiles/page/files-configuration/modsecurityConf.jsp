@@ -8,6 +8,6 @@
     </div>
     <!-- /.row -->
     <div class="row">
-        <h1>ACA VAN LOS PARAMETROS DE CONFIGURACION DEL MODSECRURITY.CONF TIPO NA</h1>
+        <h1>ACA VAN LOS PARAMETROS DE CONFIGURACION DEL MODSECRURITY.CONF</h1>
     </div>
 </div>

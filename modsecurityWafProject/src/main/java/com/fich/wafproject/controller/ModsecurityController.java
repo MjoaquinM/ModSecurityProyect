@@ -5,8 +5,9 @@
  */
 package com.fich.wafproject.controller;
 
-import com.fich.wafproject.model.ConfigurationFile;
-import com.fich.wafproject.model.ConfigurationFileAttribute;
+import com.fich.wafproject.model.ConfigurationFileAttributeGroups;
+import com.fich.wafproject.model.ConfigurationFiles;
+import com.fich.wafproject.model.ConfigurationFilesAttributes;
 import java.util.List;
  
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -25,20 +25,25 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
  
-import com.fich.wafproject.model.User;
-import com.fich.wafproject.model.UserProfile;
+import com.fich.wafproject.model.Users;
+import com.fich.wafproject.model.UserProfiles;
+import com.fich.wafproject.model.UsersHistory;
 import com.fich.wafproject.service.ConfigurationFileAttributeService;
 import com.fich.wafproject.service.ConfigurationFileService;
 import com.fich.wafproject.service.UserService;
+import com.fich.wafproject.service.UsersHistoryService;
 import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+//import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -55,124 +60,86 @@ public class ModsecurityController {
     @Autowired
     ConfigurationFileService configurationFileService;
     
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String adminPage(ModelMap model) {
-        System.out.println(configurationFileAttributeService.findAll());
-        return "adminHome";
-    }
+    @Autowired
+    private UserService userService;
     
-    /**Show File Configuration Attributes**/
-    @RequestMapping(value = "/addFileConfigurationAttributes", method = RequestMethod.GET)
-    public String showFileConfigurationParameters(ModelMap model, @RequestParam("fileId") int fileId) {
-        ConfigurationFileAttribute cfa = configurationFileAttributeService.findByFileConfiguration(fileId);
-        model.addAttribute("configFileAttr",cfa);
-        return "showFileConfigurationAttributes";
-    }
-    /**Show File Configuration Attributes -- END **/
-    
-    /**Save File Configuration Attributes**/
-    @RequestMapping(value = "/addFileConfigurationAttributes", method = RequestMethod.POST)
-    public String saveConfigurationFileAttributes(@Valid ConfigurationFileAttribute cfa,
-            BindingResult result, ModelMap model) {
-        if (result.hasErrors()) {
-            System.out.println("There are errors");
-            return "modsecurityFileConfig";
-        }
-        configurationFileAttributeService.save(cfa);
-        return "<h1>ANDUVO</h1>";
-    }
-    /**Save File Configuration Attributes -- END **/
-    
-    @RequestMapping(value = "/addConfigurationFile", method = RequestMethod.POST)
-    public String saveConfigurationFile(@Valid ConfigurationFile cf,
-            BindingResult result, ModelMap model) {
-        if (result.hasErrors()) {
-            System.out.println("There are errors");
-            return "modsecurityFileConfig";
-        }
-        
-        configurationFileService.save(cf);
-        System.out.println("Name: "+cf.getName());
-        System.out.println("Path: "+cf.getPath());
-        System.out.println("Description: "+cf.getDescription());
-        String state = cf.getState() ? "Active" : "Disable";
-        System.out.println("State: "+ cf.getState());
-//        List<ConfigurationFile> configurationFilesAll = configurationFileService.findAll();
-//        model.addAttribute("configFiles", configurationFilesAll);
-        return "modsecurityFileConfig";
-    }
-    
-    @RequestMapping(value = "/addConfigurationFile", method = RequestMethod.GET)
-    public String addConfigurationFile(ModelMap model) {
-        ConfigurationFile fc = new ConfigurationFile();
-        model.addAttribute("configurationFile",fc);
-        return "addConfigurationFile";
-    }
-    
-    //Modsecurity File Configuration
-    @RequestMapping(value = { "/modsecurityFileConfig" }, method = RequestMethod.GET)
-    public String modSecFileConfig(ModelMap model) {
-        
-        List<ConfigurationFile> configurationFilesAll = configurationFileService.findAll();
-        System.out.println("LARGARON!!!!!!!!!!!!!!!!!!!!!!111");
-        Iterator iter = configurationFilesAll.iterator();
-        while (iter.hasNext()){
-          System.out.println(iter.next());
-        }
-        model.addAttribute("configFiles",configurationFilesAll);
-        return "modsecurityFileConfig";
-    }
+    @Autowired
+    private UsersHistoryService userHistoryService;
     
     //Configure Request Body Page
     @RequestMapping(value = { "/reqBodyConfig" }, method = RequestMethod.GET)
     public String modSecConfigReqBody(ModelMap model) {
         return "reqBodyConfig";
     }
-    
-    @RequestMapping(value = "/applyRequestBodyHandlingChanges", method = RequestMethod.POST)
-    public String applyReqBodyChanges() throws IOException, InterruptedException {
-        String cadena, arch = "";
-        FileReader fr = new FileReader("/etc/modsecurity/modsecurity.conf");
-        BufferedReader br = new BufferedReader(fr);
-        File f;
-        f = new File("/home/r3ng0/Desktop/modsecurity.conf");
+
+    @RequestMapping(value = "/configurationFiles/applyRequestBodyHandlingChanges", method = RequestMethod.POST)
+    public String applyReqBodyChanges(@Valid ConfigurationFiles ccf,
+            BindingResult result, ModelMap model) throws IOException, InterruptedException {
+        configurationFileService.save(ccf);
+        ccf=configurationFileService.findById(ccf.getId());
+        List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
+        List<ConfigurationFilesAttributes> attrs = configurationFileAttributeService.findByFileConfiguration(ccf.getId());
         try {
+            String line = "";
+            FileReader fr = new FileReader(ccf.getPathName());
+            BufferedReader br = new BufferedReader(fr);
+            java.io.File f = new java.io.File("/tmp/"+ccf.getName()); //ARGUMENT MUST BE A GOBAL VARIABLE
             FileWriter w = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(w);
             PrintWriter wr = new PrintWriter(bw);
-
-            while ((cadena = br.readLine()) != null) { 
-                System.out.println(cadena);
-                if (!cadena.isEmpty()) {
-                    if (cadena.charAt(0) != '#') {
-                        
-                        if (cadena.contains("SecRuleEngine")) {
-//                            cadena = "SecRuleEngine " + SecRuleEngine;
+            String msgToHistoryLog = ccf.getName()+" setup";
+            while ((line = br.readLine()) != null) {
+                if (!line.isEmpty()) {
+                    String aux = line;
+                    if (aux.indexOf(" ")>=0){
+                        aux = aux.substring(0, aux.indexOf(" ")+1);
+                    }
+                    for(ConfigurationFilesAttributes cfa : attrs){
+//                        System.out.println(aux + " -- " + cfa.getName());
+                        if (aux.contains(cfa.getName()+" ")){
+                            if(!cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED")){
+                                line = line.replaceAll("#", "");
+                                msgToHistoryLog = msgToHistoryLog + " - Setup "+cfa.getName()+" Attribute: "+line.replaceAll(cfa.getName(), "").trim()+" to "+cfa.getValue()+"\n";
+                                line = cfa.getName()+" "+cfa.getValue();
+//                                msgToHistoryLog = msgToHistoryLog + " - "+cfa.getName()+" was blocked \n";
+//                                line = "# "+line;
+//                            }else{
+//                                msgToHistoryLog = msgToHistoryLog + " - Setup "+cfa.getName()+" Attribute: "+line.replaceAll(cfa.getName(), "").trim()+" to "+cfa.getValue()+"\n";
+//                                line = cfa.getName()+" "+cfa.getValue();
+                            }
                         }
                     }
                 }
-//                wr.append(cadena + "\n");
-//                arch = arch + cadena + "<br/>";
+                wr.append(line + "\n");
             }
             wr.close();
             bw.close();
-
+            br.close();
+            this.persistEvent(msgToHistoryLog);
+            String cmd = " pkexec sudo mv /tmp/"+ccf.getName()+" "+ccf.getPathName();//+" && /etc/init.d/apache2 reload";
+            Runtime run = Runtime.getRuntime();
+            Process pr = run.exec(cmd);
+            pr.waitFor();
+            BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            line = "";
+            cmd = " pkexec sudo /etc/init.d/apache2 reload";
+            run = Runtime.getRuntime();
+            pr = run.exec(cmd);
+            pr.waitFor();
+            buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+            line = "";
+            
         } catch (IOException e) {
-            System.out.println(e);
-        };
-        br.close();
+//            System.out.println(e);
+        }
         
-        String cmd = "pkexec sudo /etc/init.d/apache2 reload";
-        //Runtime run = Runtime.getRuntime();
-        //Process pr = run.exec(cmd);
-        //pr.waitFor();
-        //BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-        /*String line = "";
-        while ((line = buf.readLine()) != null) {
-            System.out.println(line);
-        }*/
-
-        return "/modsecurity/request-body-handling";
+        /*<Build data modal>*/
+        model.addAttribute("idModal", "fileConfigurationTemplateModal");
+        /*<Build data modal - end>*/
+        model.addAttribute("configFiles",configurationFilesAll);
+        model.addAttribute("user",getPrincipal());
+        model.addAttribute("currentFile",ccf);
+        return "configurationFilesTemplate";
     }
     
     private String getPrincipal(){
@@ -185,5 +152,17 @@ public class ModsecurityController {
             userName = principal.toString();
         }
         return userName;
+    }
+    
+    private void persistEvent(String msg){
+        String currentUsr = this.getPrincipal();
+        
+        Users user = userService.findByUserName(this.getPrincipal());
+        UsersHistory uh = new UsersHistory();
+        uh.setDescription(msg);
+        uh.setUser(user);
+        uh.setDateEvent(new Date());
+        userHistoryService.save(uh);
+        System.out.println("MSG: " + msg + " \n " + "CURRENT USER: " + currentUsr);
     }
 }

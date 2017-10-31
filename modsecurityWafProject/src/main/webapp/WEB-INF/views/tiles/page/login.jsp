@@ -4,27 +4,32 @@
     Author     : r3ng0
 --%>
 
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <div id="div-container-login" class="container-login">
     <h1 class="div-login-heading">
         <strong>Welcome.</strong> Please login.
     </h1>
-    <div class="row row-notice-login-status">
-        <div class="col-lg-10 center-elements">
-        <c:if test="${param.error != null}">
-            <div class="alert alert-danger notice-login-page">
-                <p>Invalid username and password.</p>
-            </div>
-        </c:if>
-        <c:if test="${param.logout != null}">                       
-            <div class="alert alert-success notice-login-page">
-                <p style="margin-left: auto; margin-right: auto">You have been logged out successfully.</p>
-            </div>
-        </c:if>
-        </div>
-    </div>
     <c:url var="loginUrl" value="/login" />
     <form action="${loginUrl}" method="post">
-        <input type="text" id="username" name="ssoId" placeholder="Enter Username" required class="input-txt">
+        <div class="row row-notice-login-status">
+            <div class="col-lg-10 center-elements">
+            <c:if test="${param.error != null}">
+                <div class="alert alert-danger notice-login-page">
+                    <p>Invalid username and password.</p>
+                </div>
+            </c:if>
+            <c:if test="${param.logout != null}">
+                <div class="alert alert-success notice-login-page">
+                    <p style="margin-left: auto; margin-right: auto">You have been logged out successfully.</p>
+                </div>
+            </c:if>
+            </div>
+        </div>
+        
+        <input type="text" id="username" name="user_name" placeholder="Enter Username" required class="input-txt">
         <input type="password" id="password" name="password" placeholder="Enter Password" required class="input-txt">
 
         <input type="hidden" name="${_csrf.parameterName}"  value="${_csrf.token}" />

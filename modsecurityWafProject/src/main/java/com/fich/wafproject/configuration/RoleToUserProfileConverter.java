@@ -13,11 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
  
-import com.fich.wafproject.model.UserProfile;
+import com.fich.wafproject.model.UserProfiles;
 import com.fich.wafproject.service.UserProfileService;
  
 @Component
-public class RoleToUserProfileConverter implements Converter<Object, UserProfile>{
+public class RoleToUserProfileConverter implements Converter<Object, UserProfiles>{
  
     @Autowired
     UserProfileService userProfileService;
@@ -26,10 +26,10 @@ public class RoleToUserProfileConverter implements Converter<Object, UserProfile
      * Gets UserProfile by Id
      * @see org.springframework.core.convert.converter.Converter#convert(java.lang.Object)
      */
-    public UserProfile convert(Object element) {
-        Integer id = Integer.parseInt((String)element);
-        UserProfile profile= userProfileService.findById(id);
-        System.out.println("Profile (aca escribo yo) : "+profile);
+    public UserProfiles convert(Object element) {
+//        Integer id = Integer.parseInt((String)element);
+        Long id = Long.parseLong((String)element);
+        UserProfiles profile= userProfileService.findById(id);
         return profile;
     }
      

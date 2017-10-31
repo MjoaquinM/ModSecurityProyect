@@ -3,53 +3,51 @@
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
                 <li>
-                    <a href="<c:url value="/admin" />"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i> Dashboard</a>
+                    <a href="<c:url value="/admin" />"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i>Dashboard</a>
                 </li>
-                
+                <li>
+                    <a href="#"><i class="fa fa-users fa-fw" aria-hidden="true"></i>Users Administration</a>
+                </li>
                 <li class="active">
-                    <i class="fa fa-bar-chart-o fa-fw"></i>Users Administration<span class="fa arrow"></span>
                     <ul class="nav nav-second-level">
-                        <li> 
-                            <a href="<c:url value="/listUsers" />">User List</a>
+                        <li>
+                            <a href="<c:url value="/users/list" />">User List</a>
                         </li>
                         <li>
-                            <a href="<c:url value="/historyUsers" />">User History</a>
-                        </li>
-                        <li>
-                            <a href="<c:url value="/chronHistoryUsers" />">Chronological History (que sería esto?)</a>
+                            <a href="<c:url value="/users/history" />">User History</a>
                         </li>
                     </ul>
                     <!-- /.nav-second-level -->
                 </li>
+                <li>
+                    <a><i class="fa fa-file fa-fw" aria-hidden="true"></i>Manage Files Configuration</a>
+                </li>
                 <li class="active">
-                    <i class="fa fa-bar-chart-o fa-fw"></i>Manage Files Configuration<span class="fa arrow"></span>
                     <ul class="nav nav-third-level collapse in" aria-expanded="true" style="">
                         <li>
-                            <a href="<c:url value="/modSecConf" />">ModSecurity</a>
+                            <a href="<c:url value="/configurationFiles/list" />">Files Configuration List</a>
                         </li>
+                        <c:forEach items="${configFiles}" var="configFile">
+                            <li>
+                                <a href="<c:url value="/configurationFiles/confFileTemp?currentFile=${configFile.name}" />">${configFile.name}</a>
+                            </li>
+                        </c:forEach>
                         <li>
-                            <a href="<c:url value="/modSecLogCollectorConf" />">ModSecurity Log Collector</a>
-                        </li>
-                        <li>
-                            <a href="<c:url value="/coreRuleSetConf" />">Core Rule Set</a>
-                        </li>
-                        <li>
-                            <a href="<c:url value="/rulesConf" />">Rules</a>
+                            <a href="<c:url value="/configurationFiles/rulesManagement" />">Manage Rules</a>
                         </li>
                     </ul>
                     <!-- /.nav-third-level -->
                 </li>
+                <li>
+                    <a href="#"><i class="fa fa-eye fa-fw" aria-hidden="true"></i>Monitoring</a>
+                </li>
                 <li class="active">
-                    <i class="fa fa-bar-chart-o fa-fw"></i>Monitoring<span class="fa arrow"></span>
                     <ul class="nav nav-third-level collapse in" aria-expanded="true" style="">
                         <li>
-                            <a href="<c:url value="/charts" />">Statistical Charts</a>
+                            <a href="<c:url value="/control/charts" />">Statistical Charts</a>
                         </li>
                         <li>
-                            <a href="<c:url value="/reports" />">Generate Report</a>
-                        </li>
-                        <li>
-                            <a href="<c:url value="/events" />">List Events</a>
+                            <a href="<c:url value="/control/eventList" />">List Events</a>
                         </li>
                     </ul>
                     <!-- /.nav-third-level -->

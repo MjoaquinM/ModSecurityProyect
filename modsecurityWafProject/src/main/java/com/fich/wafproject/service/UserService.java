@@ -10,17 +10,23 @@ package com.fich.wafproject.service;
  * @author r3ng0
  */
  
-import com.fich.wafproject.model.User;
+import com.fich.wafproject.model.Users;
 import java.util.List;
  
 public interface UserService {
  
-    void save(User user);
-     
-    User findById(int id);
-     
-    User findBySso(String sso);
+    void save(Users user);
     
-    List<User> findAll();
+    void update(Users user);
+    
+    void delete(Long id);
+     
+    Users findById(Long id);
+     
+    Users findByUserName(String user_name);
+    
+    List<Users> findAll();
+    
+    public List<Users> findAll(int pageNumber, String[] targets, String[] names, String[] values, boolean pagination);
      
 }

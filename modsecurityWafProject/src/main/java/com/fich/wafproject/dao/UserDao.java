@@ -9,17 +9,23 @@ package com.fich.wafproject.dao;
  *
  * @author r3ng0
  */
-import com.fich.wafproject.model.User;
+import com.fich.wafproject.model.Users;
 import java.util.List;
  
 public interface UserDao {
  
-    void save(User user);
+    void save(Users user);
      
-    User findById(int id);
+    Users findById(Long id);
      
-    User findBySSO(String sso);
+    Users findByUserName(String user_name);
     
-    List<User> findAll();
-     
+    List<Users> findAll();
+    
+    List<Users> findAll(int pageNumber, String[] targets, String[] names, String[] values, boolean pagination);
+            
+    void update(Users user);
+    
+    void delete(Long user);
+         
 }

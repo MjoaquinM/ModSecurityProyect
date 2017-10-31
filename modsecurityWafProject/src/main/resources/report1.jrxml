@@ -1,0 +1,727 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="14874671-00d2-4654-8e20-f9856528c156">
+	<property name="ireport.zoom" value="1.6105100000000139"/>
+	<property name="ireport.x" value="172"/>
+	<property name="ireport.y" value="1108"/>
+	<style name="Title" fontName="Monospaced" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Monospaced" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Monospaced" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Monospaced" fontSize="12"/>
+	<subDataset name="dataset1" uuid="06bf04b9-5d91-46d2-9d55-df4108715b53">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.Number"/>
+	</subDataset>
+	<subDataset name="dataset2" uuid="f4b857a6-cb26-458c-bcc3-a9bd631b606f">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.Number"/>
+	</subDataset>
+	<subDataset name="dataset3" uuid="d09e90be-4b5c-49a7-86f0-34dfbec79bea">
+		<field name="dateEvent" class="java.lang.String"/>
+		<field name="clientIp" class="java.lang.String"/>
+		<field name="method" class="java.lang.String"/>
+		<field name="destinationPage" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list941" uuid="f6f45f8f-f13f-4841-adaa-743b01faeb5b">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list910" uuid="99a78573-5fc3-4ba3-bf08-d6f7064f110d">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list911" uuid="eee8f026-f508-42a6-8856-50b6f6081a89">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list912" uuid="225fd66c-fc5e-4538-95fc-d3ad387adc10">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list913" uuid="1efef9e1-c70f-4cd3-af8d-2820ede3a89c">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list920" uuid="1f6bde77-5759-4613-bf66-0eef55008f00">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list921" uuid="e3329f56-6e72-4d34-8173-ba2bec86e978">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list930" uuid="e6411315-179e-4f0e-905c-2680a2f35285">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list931" uuid="870982b3-9b84-46f2-88b2-592cee7dbdd6">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list932" uuid="5db5b193-b2c3-4cc3-b478-d05f30985897">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list933" uuid="c4be1d43-0393-4405-b4c9-0a0d0d873f8a">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list942" uuid="d5a7ad0f-379b-4f8d-8d79-0e0800e73e3d">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list943" uuid="f8dbd374-9548-4e97-b87a-0c60648e4a21">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list950" uuid="37f40a9b-312f-44c2-a286-dd7b91f72b00">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list951" uuid="368772f6-2246-4fae-a57e-c58f8b898a06">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list952" uuid="d791904a-81c7-4412-86f5-0b6845bcafc3">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list953" uuid="6fc5b7b5-627a-4538-bb79-fe60639dd2ee">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="list954" uuid="3aeea40a-3c74-48a5-852c-438f460ad67d">
+		<field name="campo" class="java.lang.String"/>
+		<field name="valor" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="listFileNumber" class="java.util.List" isForPrompting="false"/>
+	<parameter name="listDateNumber" class="java.util.List" isForPrompting="false"/>
+	<parameter name="events" class="java.util.List" isForPrompting="false"/>
+	<parameter name="dateEventFrom" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="clientIp" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="clientPort" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="dateEventTo" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="serverIp" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="serverPort" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="list905" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list910" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list911" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list912" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list913" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list920" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list921" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list930" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list931" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list932" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list933" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list941" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list942" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list943" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list950" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list951" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list952" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list953" class="java.util.List" isForPrompting="false"/>
+	<parameter name="list954" class="java.util.List" isForPrompting="false"/>
+	<field name="dateEvent" class="java.lang.String"/>
+	<field name="destinationPage" class="java.lang.String"/>
+	<field name="clientIp" class="java.lang.String"/>
+	<field name="method" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="728" splitType="Stretch">
+			<staticText>
+				<reportElement style="Title" x="102" y="226" width="351" height="33" uuid="1876b419-55a7-4556-9609-d7f181828ad2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Monospaced"/>
+				</textElement>
+				<text><![CDATA[Reporte de ModSecurity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="179" y="270" width="196" height="22" uuid="d766fa4d-93a6-4cd2-a615-5edada10b4bf"/>
+				<textElement>
+					<font fontName="Monospaced"/>
+				</textElement>
+				<text><![CDATA[Módulo Estadístico]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="364" y="458" width="186" height="20" uuid="765b5d0d-ff46-4f59-9f96-d9cdf9ee1f48"/>
+				<textElement>
+					<font fontName="Monospaced" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dateEventTo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="264" y="498" width="100" height="20" uuid="4a686125-25dc-435c-9f20-39972d7502cc"/>
+				<textElement>
+					<font fontName="Monospaced"/>
+				</textElement>
+				<text><![CDATA[Puerto servidor:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="124" y="478" width="140" height="20" uuid="1037b0c9-c350-49a8-a387-092cd3a51e07"/>
+				<textElement>
+					<font fontName="Monospaced" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{clientIp}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="498" width="100" height="20" uuid="8c1f8d9c-9d2d-42ef-9d58-820d8f4dcc38"/>
+				<textElement>
+					<font fontName="Monospaced"/>
+				</textElement>
+				<text><![CDATA[Puerto cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="264" y="478" width="100" height="20" uuid="bf7a48c3-94b9-434b-9d3a-dbaf7385e246"/>
+				<textElement>
+					<font fontName="Monospaced"/>
+				</textElement>
+				<text><![CDATA[IP servidor:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="478" width="100" height="20" uuid="88c2b054-4ca9-498d-8951-f5de4bf0d3cc"/>
+				<textElement>
+					<font fontName="Monospaced"/>
+				</textElement>
+				<text><![CDATA[IP cliente:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="124" y="458" width="140" height="20" uuid="4ce3b145-0f87-4fbe-9b3f-5e811e071737"/>
+				<textElement>
+					<font fontName="Monospaced" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dateEventFrom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="264" y="458" width="100" height="20" uuid="f62ef0bc-c788-43f3-b819-0251b26b2834"/>
+				<textElement>
+					<font fontName="Monospaced"/>
+				</textElement>
+				<text><![CDATA[Hasta:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="364" y="478" width="186" height="20" uuid="e02ba02e-5894-44cd-98e2-b552e14029f5"/>
+				<textElement>
+					<font fontName="Monospaced" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{serverIp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="364" y="498" width="186" height="20" uuid="c2a91509-fdb1-4ace-b157-4b3484f49d09"/>
+				<textElement>
+					<font fontName="Monospaced" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{serverPort}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="458" width="100" height="20" uuid="da17ee9b-b752-4fef-afcd-2bbbd3ac5f65"/>
+				<textElement>
+					<font fontName="Monospaced"/>
+				</textElement>
+				<text><![CDATA[Desde:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="124" y="498" width="140" height="20" uuid="48e7087c-16d2-4ded-aad8-15183deb6b64"/>
+				<textElement>
+					<font fontName="Monospaced" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{clientPort}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<lastPageFooter>
+		<band height="758">
+			<staticText>
+				<reportElement x="108" y="10" width="376" height="20" uuid="4fb84999-f86e-45c7-a868-9fc15632e1b1"/>
+				<textElement>
+					<font fontName="Monospaced" size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad de eventos por cada tipo de regla]]></text>
+			</staticText>
+			<pieChart>
+				<chart>
+					<reportElement x="10" y="30" width="540" height="534" uuid="f60e545d-45fb-4c83-9d97-6acca1a1bef8"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<dataset>
+						<datasetRun subDataset="dataset1" uuid="7353da9b-a61b-4a92-b1c1-0618efc8e010">
+							<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource ($P{listFileNumber})]]></dataSourceExpression>
+						</datasetRun>
+					</dataset>
+					<keyExpression><![CDATA[$F{campo}]]></keyExpression>
+					<valueExpression><![CDATA[$F{valor}]]></valueExpression>
+					<labelExpression><![CDATA[""+$F{valor}]]></labelExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="802">
+			<componentElement>
+				<reportElement positionType="Float" x="55" y="474" width="430" height="20" uuid="73c65b08-59a7-4799-ab1c-3ea4d2ba3a2b"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list941" uuid="f481091b-38bf-468a-88b4-2c36a107bf8c">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list941})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="430">
+						<textField>
+							<reportElement positionType="Float" x="0" y="0" width="228" height="20" uuid="c053df1c-67e5-403b-bb8f-ad10f2c970af"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="240" y="0" width="166" height="20" uuid="9eb9bf4c-21dc-44f1-ac3a-e910f78a8a3f"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="55" y="458" width="307" height="16" uuid="7365ad3a-48ad-4e2e-b19a-936b99c99cb4"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[REQUEST-941-APPLICATION-ATTACK-XSS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="55" y="56" width="283" height="16" uuid="e01a2781-de11-4177-92f9-f99dd0c95d94"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[REQUEST-910-IP-REPUTATION]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="56" y="72" width="430" height="20" uuid="5229cb40-2b05-4796-8232-21a4f8dff8e8"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list910" uuid="ef772cb0-311e-4b1f-a17b-d234018bf5c6">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list910})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="430">
+						<textField>
+							<reportElement positionType="Float" x="1" y="0" width="227" height="20" uuid="f17cc0a4-0ab8-46a9-88cf-b70b6bb5fbe2"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="240" y="0" width="167" height="20" uuid="4ab13395-b3bb-4372-a644-bc2cc751c9e5"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="56" y="96" width="283" height="16" uuid="2ed839fb-e209-46dc-870a-0ac6df4bb736"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[REQUEST-911-METHOD-ENFORCEMENT]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="55" y="112" width="430" height="21" uuid="0b5101a1-c521-41df-986e-23e2ce2495eb"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list911" uuid="58fc446c-71b3-430a-ae0c-6067cd6ac60a">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list911})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="21" width="430">
+						<textField>
+							<reportElement positionType="Float" x="1" y="1" width="227" height="20" uuid="e84300cc-0a09-4898-9432-00bf7c681c5a"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="240" y="1" width="167" height="20" uuid="05c8b364-b671-4be0-a710-98530bbe7cf6"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="56" y="137" width="283" height="16" uuid="d634f410-7ea9-4542-8566-04b25379acd6"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[REQUEST-912-DOS-PROTECTION]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="55" y="153" width="430" height="20" uuid="7678d8da-2464-441c-94da-4143684ff0b5"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list912" uuid="39dd0eff-3557-4452-a01d-7c3418e60fe8">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list912})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="430">
+						<textField>
+							<reportElement positionType="Float" x="1" y="0" width="227" height="20" uuid="bec1b837-2133-4459-bac7-8dc1319d7e7e"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="240" y="0" width="167" height="20" uuid="ea1b7d21-fb6b-4e39-a43c-30d9a4d491a6"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="56" y="177" width="283" height="16" uuid="db7911d8-2f07-4079-93b7-1c0a91e35bdc"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[REQUEST-913-SCANNER-DETECTION]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="56" y="193" width="429" height="20" uuid="93b29fb9-b849-49df-adff-a941672f433b"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list913" uuid="df9be1a1-4c22-40d3-9bd7-96dce8fde89d">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list913})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="429">
+						<textField>
+							<reportElement positionType="Float" x="0" y="0" width="227" height="20" uuid="6bcbdfd1-09c6-4d26-a898-8e75c75246b4"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="239" y="0" width="167" height="20" uuid="fd262a24-29b2-451e-8416-2cdcd1b586d8"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="56" y="217" width="283" height="16" uuid="f2a34973-6917-40d4-be7d-6a1944da6c44"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[REQUEST-920-PROTOCOL-ENFORCEMENT]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="56" y="233" width="429" height="20" uuid="2fa77d6b-4cb6-421b-9bda-1e9a0f4fee52"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list920" uuid="e2ab9953-5111-4d98-9314-0a641cdce3f7">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list920})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="429">
+						<textField>
+							<reportElement positionType="Float" x="0" y="0" width="227" height="20" uuid="0de7513a-66de-46c5-86a7-220ebd0d644c"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="239" y="0" width="167" height="20" uuid="5c324518-574c-47cb-a25a-18d0d10a9b51"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="56" y="257" width="283" height="16" uuid="ec995a3b-e986-4b0a-8afd-49875a517764"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[REQUEST-921-PROTOCOL-ATACK]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="55" y="273" width="429" height="20" uuid="4f744df4-65e4-4304-9fc7-1cbb8b30ef2d"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list921" uuid="4a77bc70-7186-45da-b8da-3ab7d19ca4ef">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list921})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="429">
+						<textField>
+							<reportElement positionType="Float" x="0" y="0" width="227" height="20" uuid="08d06aaf-f3cf-4fc9-8e6d-84445df3407b"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="239" y="0" width="167" height="20" uuid="77d89160-2361-494b-a4f1-83bdfdb9f745"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="56" y="297" width="307" height="16" uuid="83af1d81-86a1-428f-9aa0-a9391c3e0b9c"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[REQUEST-930-APPLICATION-ATTACK-LFI]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="55" y="313" width="429" height="20" uuid="4d200944-6959-441b-b5f9-3c24691f5b33"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list930" uuid="bf3fd40d-b9b5-4bc1-98d5-26c066d83738">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list930})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="429">
+						<textField>
+							<reportElement positionType="Float" x="0" y="0" width="227" height="20" uuid="a5674161-bea1-4368-a78c-f7c4a2262a76"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="239" y="0" width="167" height="20" uuid="16e2e651-206f-47a9-a184-0ee077ef281c"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="337" width="307" height="16" uuid="e2dcb224-6760-4685-b4d6-f7295a7a5f27"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[REQUEST-931-APPLICATION-ATTACK-RFI]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="55" y="353" width="429" height="20" uuid="4d1a5f58-7e8b-4163-9c44-566f8aea2425"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list931" uuid="f5e4bcc7-7563-4a4f-8c7f-f6157c7b5a09">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list931})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="429">
+						<textField>
+							<reportElement positionType="Float" x="0" y="0" width="227" height="20" uuid="ce1ac68e-7e9a-4df3-b364-691639d277b1"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="239" y="0" width="167" height="20" uuid="6782650b-1e0c-4710-8ac6-9d2dab2ea772"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="56" y="377" width="307" height="16" uuid="f2978fc2-7007-4d95-8503-652f910a27b5"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[REQUEST-932-APPLICATION-ATTACK-RCE]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="57" y="393" width="427" height="21" uuid="a86a7978-4484-4404-8235-548e98fb89c9"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list932" uuid="7d243915-a8ea-4ea9-963c-d2993c1084e0">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list932})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="21" width="427">
+						<textField>
+							<reportElement positionType="Float" x="0" y="0" width="225" height="20" uuid="df0486d1-13f7-4d6d-a3cc-a94cb2db9b3b"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="237" y="0" width="167" height="20" uuid="d59724f0-cb1b-46c9-8361-f723d0a4f1c5"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="418" width="307" height="16" uuid="12a59c5a-9b4c-4d69-bccc-1d8edfc0bd30"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[REQUEST-933-APPLICATION-ATTACK-PHP]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="57" y="434" width="427" height="20" uuid="afdcadf5-72a3-4264-9eee-4d91f6c9280c"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list933" uuid="09db1a98-a9b9-4923-9d8f-9b4d26d72b39">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list933})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="427">
+						<textField>
+							<reportElement positionType="Float" x="0" y="0" width="225" height="20" uuid="eb908243-7f63-4ba9-8120-14c503c6311c"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="240" y="0" width="164" height="20" uuid="ad5465ec-4ac2-43a0-b8e3-cc3711fdf605"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="56" y="501" width="305" height="16" uuid="a1a26f1b-f06e-4488-a973-89fe9568872e"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[REQUEST-942-APPLICATION-ATTACK-SQLI]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="55" y="514" width="429" height="23" uuid="d2ee9378-4d65-4fa2-a214-7ed6c7e8b051"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list942" uuid="1bce9949-877d-4433-9fa3-748faa7df844">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list942})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="23" width="429">
+						<textField>
+							<reportElement positionType="Float" x="0" y="3" width="227" height="20" uuid="02ff6b9d-d585-466d-886b-842b1d968b85"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="239" y="3" width="168" height="20" uuid="d0636d7b-25dc-463b-ba29-0293947057f2"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="541" width="379" height="16" uuid="860d32b3-4ba8-43c5-99d5-2acc03dca937"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="55" y="557" width="429" height="20" uuid="2bbd90dc-c4ed-4c92-b951-86308b56cb64"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list943" uuid="a8038ef4-ca5c-4b84-b703-bb5bd7cad4db">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list943})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="429">
+						<textField>
+							<reportElement positionType="Float" x="0" y="0" width="227" height="20" uuid="53360706-d84d-4f51-b3a4-909c81273df0"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="239" y="0" width="167" height="20" uuid="b17f06ec-50c4-4f69-b5cc-19b10b8168a8"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="581" width="350" height="16" uuid="cc4dfb72-3320-4c78-b950-b075e37f2562"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[RESPONSE-950-DATA-LEAKAGES]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="57" y="597" width="427" height="20" uuid="1c7c440f-dbc9-4966-8673-97870a1b37a2"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list950" uuid="985c4467-0ed1-4824-8102-69808d98d13f">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list950})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="427">
+						<textField>
+							<reportElement positionType="Float" x="0" y="0" width="225" height="20" uuid="bcc72dec-12f5-4ef7-8269-152a1eb51cde"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="240" y="0" width="164" height="20" uuid="ba9caea5-dd10-451e-917d-90118ca50661"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="621" width="350" height="16" uuid="091f5815-efe3-48d7-9b3e-6711d3ded174"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[RESPONSE-951-DATA-LEAKAGES-SQL]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="57" y="637" width="427" height="20" uuid="5fc2717b-0a88-460b-8b5e-650d0a9906ec"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list951" uuid="2aca78de-49fe-4769-ab8c-b5e48e47493c">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list951})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="427">
+						<textField>
+							<reportElement positionType="Float" x="0" y="0" width="225" height="20" uuid="d67a1c3a-cf61-44fc-9433-4266b72148c6"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="240" y="0" width="164" height="20" uuid="419fa9eb-8f36-4d7c-b1e3-1fb5789fedad"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="661" width="350" height="16" uuid="08b44f2d-a7f9-4230-b99a-87039ce1bdc6"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[RESPONSE-952-DATA-LEAKAGES-JAVA]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="57" y="677" width="427" height="20" uuid="f621142a-54a4-4e23-9de7-0355b4fbd95c"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list952" uuid="55a2d43e-bf1e-4d18-9809-cd52bf72c2c3">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list952})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="427">
+						<textField>
+							<reportElement positionType="Float" x="0" y="0" width="225" height="20" uuid="c5c9499c-d22e-4525-9c5b-9f44d1f84ecf"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="240" y="0" width="164" height="20" uuid="c8e7fc79-10ea-4f2e-86b4-4f1870de2d39"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="55" y="701" width="350" height="16" uuid="dd9ee240-3aa8-451c-814e-8c68429090bb"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[RESPONSE-953-DATA-LEAKAGES-PHP]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="56" y="717" width="428" height="20" uuid="941dfdb5-4b01-4ec7-bda1-43bfcaf85952"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list953" uuid="f5db1351-d314-4f6d-8d8f-8064e493c18a">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list953})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="428">
+						<textField>
+							<reportElement positionType="Float" x="1" y="0" width="225" height="20" uuid="f23b4156-f85a-496c-9b6c-d7563c8c7fe3"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="239" y="0" width="166" height="20" uuid="dbd75d2e-de97-4e8d-9b51-65746b0658d3"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement positionType="Float" x="57" y="741" width="350" height="16" uuid="520f114f-ee32-4747-986d-b461c7dd032b"/>
+				<textElement>
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[RESPONSE-954-DATA-LEAKAGES-IIS]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement positionType="Float" x="55" y="757" width="429" height="20" uuid="01a6c5a0-3019-43b9-a4cd-0c3fcf55f79f"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="list954" uuid="ea44af0d-333b-4087-8f97-224c9e86746c">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{list954})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="20" width="429">
+						<textField>
+							<reportElement positionType="Float" x="2" y="0" width="225" height="20" uuid="277f40ba-74d1-4eca-93ea-6704efa5df8d"/>
+							<textFieldExpression><![CDATA[$F{campo}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement positionType="Float" x="240" y="0" width="166" height="20" uuid="dbf13ffe-3595-4878-af00-bbdcbba82047"/>
+							<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement x="148" y="25" width="258" height="20" uuid="5fda2899-0c83-48a7-82e1-640ddcc363e7"/>
+				<textElement>
+					<font size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[INFORMACION DE SEGURIDAD]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

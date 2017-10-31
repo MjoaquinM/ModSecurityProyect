@@ -62,3 +62,95 @@ body, #mainWrapper, .form-control{
 a{
     cursor: pointer;
 }
+
+/*Attribute option form*/
+/*.options-row-header,.options-row-body{
+    display: none;
+}*/
+
+/*Side Menu*/
+.sidebar i.fa{
+    margin-right: 10px;
+}
+
+/*Configuration File form*/
+#nameRow{
+    pointer-events: none;
+}
+
+/*Rules Management*/
+.parameter-container,.blocked-container,#id-blocked-container{
+    height: 300px;
+    overflow: scroll;
+}
+
+.blocked-container{
+    min-width: 150px;
+}
+
+.action-container{
+    vertical-align: middle !important;
+    width: 165px;
+}
+
+.parameter-item:hover,.id-parameter-item:hover{
+    cursor: pointer;
+}
+
+/*Configuration files template*/
+.tmpl-page-delete-edit-group-buttons{
+    text-align: right;
+}
+.tmpl-page-group-header{
+    color: white;
+}
+td.config-file-temp-action-column{
+    min-width: 80px;
+}
+
+.cfa-state{
+    margin: 0 !important;
+}
+
+.attribute-description{
+    padding-left: 5px;
+}
+
+.popover-title,.popover-content{
+    color: black;
+}
+
+
+/*User History*/
+.user-history-description{
+    max-height: 155px;
+    overflow: auto;
+}
+
+.filter-title{
+    padding-left: 15px;
+    display: inline;
+}
+
+.table-filtered{
+    max-height: 325px;
+}
+
+/*GENERAL*/
+h1{
+    margin: 10px 0 10px 0 !important;
+}
+
+.message-status-container{
+    position: relative;
+    top: 10;
+    height: 60px;
+}
+
+.cfa-state{
+    padding:6px !important; 
+}
+
+.filters-containers>.row>div>p>input{
+    float:right;
+}

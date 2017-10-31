@@ -4,18 +4,26 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 
 <html style="background: white;">
- 
+
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        
+
         <title><tiles:getAsString name="title" /></title>
-        
+
+        <!-- Custom -->
         <link href="<c:url value='/static/css/app.css' />" rel="stylesheet"></link>
         
+        <!-- JQuery UI -->
+        <link href="<c:url value='/static/css/jquery-ui.min.css' />" rel="stylesheet"></link>
+        
+        <link href="<c:url value='/static/css/jquery-ui.structure.css' />" rel="stylesheet"></link>
+        
+        <link href="<c:url value='/static/css/jquery-ui.theme.css' />" rel="stylesheet"></link>
+
         <!-- Bootstrap Core CSS -->
         <link href="<c:url value='/static/css/bootstrap.min.css' />"  rel="stylesheet"></link>
 
@@ -30,29 +38,47 @@
 
         <!-- Custom Fonts -->
         <link href="<c:url value='/static/css/font-awesome.min.css' />" rel="stylesheet"></link>
-        
+
     </head>
-  
+
     <body style="background: #f8f8f8;">
         <div id="wrapper">
             <!--<header id="header">-->
-                <tiles:insertAttribute name="header" />
+            <tiles:insertAttribute name="header" />
             <!--</header>-->
 
             <!--<section id="sidemenu">-->
-                <tiles:insertAttribute name="menu" />
+            <tiles:insertAttribute name="menu" />
             <!--</section>-->
 
             <!--<section id="site-content">-->
-                <tiles:insertAttribute name="body" />
+            <tiles:insertAttribute name="body" />
             <!--</section>-->
 
             <!--<footer id="footer">-->
-                <tiles:insertAttribute name="footer" />
+            <tiles:insertAttribute name="footer" />
             <!--</footer>-->
         </div>
+
+        <div id="generic-modal-container">
+            <!--<footer id="footer">-->
+            <tiles:insertAttribute name="modal" />
+            <!--</footer>-->
+        </div>
+
         <!-- jQuery -->
         <script src="<c:url value='/static/js/jquery-3.2.1.min.js' />"></script>
+        
+        <script src="<c:url value='/static/js/jquery-ui.min.js' />"></script>
+        
+        <!--Atmosphere-->
+        <script src="<c:url value='/static/js/atmosphere.js' />"></script>
+        
+        <!--Sockjs-->
+        <script src="<c:url value='/static/js/sockjs-0.3.4.js' />"></script>
+        
+        <!--Stomp-->
+        <script src="<c:url value='/static/js/stomp.js' />"></script>
         
         <!-- custom -->
         <script src="<c:url value='/static/js/index.js' />"></script>
@@ -70,6 +96,12 @@
 
         <!-- Custom Theme JavaScript -->
         <script src="<c:url value='/static/js/SBAdmin2/sb-admin-2.js' />"></script>
+
+        <!-- Validation JavaScript -->
+        <script src="<c:url value='/static/js/jquery.validate.min.js' />"></script>
         
+        <!-- Notify JavaScript -->
+        <script src="<c:url value='/static/js/bootstrap-notify.min.js' />"></script>
+
     </body>
 </html>

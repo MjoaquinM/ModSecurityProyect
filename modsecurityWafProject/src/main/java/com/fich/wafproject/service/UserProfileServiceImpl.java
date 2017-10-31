@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
  
 import com.fich.wafproject.dao.UserProfileDao;
-import com.fich.wafproject.model.UserProfile;
+import com.fich.wafproject.model.UserProfiles;
  
 @Service("userProfileService")
 @Transactional
@@ -25,15 +25,15 @@ public class UserProfileServiceImpl implements UserProfileService{
     @Autowired
     UserProfileDao dao;
      
-    public List<UserProfile> findAll() {
+    public List<UserProfiles> findAll() {
         return dao.findAll();
     }
  
-    public UserProfile findByType(String type){
+    public UserProfiles findByType(String type){
         return dao.findByType(type);
     }
  
-    public UserProfile findById(int id) {
+    public UserProfiles findById(Long id) {
         return dao.findById(id);
     }
 }

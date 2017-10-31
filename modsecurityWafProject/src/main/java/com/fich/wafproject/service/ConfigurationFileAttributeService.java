@@ -5,7 +5,7 @@
  */
 package com.fich.wafproject.service;
 
-import com.fich.wafproject.model.ConfigurationFileAttribute;
+import com.fich.wafproject.model.ConfigurationFilesAttributes;
 import java.util.List;
 
 /**
@@ -15,14 +15,22 @@ import java.util.List;
 
 public interface ConfigurationFileAttributeService {
  
-    List<ConfigurationFileAttribute> findAll();
+    List<ConfigurationFilesAttributes> findAll();
      
-    ConfigurationFileAttribute findById(int id);
+    ConfigurationFilesAttributes findById(Long id);
     
-    ConfigurationFileAttribute findByFileConfiguration(int idFc);
+    void delete(Long id);
     
-    void save(ConfigurationFileAttribute cfa);
+    void deleteByEntity(ConfigurationFilesAttributes cfa);
     
-    ConfigurationFileAttribute findByName(String name);
+    void save(ConfigurationFilesAttributes cfa);
+    
+    void update(ConfigurationFilesAttributes cfa);
+    
+    ConfigurationFilesAttributes findByName(String name);
+    
+    List<ConfigurationFilesAttributes> findByFileConfigurationGroup(Long idFcg);
+    
+    public List<ConfigurationFilesAttributes> findByFileConfiguration(Long id);
     
 }
