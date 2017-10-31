@@ -110,48 +110,22 @@ public class EventsLogController {
 
     private static List<MessageData> ALERTS = new ArrayList<MessageData>();// AlertMessages();
     
-//    private sortHashMapJasper(HashMap<String, Number> map){
-//        
-//    }
-    private static LinkedHashMap<String, Integer> sortHashMapJasper(HashMap<String, Integer> originalHashMap) {
-        //ordena por keys
-//        LinkedHashMap<String, Number> sortedHashMapByKeys = new LinkedHashMap<>(); //maintains the order of putting
-//        TreeMap<String, Number> originalTreeMap = new TreeMap<>(originalHashMap); //sorts based on keys
-//        for (Map.Entry<String, Number> map: originalTreeMap.entrySet()) {
-//            sortedHashMapByKeys.put(map.getKey(), map.getValue());
-//        }
-        
-        //al ordenamiento anterior lo pone con valor,clave
-        LinkedHashMap<Integer, String> reversedOfSortedLinkedHashMap = new LinkedHashMap<>();
-        for (Map.Entry<String, Integer> map: originalHashMap.entrySet()) {
-            reversedOfSortedLinkedHashMap.put(map.getValue(), map.getKey());
-        }
-        
-        
-        LinkedHashMap<String, Integer> finalMap = new LinkedHashMap<>();
-        TreeMap<Integer, String> treeMapOfReversedOfSortedLinkedHashMap = new TreeMap<>(reversedOfSortedLinkedHashMap);
-        for (Map.Entry<Integer, String> map: treeMapOfReversedOfSortedLinkedHashMap.entrySet()) {
-            finalMap.put(map.getValue(), map.getKey()); //sort and swap
-        }
-        return finalMap;
-    }
-    
-    public static <K, V extends Comparable<? super V>> HashMap<K, V> 
-        sortByValue(HashMap<K, V> map) {
-        List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(map.entrySet());
-        Collections.sort( list, new Comparator<Map.Entry<K, V>>() {
-            public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
-                return (o1.getValue()).compareTo( o2.getValue() );
+    List<JasperCharts> getListFromHashMap(HashMap<String, Integer> map){
+        List<JasperCharts> list = new ArrayList<>();
+        int count = 0;
+        while (count < 1000 && !map.isEmpty()) {
+            Map.Entry<String, Integer> maxEntry = null;
+            for (Map.Entry<String, Integer> entry : map.entrySet()) {
+                if (maxEntry == null || entry.getValue() > maxEntry.getValue()) {
+                    maxEntry = entry;
+                }
             }
-        });
-
-        HashMap<K, V> result = new LinkedHashMap<K, V>();
-        for (Map.Entry<K, V> entry : list) {
-            result.put(entry.getKey(), entry.getValue());
+            list.add(new JasperCharts(maxEntry.getKey(), maxEntry.getValue()));
+            map.remove(maxEntry.getKey());
+            count++;
         }
-        return result;
+        return list;
     }
-    
     
     @RequestMapping(value = "/control/jrreport", method = RequestMethod.GET)
     public ResponseEntity<byte[]> printWelcome(ModelMap model, HttpServletRequest request) throws JRException, FileNotFoundException, IOException {
@@ -252,8 +226,8 @@ public class EventsLogController {
         List<JasperCharts> list931 = new ArrayList();
         List<JasperCharts> list932 = new ArrayList();
         List<JasperCharts> list933 = new ArrayList();
-        List<JasperCharts> list941 = new ArrayList();
-        List<JasperCharts> list942 = new ArrayList();
+        List<JasperCharts> list941 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
+        List<JasperCharts> list942 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
         List<JasperCharts> list943 = new ArrayList();
         List<JasperCharts> list950 = new ArrayList();
         List<JasperCharts> list951 = new ArrayList();
@@ -319,15 +293,15 @@ public class EventsLogController {
 //            }
 //        }else{list913.add(new JasperCharts("No se registraron ataques", 0));}
         
-        file = fileService.findByFileName("REQUEST-920-PROTOCOL-ENFORCEMENT");
-        auxMap = (HashMap<String, Integer>) fileMap.get(file);
-        if (auxMap != null) {
-//            auxMap = this.sortHashMapJasper(auxMap);
-            auxMap = this.sortByValue(auxMap);
-            for (Map.Entry<String, Integer> entry : auxMap.entrySet()) {
-                list920.add(new JasperCharts(entry.getKey(), entry.getValue()));
-            }
-        }else{list920.add(new JasperCharts("No se registraron ataques", 0));}
+//        file = fileService.findByFileName("REQUEST-920-PROTOCOL-ENFORCEMENT");
+//        auxMap = (HashMap<String, Integer>) fileMap.get(file);
+//        if (auxMap != null) {
+////            auxMap = this.sortHashMapJasper(auxMap);
+//            auxMap = this.sortByValue(auxMap);
+//            for (Map.Entry<String, Integer> entry : auxMap.entrySet()) {
+//                list920.add(new JasperCharts(entry.getKey(), entry.getValue()));
+//            }
+//        }else{list920.add(new JasperCharts("No se registraron ataques", 0));}
         
 //        file = fileService.findByFileName("REQUEST-921-PROTOCOL-ATTACK");
 //        auxMap = (HashMap<String, Number>) fileMap.get(file);
@@ -371,14 +345,16 @@ public class EventsLogController {
 //                list941.add(new JasperCharts(entry.getKey(), entry.getValue()));
 //            }
 //        }else{list941.add(new JasperCharts("No se registraron ataques", 0));}
-//        file = fileService.findByFileName("REQUEST-942-APPLICATION-ATTACK-SQLI");
-//        auxMap = (HashMap<String, Number>) fileMap.get(file);
+        file = fileService.findByFileName("REQUEST-942-APPLICATION-ATTACK-SQLI");
+        auxMap = (HashMap<String, Integer>) fileMap.get(file);
 //        if (auxMap != null) {
-//            auxMap = this.sortHashMapJasper(auxMap);
-//            for (Map.Entry<String, Number> entry : auxMap.entrySet()) {
-//                list942.add(new JasperCharts(entry.getKey(), entry.getValue()));
-//            }
+////            auxMap = this.sortHashMapJasper(auxMap);
+////            for (Map.Entry<String, Integer> entry : auxMap.entrySet()) {
+////                list942.add(new JasperCharts(entry.getKey(), entry.getValue()));
+////            }
+//            list942 = this.getListFromHashMap(auxMap);
 //        }else{list942.add(new JasperCharts("No se registraron ataques", 0));}
+        list942 = (auxMap == null) ? list942 : this.getListFromHashMap(auxMap);
 //        file = fileService.findByFileName("REQUEST-943-APPLICATION-ATTACK-SESSION-FIXATION");
 //        auxMap = (HashMap<String, Number>) fileMap.get(file);
 //        if (auxMap != null) {
