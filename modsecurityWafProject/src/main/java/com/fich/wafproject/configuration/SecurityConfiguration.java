@@ -56,7 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests()
-        .antMatchers("/admin-test","/EventList","/jasperHTML","/jasperPDF","/jasperXLS","/put").permitAll()
+        .antMatchers("/put").permitAll()
         .antMatchers("/", "/home","/admin","/control/**","/configurationFiles/**","/users").access("hasRole('USER') or hasRole('ADMIN') or hasRole('DBA')")       
         .antMatchers("/users/list").access("hasRole('ADMIN')")
         .antMatchers("/ascync").permitAll()
