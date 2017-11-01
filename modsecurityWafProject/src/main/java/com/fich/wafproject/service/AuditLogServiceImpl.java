@@ -3,8 +3,6 @@ package com.fich.wafproject.service;
 
 import com.fich.wafproject.dao.EventDao;
 import com.fich.wafproject.model.Event;
-import com.fich.wafproject.model.File;
-import com.fich.wafproject.model.Rule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

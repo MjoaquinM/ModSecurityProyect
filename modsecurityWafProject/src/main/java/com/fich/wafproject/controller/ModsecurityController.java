@@ -5,47 +5,36 @@
  */
 package com.fich.wafproject.controller;
 
-import com.fich.wafproject.model.ConfigurationFileAttributeGroups;
 import com.fich.wafproject.model.ConfigurationFiles;
 import com.fich.wafproject.model.ConfigurationFilesAttributes;
 import java.util.List;
  
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
  
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
  
 import com.fich.wafproject.model.Users;
-import com.fich.wafproject.model.UserProfiles;
 import com.fich.wafproject.model.UsersHistory;
 import com.fich.wafproject.service.ConfigurationFileAttributeService;
 import com.fich.wafproject.service.ConfigurationFileService;
 import com.fich.wafproject.service.UserService;
 import com.fich.wafproject.service.UsersHistoryService;
-import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 //import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
