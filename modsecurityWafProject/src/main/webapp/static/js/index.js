@@ -752,6 +752,7 @@ $(document).ready(function () {
     }
 
     function showMessageOutput(messageOutput) {
+        console.log("ESTA EN EL SHOW MESSAGE OUTPUT");
         if(messageOutput.length > 0){
             (flagLog == true) ? console.log("RECEIVED") : console.log("");
             (flagLog == true) ? console.log(messageOutput) : console.log("");

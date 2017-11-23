@@ -149,7 +149,7 @@
             </div>
                         
             <div class="btn-group">
-                <button type="button" class="btn btn-primary user-history-filter-btn" value="${pageNumber-1}">Previus</button>
+                <button type="button" class="btn btn-primary user-history-filter-btn" value="${pageNumber-1}">Previous</button>
                 <button type="button" class="btn btn-primary user-history-filter-btn" value="${pageNumber}">${pageNumber}</button>
                 <button type="button" class="btn btn-primary user-history-filter-btn" value="${pageNumber+1}">Next</button>
             </div>

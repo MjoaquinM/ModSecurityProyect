@@ -132,7 +132,7 @@
                         <tr>
                             <td colspan="5">
                                 <div class="btn-group">
-                                    <button ${fn:length(users)==0 || pageNumber==1 ? "disabled='true'" : ""} type="button" class="btn btn-primary user-filter-btn" value="${pageNumber-1}">Previus</button>
+                                    <button ${fn:length(users)==0 || pageNumber==1 ? "disabled='true'" : ""} type="button" class="btn btn-primary user-filter-btn" value="${pageNumber-1}">Previous</button>
                                     <button type="button" class="btn btn-primary user-filter-btn" value="${pageNumber}">${pageNumber}</button>
                                     <button type="button" class="btn btn-primary user-filter-btn" value="${pageNumber+1}">Next</button>
                                 </div>

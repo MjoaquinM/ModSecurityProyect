@@ -28,7 +28,7 @@
             <form method="GET" id="event-filter-form">
                 <input type="hidden" name="filterFlag"  value="true" />
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table table-responsive">
                         <thead>
                             <tr>
                                 <th colspan="2">Date</th>
@@ -137,7 +137,7 @@
                         <tr>
                             <td colspan="9">
                                 <div class="btn-group">
-                                    <button ${fn:length(lst)==0 || pageNumber==1 ? "disabled='true'" : ""} type="button" class="btn btn-primary event-filter-btn" value="${pageNumber-1}">Previus</button>
+                                    <button ${fn:length(lst)==0 || pageNumber==1 ? "disabled='true'" : ""} type="button" class="btn btn-primary event-filter-btn" value="${pageNumber-1}">Previous</button>
                                     <button ${fn:length(lst)==0 ? "disabled='true'" : ""} type="button" class="btn btn-primary event-filter-btn" value="${pageNumber}">${pageNumber}</button>
                                     <button ${fn:length(lst)==0 ? "disabled='true'" : ""} type="button" class="btn btn-primary event-filter-btn" value="${pageNumber+1}">Next</button>
                                 </div>
