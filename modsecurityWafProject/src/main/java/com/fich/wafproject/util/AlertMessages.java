@@ -6,7 +6,6 @@
 package com.fich.wafproject.util;
 
 import java.util.List;
-import com.fich.wafproject.util.MessageData;
 import java.util.ArrayList;
 
 /**

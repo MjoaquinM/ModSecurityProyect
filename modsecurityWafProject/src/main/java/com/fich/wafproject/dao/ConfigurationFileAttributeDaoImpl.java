@@ -5,7 +5,6 @@
  */
 package com.fich.wafproject.dao;
 
-import com.fich.wafproject.model.ConfigurationFileAttributeGroups;
 import com.fich.wafproject.model.ConfigurationFilesAttributes;
 import java.util.List;
 import org.hibernate.Criteria;

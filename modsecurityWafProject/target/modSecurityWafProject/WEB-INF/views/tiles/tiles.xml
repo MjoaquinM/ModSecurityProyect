@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">  
+
+<tiles-definitions>  
+  
+   <!-- Admin Layout -->
+   <definition name="admin-layout"
+       template="/WEB-INF/views/tiles/layouts/adminLayout.jsp">  
+       <put-attribute name="title" value="" />  
+       <put-attribute name="header" value="/WEB-INF/views/tiles/template/adminHeader.jsp" />  
+       <put-attribute name="menu" value="/WEB-INF/views/tiles/template/adminSideMenu.jsp" />  
+       <put-attribute name="body" value="" />
+       <put-attribute name="footer" value="/WEB-INF/views/tiles/template/adminFooter.jsp" />  
+       <put-attribute name="modal" value="" />
+   </definition>  
+   
+   <!-- Login Layout -->
+   <definition name="login-layout"
+       template="/WEB-INF/views/tiles/layouts/loginLayout.jsp">  
+       <put-attribute name="title" value="" />  
+       <put-attribute name="header" value="" />  
+       <put-attribute name="menu" value="" />  
+       <put-attribute name="body" value="" />  
+       <put-attribute name="footer" value="" />  
+   </definition>
+   
+   <!-- Admin Page -->
+   <definition name="adminHome" extends="admin-layout">  
+       <put-attribute name="title" value="admin" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/admin/index.jsp" />  
+   </definition>
+   
+   <!-- Login Page -->
+   <definition name="login" extends="login-layout">  
+       <put-attribute name="title" value="login" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/login.jsp" />  
+   </definition>
+   
+   <!-- Request Body Configuration -> Controller in Modsecurity.conf file -->
+   <definition name="reqBodyConfig" extends="admin-layout">  
+       <put-attribute name="title" value="Configuration" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/admin/modsecurity/request-body-handling.jsp" />  
+   </definition>
+   
+   <!--****************** USERS MODULE ******************-->
+   
+   <!-- Request Show Users List Page -> Controller Admin -->
+   <definition name="listUsers" extends="admin-layout">  
+       <put-attribute name="title" value="Users List" />
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/admin/users/index.jsp" />
+       <put-attribute name="modal" value="/WEB-INF/views/tiles/template/modal.jsp" />
+   </definition>
+   
+   <!-- Request add user form Page -> Controller Admin -->
+   <definition name="addUserForm" template="/WEB-INF/views/tiles/page/admin/users/addUserForm.jsp">
+   </definition>
+   
+   <!-- Request add user form Page -> Controller Admin -->
+<!--   <definition name="miValor" template="/WEB-INF/views/tiles/page/admin/users/borrame.jsp">
+   </definition>-->
+   
+   <!-- Request Show Users History Page -> Controller Admin -->
+   <definition name="historyUsers" extends="admin-layout">  
+       <put-attribute name="title" value="Users History" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/admin/users/history.jsp" />  
+   </definition>
+   
+   <!-- Request Show Users Chron History Page -> Controller Admin -->
+   <definition name="chronHistoryUsers" extends="admin-layout">  
+       <put-attribute name="title" value="Users Chronological History" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/admin/users/chronHistory.jsp" />  
+   </definition>
+   
+   <!--****************** USERS MODULE - END ******************-->
+   
+   <!--****************** FILES CONFIGURATION MODULE ******************-->
+   
+   
+   <!-- Request Files Configuration -> Controller in Modsecurity.conf file -->
+   <definition name="configurationFilesTemplate" extends="admin-layout">  
+       <put-attribute name="title" value="File Configuration" />
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/files-configuration/configurationFileTemplate.jsp" />
+       <put-attribute name="modal" value="/WEB-INF/views/tiles/template/modal.jsp" />
+   </definition>
+   
+   <!-- Request Files Configuration -> Controller in Modsecurity.conf file -->
+   <definition name="configurationFilesPage" extends="admin-layout">  
+       <put-attribute name="title" value="File Configuration" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/files-configuration/index.jsp" />
+       <put-attribute name="modal" value="/WEB-INF/views/tiles/template/modal.jsp" />
+   </definition>
+   
+   
+   <!-- Request Add Files Configuration -> Controller in Modsecurity.conf file -->
+   <definition name="addConfigurationFile" template="/WEB-INF/views/tiles/page/files-configuration/addFileConfiguration.jsp">
+   </definition>
+   
+   <!-- Request Show File Configuration Attributes -> Controller in Modsecurity.conf file -->
+   <definition name="showFileConfigurationAttributes" template="/WEB-INF/views/tiles/page/admin/files-configuration/showFileConfigurationParametter.jsp">
+   </definition>
+   
+   <!-- Request add configuration file form Page -> Controller Admin -->
+   <definition name="addConfigurationFileForm" template="/WEB-INF/views/tiles/page/files-configuration/addFileConfiguration.jsp">
+   </definition>
+   
+   <!-- Request add configuration file attribute group form -> Controller Admin -->
+   <definition name="addFileConfigurationAttrGroupForm" template="/WEB-INF/views/tiles/page/files-configuration/fileConfigurationAttrGroupForm.jsp">
+   </definition>
+   
+   <!-- Request add configuration file attribute form -> Controller Admin -->
+   <definition name="addFileConfigurationAttrForm" template="/WEB-INF/views/tiles/page/files-configuration/fileConfigurationAttrForm.jsp">
+   </definition>
+   
+   <!-- Request Show Modsecurity Parameters Configuration File Page -> Controller Admin -->
+   <definition name="modSecConf" extends="admin-layout">  
+       <put-attribute name="title" value="ModSecurity Configuration" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/files-configuration/modsecurityConf.jsp" />
+   </definition>
+   
+   <!-- Request Show Modsecurity Log Collector Parameters Configuration File Page -> Controller Admin -->
+   <definition name="modSecLogCollectorConf" extends="admin-layout">  
+       <put-attribute name="title" value="MLogC Configuration" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/files-configuration/modsecurityLogCollectorConf.jsp" />  
+   </definition>
+   
+   <!-- Request Show Modsecurity Core Rule Set Configuration File Page -> Controller Admin -->
+   <definition name="coreRuleSetConf" extends="admin-layout">  
+       <put-attribute name="title" value="CRS Configuration" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/files-configuration/coreRuleSetConf.jsp" />  
+   </definition>
+   
+   <!-- Request Show Rules Parameters Configuration File Page -> Controller Admin -->
+   <definition name="rulesConf" extends="admin-layout">  
+       <put-attribute name="title" value="Rules Configuration" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/files-configuration/rulesConfiguration.jsp" />  
+   </definition>
+   
+   <!--****************** FILES CONFIGURATION MODULE - END ******************-->
+   
+   <!--****************** CONTROL PANEL MODULE ******************-->
+   
+   <!-- Request Show Charts Main Page -> Controller Admin -->
+   <definition name="charts" extends="admin-layout">  
+       <put-attribute name="title" value="Charts" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/controll-panel/charts.jsp" />
+   </definition>
+   
+   <!-- Request Show Reports Main Page -> Controller Admin -->
+   <definition name="reports" extends="admin-layout">  
+       <put-attribute name="title" value="Reports" />  
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/controll-panel/reports.jsp" />  
+   </definition>
+   
+    <!-- Request Show Reports Main Page -> Controller Admin -->
+   <definition name="eventsList" extends="admin-layout">  
+       <put-attribute name="title" value="Events" />
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/controll-panel/events.jsp" />
+       <put-attribute name="modal" value="/WEB-INF/views/tiles/template/modal.jsp" />  
+   </definition>
+   
+   <!-- Show Event Details On Modal -->
+   <definition name="eventDetailsForm" template="/WEB-INF/views/tiles/page/events/eventDetailsForm.jsp">
+   </definition>
+   
+   <!-- Show Event Details Page -->
+   <definition name="eventDetailsFormPage" extends="admin-layout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/page/events/eventDetailsForm.jsp" />
+   </definition>
+   
+   <!--****************** CONTROL PANEL MODULE - END ******************-->
+       
+   <!--****************** REDIRECT PAGE ERROR - END ******************-->
+   <definition name="accessDenied" template="/WEB-INF/views/tiles/page/accessDenied.jsp">
+   </definition>
+   <!--****************** REDIRECT PAGE ERROR - END ******************-->
+   
+   <!--BORRAMEEEEEEEEEEE--> 
+   <definition name="newuser" template="/WEB-INF/views/tiles/page/newuser.jsp">
+   </definition>
+   
+   <definition name="aux" template="/WEB-INF/views/tiles/page/borrame.jsp"></definition>
+     
+</tiles-definitions>

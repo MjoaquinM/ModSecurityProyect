@@ -11,7 +11,6 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import static org.hibernate.id.PersistentIdentifierGenerator.PK;
 import org.springframework.stereotype.Repository;
 
 /**
