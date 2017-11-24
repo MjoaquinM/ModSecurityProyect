@@ -100,7 +100,7 @@
         </div>
         <div class="panel-body">
             <div class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped vertical-middle-table">
                     <thead>
                         <tr>
                             <th>User Name</th>
@@ -108,6 +108,7 @@
                             <th>Last Name</th>
                             <th>Email</th>
                             <th>State</th>
+                            <th>Roles</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -120,6 +121,13 @@
                             <td> ${user.email}</td>
                             <td> ${user.userStates.name}</td>
                             <td>
+                                <ul>
+                                <c:forEach items="${user.profiles}" var="profile">
+                                    <li>${profile.type}</li>
+                                </c:forEach>
+                                </ul>
+                            </td>
+                            <td>
                                 <a href="#" class="btn btn-success" id="edit-user-button" data-action="edit" data-id="${user.id}">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                 </a>
@@ -130,7 +138,7 @@
                         </tr>
                         </c:forEach>
                         <tr>
-                            <td colspan="5">
+                            <td colspan="6">
                                 <div class="btn-group">
                                     <button ${fn:length(users)==0 || pageNumber==1 ? "disabled='true'" : ""} type="button" class="btn btn-primary user-filter-btn" value="${pageNumber-1}">Previous</button>
                                     <button type="button" class="btn btn-primary user-filter-btn" value="${pageNumber}">${pageNumber}</button>

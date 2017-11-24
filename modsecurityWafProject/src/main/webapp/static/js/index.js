@@ -840,4 +840,11 @@ $(document).ready(function () {
     }
 
 /************************ALERT ATTACK END****************************/
+
+/************************ GENERAL ****************************/
+//    $('.title-on-mouse-over').mouseover(function(){
+//        console.log($(this).find('.text-container').text());
+//    });
+/************************ GENERAL END ****************************/
+
 });

@@ -2,6 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page isELIgnored="false" %>
 
 <div id="page-wrapper">
@@ -149,7 +150,7 @@
             </div>
                         
             <div class="btn-group">
-                <button type="button" class="btn btn-primary user-history-filter-btn" value="${pageNumber-1}">Previous</button>
+                <button ${fn:length(usersActions)==0 || pageNumber==1 ? "disabled='true'" : ""} type="button" class="btn btn-primary user-history-filter-btn" value="${pageNumber-1}">Previous</button>
                 <button type="button" class="btn btn-primary user-history-filter-btn" value="${pageNumber}">${pageNumber}</button>
                 <button type="button" class="btn btn-primary user-history-filter-btn" value="${pageNumber+1}">Next</button>
             </div>

@@ -745,9 +745,10 @@ public class EventsLogController {
         if (pageNumber < 1) {
             pageNumber = 1;
         }
-
+        String lastPage = "false";
         List<Event> events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"), true);
         if (events.size() == 0 && pageNumber > 1) {
+            lastPage = "true";
             pageNumber = pageNumber - 1;
             events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"), true);
         }
@@ -763,9 +764,10 @@ public class EventsLogController {
                 count++;
             }
         }
-
+        System.out.println("MOSTRANDO "+lastPage+" ************************************************************************************************************************************************************************");
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
         model.addAttribute("hm", hm);
+        model.addAttribute("lastPage", lastPage);
         model.addAttribute("configFiles", configurationFilesAll);
         model.addAttribute("lst", events);
         model.addAttribute("pageNumber", pageNumber);
