@@ -509,7 +509,7 @@ $(document).ready(function () {
         $('#generic-modal-container').find('.modal-title').html(modalTitle);
         $('#generic-modal-container').find('.modal-footer').html(modalFooter);
         if (url == 'removeUser') {
-            $('#generic-modal-container').find('.modal-body').html('<p> Confirm remove selected user? </p>');
+            $('#generic-modal-container').find('.modal-body').html('<p> remove selected user? </p>');
         } else {
             $.ajax({
                 url: url,
@@ -534,6 +534,7 @@ $(document).ready(function () {
                 userName: "required",
                 firstName: "required",
                 lastName: "required",
+                email: "required",
                 password: {
                     required: true,
                     minlength: 5
@@ -543,6 +544,7 @@ $(document).ready(function () {
                 userName: "Please enter a user name",
                 firstName: "Please enter your first name",
                 lastName: "Please enter your last name",
+                email: "Please enter an email",
                 password: {
                     required: "Please enter a password",
                     minlength: "Your password must be at least 5 characters long"
