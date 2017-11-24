@@ -194,7 +194,7 @@
                                                 <c:otherwise>
                                                     <input type="text" value="${fn:replace(attr.value, "\"", "'")}" class="file-config-page-text-number-attr" >
                                                 </c:otherwise>
-                                            </c:choose>                                            
+                                            </c:choose>
                                         </c:when>
                                         <c:otherwise>
                                             Option Undefined    
