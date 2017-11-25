@@ -214,27 +214,27 @@ public class EventsLogController {
             }
         }
         
-        List<JasperCharts> list903_9001 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list903_9002 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list905 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list910 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list911 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list912 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list913 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list920 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list921 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list930 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list931 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list932 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list933 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list941 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list942 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list943 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list950 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list951 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list952 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list953 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
-        List<JasperCharts> list954 = new ArrayList(Arrays.asList(new JasperCharts("No se registraron ataques", 0)));
+        List<JasperCharts> list903_9001 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list903_9002 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list905 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list910 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list911 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list912 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list913 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list920 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list921 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list930 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list931 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list932 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list933 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list941 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list942 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list943 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list950 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list951 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list952 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list953 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
+        List<JasperCharts> list954 = new ArrayList(Arrays.asList(new JasperCharts("No events were recorded", 0)));
         
         HashMap<String, Integer> auxMap;
         Map<String, Number> auxMap1;
@@ -334,19 +334,19 @@ public class EventsLogController {
 
         Date date = new Date();
         if (n1 != null) {
-            dateEventFrom = "".equals(n1[0]) ? "Inicio de registros" : n1[0];
-            clientIp = "".equals(n1[1]) ? "Todas" : n1[1];
-            clientPort = "".equals(n1[2]) ? "Todos" : n1[2];
+            dateEventFrom = "".equals(n1[0]) ? "Start of records" : n1[0];
+            clientIp = "".equals(n1[1]) ? "All" : n1[1];
+            clientPort = "".equals(n1[2]) ? "All" : n1[2];
             dateEventTo = "".equals(n1[3]) ? date.toString() : n1[3];
-            serverIp = "".equals(n1[4]) ? "Todas" : n1[4];
-            serverPort = "".equals(n1[5]) ? "Todas" : n1[5];
+            serverIp = "".equals(n1[4]) ? "All" : n1[4];
+            serverPort = "".equals(n1[5]) ? "All" : n1[5];
         } else {
-            dateEventFrom = "Inicio de registros";
-            clientIp = "Todas";
-            clientPort = "Todos";
+            dateEventFrom = "Start of records";
+            clientIp = "All";
+            clientPort = "All";
             dateEventTo = date.toString();
-            serverIp = "Todas";
-            serverPort = "Todas";
+            serverIp = "All";
+            serverPort = "All";
         }
 
         Map<String, Object> parameters = new HashMap<String, Object>();
@@ -415,7 +415,7 @@ public class EventsLogController {
         byte[] fichero = JasperExportManager.exportReportToPdf(jasperPrint);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
-        String filename = "output";
+        String filename = "MS Report - " + date.toString();
         headers.add("Content-disposition", "inline; filename=" + filename + ".pdf");
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(fichero, headers, HttpStatus.OK);

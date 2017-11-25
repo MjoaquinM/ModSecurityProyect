@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="14874671-00d2-4654-8e20-f9856528c156">
 	<property name="ireport.zoom" value="1.6105100000000139"/>
 	<property name="ireport.x" value="172"/>
 	<property name="ireport.y" value="1108"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<style name="Title" fontName="Monospaced" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Monospaced" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Monospaced" fontSize="12" isBold="true"/>
@@ -135,14 +137,14 @@
 				<textElement verticalAlignment="Middle">
 					<font fontName="Monospaced"/>
 				</textElement>
-				<text><![CDATA[Reporte de ModSecurity]]></text>
+				<text><![CDATA[ModSecurity Report]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="SubTitle" x="179" y="270" width="196" height="22" uuid="d766fa4d-93a6-4cd2-a615-5edada10b4bf"/>
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
-				<text><![CDATA[Módulo Estadístico]]></text>
+				<text><![CDATA[Statistical Module]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="364" y="458" width="186" height="20" uuid="765b5d0d-ff46-4f59-9f96-d9cdf9ee1f48"/>
@@ -156,7 +158,7 @@
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
-				<text><![CDATA[Puerto servidor:]]></text>
+				<text><![CDATA[Server Port:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="124" y="478" width="140" height="20" uuid="1037b0c9-c350-49a8-a387-092cd3a51e07"/>
@@ -170,21 +172,21 @@
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
-				<text><![CDATA[Puerto cliente:]]></text>
+				<text><![CDATA[Cliente Port:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="264" y="478" width="100" height="20" uuid="bf7a48c3-94b9-434b-9d3a-dbaf7385e246"/>
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
-				<text><![CDATA[IP servidor:]]></text>
+				<text><![CDATA[Server IP:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="24" y="478" width="100" height="20" uuid="88c2b054-4ca9-498d-8951-f5de4bf0d3cc"/>
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
-				<text><![CDATA[IP cliente:]]></text>
+				<text><![CDATA[Source IP:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="124" y="458" width="140" height="20" uuid="4ce3b145-0f87-4fbe-9b3f-5e811e071737"/>
@@ -198,7 +200,7 @@
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
-				<text><![CDATA[Hasta:]]></text>
+				<text><![CDATA[Until:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="364" y="478" width="186" height="20" uuid="e02ba02e-5894-44cd-98e2-b552e14029f5"/>
@@ -219,7 +221,7 @@
 				<textElement>
 					<font fontName="Monospaced"/>
 				</textElement>
-				<text><![CDATA[Desde:]]></text>
+				<text><![CDATA[From:]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="124" y="498" width="140" height="20" uuid="48e7087c-16d2-4ded-aad8-15183deb6b64"/>
@@ -233,11 +235,11 @@
 	<lastPageFooter>
 		<band height="758">
 			<staticText>
-				<reportElement x="108" y="10" width="376" height="20" uuid="4fb84999-f86e-45c7-a868-9fc15632e1b1"/>
+				<reportElement x="105" y="10" width="345" height="20" uuid="4fb84999-f86e-45c7-a868-9fc15632e1b1"/>
 				<textElement>
 					<font fontName="Monospaced" size="14" isBold="true" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[Cantidad de eventos por cada tipo de regla]]></text>
+				<text><![CDATA[Number of events for each type of rule]]></text>
 			</staticText>
 			<pieChart>
 				<chart>
@@ -716,11 +718,11 @@
 				</jr:list>
 			</componentElement>
 			<staticText>
-				<reportElement x="148" y="25" width="258" height="20" uuid="5fda2899-0c83-48a7-82e1-640ddcc363e7"/>
+				<reportElement x="176" y="25" width="202" height="20" uuid="5fda2899-0c83-48a7-82e1-640ddcc363e7"/>
 				<textElement>
 					<font size="14" isBold="true" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[INFORMACION DE SEGURIDAD]]></text>
+				<text><![CDATA[SAFETY INFORMATION]]></text>
 			</staticText>
 		</band>
 	</summary>
