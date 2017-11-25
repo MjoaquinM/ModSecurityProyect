@@ -1,3 +1,4 @@
 modsecurityWafProject/target/*
 modsecurityWafProject/nb-configuration.xml
 modsecurityWafProject/src/main/resources/application.properties
+modsecurityWafProject/target/modSecurityWafProject/*

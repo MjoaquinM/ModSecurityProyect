@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.fich.wafproject.service;
 
 import com.fich.wafproject.model.ConfigurationFileAttributeType;
@@ -12,10 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fich.wafproject.dao.ConfigurationFileAttributeTypeDao;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- *
- * @author joaquin
- */
 @Service("configurationFileAttributeTypeServiceImpl")
 @Transactional
 public class ConfigurationFileAttributeTypeServiceImpl implements ConfigurationFileAttributeTypeService {

@@ -28,7 +28,7 @@
             <form method="GET" id="event-filter-form">
                 <input type="hidden" name="filterFlag"  value="true" />
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table table-responsive">
                         <thead>
                             <tr>
                                 <th colspan="2">Date</th>
@@ -112,16 +112,16 @@
                 <tbody>
                     <c:forEach items="${lst}" var="e" varStatus="i">
                         <tr>
-                            <td>${e.dateEvent}</td>
-                            <td>${e.clientIp}</td>
-                            <td>${e.clientPort}</td>
-                            <td>${e.serverIp}</td>
-                            <td>${e.serverPort}</td>
-                            <th>${e.method}</th>
-                            <th>${e.destinationPage}</th>
-                            <th>${e.protocol}</th>
-                            <td>
-                                <a class="show-event-details" data-action="showEvent" data-id="${e.transactionId}">
+                            <td><p title="${e.dateEvent}">${e.dateEvent}</p></td>
+                            <td><p title="${e.clientIp}">${e.clientIp}</p></td>
+                            <td><p title="${e.clientPort}">${e.clientPort}</p></td>
+                            <td><p title="${e.serverIp}">${e.serverIp}</p></td>
+                            <td><p title="${e.serverPort}">${e.serverPort}</p></td>
+                            <td><p title="${e.method}">${e.method}</p></td>
+                            <td><p title="${e.destinationPage}">${e.destinationPage}</p></td>
+                            <td><p title="${e.protocol}">${e.protocol}</p></td>
+                            <td class="title-on-mouse-over">
+                                <a class="show-event-details text-container" data-action="showEvent" data-id="${e.transactionId}" title="${e.transactionId}">
                                     ${e.transactionId}
                                 </a>
                             </td>
@@ -137,9 +137,9 @@
                         <tr>
                             <td colspan="9">
                                 <div class="btn-group">
-                                    <button ${fn:length(lst)==0 || pageNumber==1 ? "disabled='true'" : ""} type="button" class="btn btn-primary event-filter-btn" value="${pageNumber-1}">Previus</button>
+                                    <button ${fn:length(lst)==0 || pageNumber==1 ? "disabled='true'" : ""} type="button" class="btn btn-primary event-filter-btn" value="${pageNumber-1}">Previous</button>
                                     <button ${fn:length(lst)==0 ? "disabled='true'" : ""} type="button" class="btn btn-primary event-filter-btn" value="${pageNumber}">${pageNumber}</button>
-                                    <button ${fn:length(lst)==0 ? "disabled='true'" : ""} type="button" class="btn btn-primary event-filter-btn" value="${pageNumber+1}">Next</button>
+                                    <button ${fn:toUpperCase(lastPage)=="TRUE" ? "disabled='true'" : ""} type="button" class="btn btn-primary event-filter-btn" value="${pageNumber+1}">Next</button>
                                 </div>
                             </td>
                             <td>

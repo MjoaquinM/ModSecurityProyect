@@ -5,8 +5,6 @@
  */
 package com.fich.wafproject.util;
 
-import com.fich.wafproject.model.File;
-import com.fich.wafproject.model.Rule;
 import java.util.ArrayList;
 import java.util.List;
 

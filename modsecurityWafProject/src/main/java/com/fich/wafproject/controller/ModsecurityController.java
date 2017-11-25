@@ -5,47 +5,36 @@
  */
 package com.fich.wafproject.controller;
 
-import com.fich.wafproject.model.ConfigurationFileAttributeGroups;
 import com.fich.wafproject.model.ConfigurationFiles;
 import com.fich.wafproject.model.ConfigurationFilesAttributes;
 import java.util.List;
  
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
  
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
  
 import com.fich.wafproject.model.Users;
-import com.fich.wafproject.model.UserProfiles;
 import com.fich.wafproject.model.UsersHistory;
 import com.fich.wafproject.service.ConfigurationFileAttributeService;
 import com.fich.wafproject.service.ConfigurationFileService;
 import com.fich.wafproject.service.UserService;
 import com.fich.wafproject.service.UsersHistoryService;
-import static com.sun.corba.se.spi.presentation.rmi.StubAdapter.request;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 //import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  *
@@ -79,16 +68,23 @@ public class ModsecurityController {
         ccf=configurationFileService.findById(ccf.getId());
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
         List<ConfigurationFilesAttributes> attrs = configurationFileAttributeService.findByFileConfiguration(ccf.getId());
+        String message = "Succefully applied changes.", messageClass="success";
         try {
             String line = "";
             FileReader fr = new FileReader(ccf.getPathName());
             BufferedReader br = new BufferedReader(fr);
             java.io.File f = new java.io.File("/tmp/"+ccf.getName()); //ARGUMENT MUST BE A GOBAL VARIABLE
+            java.io.File forig = new java.io.File("/tmp/original"); //ORIGINAL FILE BEFORE APPLY CHANGES
             FileWriter w = new FileWriter(f);
+            FileWriter worig = new FileWriter(forig);
             BufferedWriter bw = new BufferedWriter(w);
+            BufferedWriter bworig = new BufferedWriter(worig);
             PrintWriter wr = new PrintWriter(bw);
+            PrintWriter wrorig = new PrintWriter(bworig);
             String msgToHistoryLog = ccf.getName()+" setup";
             while ((line = br.readLine()) != null) {
+                System.out.println(line);
+                wrorig.append(line + "\n");
                 if (!line.isEmpty()) {
                     String aux = line;
                     if (aux.indexOf(" ")>=0){
@@ -112,23 +108,15 @@ public class ModsecurityController {
                 }
                 wr.append(line + "\n");
             }
-            wr.close();
-            bw.close();
+            wr.close();wrorig.close();
+            bw.close();bworig.close();
             br.close();
             this.persistEvent(msgToHistoryLog);
-            String cmd = " pkexec sudo mv /tmp/"+ccf.getName()+" "+ccf.getPathName();//+" && /etc/init.d/apache2 reload";
-            Runtime run = Runtime.getRuntime();
-            Process pr = run.exec(cmd);
-            pr.waitFor();
-            BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-            line = "";
-            cmd = " pkexec sudo /etc/init.d/apache2 reload";
-            run = Runtime.getRuntime();
-            pr = run.exec(cmd);
-            pr.waitFor();
-            buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
-            line = "";
             
+            if (!this.applyFileConfiguration("/tmp/"+ccf.getName(), ccf.getPathName(), "/tmp/original")){
+                message = "There was errors applying the changes.";
+                messageClass = "danger";
+            }
         } catch (IOException e) {
 //            System.out.println(e);
         }
@@ -136,6 +124,8 @@ public class ModsecurityController {
         /*<Build data modal>*/
         model.addAttribute("idModal", "fileConfigurationTemplateModal");
         /*<Build data modal - end>*/
+        model.addAttribute("message", message);
+        model.addAttribute("messageClass", messageClass);
         model.addAttribute("configFiles",configurationFilesAll);
         model.addAttribute("user",getPrincipal());
         model.addAttribute("currentFile",ccf);
@@ -164,5 +154,45 @@ public class ModsecurityController {
         uh.setDateEvent(new Date());
         userHistoryService.save(uh);
         System.out.println("MSG: " + msg + " \n " + "CURRENT USER: " + currentUsr);
+    }
+    
+    //private boolean apply(ConfigurationFiles ccf,boolean original) throws IOException, InterruptedException{
+    private boolean applyFileConfiguration(String fromFile, String toFile, String orgFile) throws IOException, InterruptedException{
+        String cmd = "pkexec sudo mv "+fromFile+" "+toFile;
+        this.runCommand(cmd);
+        String cmdApacheReload = "pkexec sudo /etc/init.d/apache2 reload";
+        String output = this.runCommand(cmdApacheReload);
+        boolean ret = true;
+        if(output.indexOf("apache2.service failed!")>=0){
+            cmd = "pkexec sudo mv "+orgFile+" "+toFile;
+            this.runCommand(cmd);
+            cmd = "rm "+fromFile;
+            this.runCommand(cmd);
+            cmdApacheReload = " pkexec sudo /etc/init.d/apache2 reload";
+            runCommand(cmdApacheReload);
+            ret = false;
+        }else{
+            cmd = "rm "+orgFile;
+            this.runCommand(cmd);
+        }
+        return ret;
+    }
+    
+    private String runCommand(String cmd) throws IOException, InterruptedException{
+        String outputCommand = "";
+        Runtime run = Runtime.getRuntime();
+        Process pr = run.exec(cmd);
+        pr.waitFor();
+        BufferedReader buf = new BufferedReader(new InputStreamReader(pr.getInputStream()));
+//        String line = "";
+        String s = null;
+        System.out.println("ESCRIBIENDO");
+
+        while ((s = buf.readLine()) != null) {
+            outputCommand += " "+s;
+            System.out.println(s);
+        }
+        
+        return outputCommand;
     }
 }

@@ -1,13 +1,10 @@
 
 package com.fich.wafproject.dao;
 
-import com.fich.wafproject.model.Event;
 import com.fich.wafproject.model.Rule;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
