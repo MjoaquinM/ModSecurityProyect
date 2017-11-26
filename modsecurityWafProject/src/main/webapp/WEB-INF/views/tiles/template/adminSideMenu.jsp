@@ -28,9 +28,13 @@
                             <a href="<c:url value="/configurationFiles/list" />">Files Configuration List</a>
                         </li>
                         <c:forEach items="${configFiles}" var="configFile">
-                            <li>
-                                <a href="<c:url value="/configurationFiles/confFileTemp?currentFile=${configFile.name}" />">${configFile.name}</a>
-                            </li>
+                            <c:choose>
+                                <c:when test="${configFile.configurationFileStates.name!='NO-CONFIGURABLE'}">
+                                    <li>
+                                        <a href="<c:url value="/configurationFiles/confFileTemp?currentFile=${configFile.name}" />">${configFile.name}</a>
+                                    </li>
+                                </c:when>
+                            </c:choose>
                         </c:forEach>
                         <li>
                             <a href="<c:url value="/configurationFiles/rulesManagement" />">Manage Rules</a>

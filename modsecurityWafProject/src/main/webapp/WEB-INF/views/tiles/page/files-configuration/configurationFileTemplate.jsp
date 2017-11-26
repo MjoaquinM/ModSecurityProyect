@@ -18,7 +18,13 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
-
+    <div class="row" style="text-align:center;">
+        <button type="button" class="btn btn-lg btn-success" id="apply-configuration">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Apply Configuration
+        </button>
+    </div>
+        
     <div class="panel-body">
         <div class="table-responsive">
             <table class="table">
@@ -67,23 +73,12 @@
                     <div class="col-md-6">
                         <h3>Configuration Parameters</h3>
                     </div>
-                    <div class="col-md-2">
-                        <h5>
-                            <button type="button" class="btn btn-primary attribute-group" data-config-file-id="${currentFile.id}" data-action="add">
-                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                Add Attribute Group
-                            </button>
-                        </h5>
-                    </div>
-                    <div class="col-md-1"></div>
-                    <div class="col-md-2">
-                        <h5>
-                            <button type="button" class="btn btn-success" id="apply-configuration">
-                                <i class="fa fa-plus" aria-hidden="true"></i>
-                                Apply Configuration
-                            </button>
-                        </h5>
-                    </div>
+                </div>
+                <div class="row" style="text-align:right;padding-right: 15px;">
+                    <button type="button" class="btn btn-md btn-primary attribute-group" data-config-file-id="${currentFile.id}" data-action="add">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        Add Attribute Group
+                    </button>
                 </div>
             </div>
             <div class="panel-body">                                
@@ -105,10 +100,6 @@
                                         </h4>
                                     </div>
                                     <div class="col-md-2">
-                                        <a  style="float:right;" href="#" class="file-attribute-button btn btn-primary"  data-config-file-id="${currentFile.id}" data-config-file-attr-group-id="${group.id}" data-action="add">
-                                            <i class="fa fa-plus" aria-hidden="true"></i>
-                                            Add Attribute
-                                        </a>
                                     </div>
                                     <div class="col-md-6 tmpl-page-delete-edit-group-buttons">
                                         <button type="button" class="btn btn-success attribute-group" data-action="edit" data-config-file-group-id="${group.id}" data-config-file-id="${currentFile.id}" >
@@ -221,6 +212,14 @@
                                 </td>
                             </tr>
                         </c:forEach>
+                            <tr>
+                                <td colspan="5">
+                                    <a  style="float:right;" href="#" class="file-attribute-button btn btn-primary"  data-config-file-id="${currentFile.id}" data-config-file-attr-group-id="${group.id}" data-action="add">
+                                        <i class="fa fa-plus" aria-hidden="true"></i>
+                                        Add Attribute
+                                    </a>
+                                </td>
+                            </tr>
                     </tbody>
                 </table>
             </div>

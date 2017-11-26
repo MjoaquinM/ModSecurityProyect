@@ -57,7 +57,7 @@ $(document).ready(function () {
                 url = 'addFileConfigurationForm';
                 break;
             default:
-                modalTitle = 'Add File Configuration <buton>Choose File</buton>';
+                modalTitle = 'Add Configuration File ';
                 modalFooter = '<button type="button" class="btn btn-primary" id="addFileConfiguration">Add</button>';
                 data = {id: id};
                 url = 'addFileConfigurationForm';
@@ -180,7 +180,7 @@ $(document).ready(function () {
         var modalFooter = "";
         switch (action) {
             case 'remove':
-                modalTitle = 'Remove File Configuration Group';
+                modalTitle = 'Remove Attribute Group';
                 url = 'removeFileConfiguration';
                 modalFooter = '<button type="button" class="btn btn-primary" id="removeFileConfigurationAttGroup" data-cfId="'+configFileId+'" data-cfagId="'+configFileAttrGroupId+'" data-action="'+action+'">Delete</button>';
                 break;
@@ -198,7 +198,7 @@ $(document).ready(function () {
         $('#generic-modal-container').find('.modal-footer').html(modalFooter);
         $('#generic-modal-container').find('.modal-title').html(modalTitle);
         if (action == 'remove') {
-            $('#generic-modal-container').find('.modal-body').html('<p> Confirm remove selected configuration file attribute group? All attributes in this group will be deleted. </p>');
+            $('#generic-modal-container').find('.modal-body').html('<p> Confirm remove selected attribute group? All attributes in this group will be deleted. </p>');
         } else {
             $.ajax({
                 url: url,
@@ -260,7 +260,7 @@ $(document).ready(function () {
         var modalFooter = "";
         switch (action) {
             case 'remove':
-                modalTitle = 'Remove File Configuration Attr '+$(this).data('config-file-attr-name')+'?';
+                modalTitle = 'Remove Attribute '+$(this).data('config-file-attr-name')+'?';
                 modalFooter = '<button type="button" class="btn btn-primary" id="removeFileConfigurationAttr" data-id="'+configFileAttrId+'">Delete</button>';
                 break;
             case 'edit':
@@ -277,7 +277,7 @@ $(document).ready(function () {
         $('#generic-modal-container').find('.modal-footer').html(modalFooter);
         $('#generic-modal-container').find('.modal-title').html(modalTitle);
         if (action == 'remove') {
-            $('#generic-modal-container').find('.modal-body').html('<p> Confirm remove selected configuration file attribute? </p>');
+            $('#generic-modal-container').find('.modal-body').html('<p> Confirm remove selected attribute? </p>');
         } else {
             $.ajax({
                 url: url,

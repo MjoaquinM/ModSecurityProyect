@@ -13,7 +13,7 @@
                         <tr>
                             <td colspan="3">
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-5 control-lable" for="name">Name</label>
+                                    <label class="col-md-5 control-lable" for="name">Name (*)</label>
                                     <div class="col-md-7">
                                         <form:input type="text" path="name" id="name" class="form-control input-sm"/>
                                         <div class="has-error">
@@ -26,7 +26,7 @@
                         <tr id="value-row">
                             <td colspan="3">
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-5 control-lable" for="value">Value</label>
+                                    <label class="col-md-5 control-lable" for="value">Value (*)</label>
                                     <div class="col-md-7">
                                         <c:choose>
                                             <c:when test="${configFileAttr.configurationFileAttributeType.name == 'multiple-select' || configFileAttr.configurationFileAttributeType.name == 'single-select'}">
@@ -59,7 +59,7 @@
                         <tr>
                             <td colspan="3">
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-5 control-lable" for="state">State</label>
+                                    <label class="col-md-5 control-lable" for="state">State (*)</label>
                                     <div class="col-md-7">
                                         <form:select path="configurationFileAttributeStates.id" items="${cfaStates}" multiple="false" itemValue="id" itemLabel="name" class="form-control input-sm"/>
                                         <div class="has-error">
@@ -72,7 +72,7 @@
                         <tr class="type-row">
                             <td colspan="3">
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-5 control-lable" for="type">Type</label>
+                                    <label class="col-md-5 control-lable" for="type">Type (*)</label>
                                     <div class="col-md-7">
                                         <form:select path="configurationFileAttributeType.id" items="${cfaTypes}" multiple="false" itemValue="id" itemLabel="name" class="form-control input-sm"/>
                                         <div class="has-error">
