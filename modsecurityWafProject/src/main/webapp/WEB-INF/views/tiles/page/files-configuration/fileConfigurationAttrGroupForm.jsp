@@ -13,7 +13,7 @@
                         <tr>
                             <td>
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-5 control-lable" for="name">Name</label>
+                                    <label class="col-md-5 control-lable" for="name">Name (*)</label>
                                     <div class="col-md-7">
                                         <form:input type="text" path="name" id="name" class="form-control input-sm"/>
                                         <div class="has-error">

@@ -14,6 +14,11 @@
         </div>
         <!-- /.col-lg-12 -->
     </div>
+    <div class="row" style="text-align:center; padding-bottom: 10px;">
+        <button type="button" class="btn btn-lg btn-danger" id="apply-configuration">
+            Delete All
+        </button>
+    </div>
     <!-- /.row -->
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -94,7 +99,7 @@
     </div>
     
     <div class="row">
-        <table class="table table-striped">
+        <table class="table table-striped vertical-middle-table">
                 <thead>
                     <tr>
                         <th>Date</th>

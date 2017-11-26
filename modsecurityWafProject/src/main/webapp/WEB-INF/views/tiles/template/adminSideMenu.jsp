@@ -2,9 +2,9 @@
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
-                <li>
+<!--                <li>
                     <a href="<c:url value="/admin" />"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i>Dashboard</a>
-                </li>
+                </li>-->
                 <li>
                     <a href="#"><i class="fa fa-users fa-fw" aria-hidden="true"></i>Users Administration</a>
                 </li>
@@ -28,9 +28,13 @@
                             <a href="<c:url value="/configurationFiles/list" />">Files Configuration List</a>
                         </li>
                         <c:forEach items="${configFiles}" var="configFile">
-                            <li>
-                                <a href="<c:url value="/configurationFiles/confFileTemp?currentFile=${configFile.name}" />">${configFile.name}</a>
-                            </li>
+                            <c:choose>
+                                <c:when test="${configFile.configurationFileStates.name!='NO-CONFIGURABLE'}">
+                                    <li>
+                                        <a href="<c:url value="/configurationFiles/confFileTemp?currentFile=${configFile.name}" />">${configFile.name}</a>
+                                    </li>
+                                </c:when>
+                            </c:choose>
                         </c:forEach>
                         <li>
                             <a href="<c:url value="/configurationFiles/rulesManagement" />">Manage Rules</a>
