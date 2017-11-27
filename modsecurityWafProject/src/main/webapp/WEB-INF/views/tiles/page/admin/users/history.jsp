@@ -95,7 +95,7 @@
                                 <td colspan="5"></td>
                                 <td>
                                     <a href="<c:url value="/users/history" />" class="btn btn-primary">Reset</a>
-                                    <button type="submit" class="btn btn-md btn-success filter-submit">Apply Filter</button>
+                                    <button type="submit" class="btn btn-md btn-success filter-submit">Apply</button>
                                 </td>
                             </tr>
                         </tbody>

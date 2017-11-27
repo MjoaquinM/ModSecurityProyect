@@ -676,6 +676,7 @@ $(document).ready(function () {
                 modalMessage = '<p> Confirm delete selected event (id: '+eventId+')?</p>';
                 break;
             default:
+                alert("ELIMINAR TODOS");
                 modalTitle = 'Delete Events';
                 modalFooter = '<a href="deleteAllEvents" class="btn btn-sm btn-danger">Delete</a>';//<button type="button" class="btn btn-primary" id="deleteEvent" data-cfId="'+configFileId+'" data-cfagId="'+configFileAttrGroupId+'" data-action="'+action+'">Delete</button>';
                 modalMessage = '<p> Confirm delete all events? </p>';
@@ -721,6 +722,12 @@ $(document).ready(function () {
         });
         /*<SHOW MODAL>*/
         $('#eventModal').modal('show');
+    });
+    
+    
+    $('#delete-all-events').on('click',function(){
+        $('#event-filter-form').append('<input type="hidden" name="deleteAll" value="true" />');
+        $('#event-filter-form').submit();
     });
 
 /************************MANAGE EVENTS END****************************/

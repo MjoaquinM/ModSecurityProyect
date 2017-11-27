@@ -736,35 +736,49 @@ public class EventsLogController {
     }
 
     @RequestMapping(value = "/control/eventList", method = RequestMethod.GET)
-    public String EventList(ModelMap model,HttpServletRequest request) {
-        int pageNumber = 1;
-        if (request.getParameterMap().containsKey("pageNumber")) {
-            pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
-        }
-
-        if (pageNumber < 1) {
-            pageNumber = 1;
-        }
+    public String EventList(ModelMap model,HttpServletRequest request) {        
+        String deleteAll = "";
         String lastPage = "false";
-        List<Event> events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"), true);
-        if (events.size() == 0 && pageNumber > 1) {
-            lastPage = "true";
-            pageNumber = pageNumber - 1;
-            events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"), true);
-        }
-
-        String[] n1 = request.getParameterValues("filter-parameters-values");
-        String[] n2 = request.getParameterValues("filter-parameters-labels");
+        int pageNumber = 1;
         HashMap hm = new HashMap<String, String>();
-
-        if (n1 != null) {
-            int count = 0;
-            for (String val : n1) {
-                hm.put(n2[count], val);
-                count++;
+        if (request.getParameterMap().containsKey("deleteAll")) {
+            deleteAll = request.getParameter("deleteAll");
+        }
+        List<Event> events = new ArrayList<Event>();
+        if (deleteAll.equals("true")){
+            events = eventService.findAllEvents(1, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"), false);
+            for(Event e: events){
+                eventService.delete(e.getId());
+            }
+            String aux[] = new String[0];
+            events = eventService.findAllEvents(1, aux, aux, aux, true);
+        }else{
+            if (request.getParameterMap().containsKey("pageNumber")) {
+                pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+            }
+            if (pageNumber < 1) {
+                pageNumber = 1;
+            }
+            events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"), true);
+            if (events.size() == 0 && pageNumber > 1) {
+                lastPage = "true";
+                pageNumber = pageNumber - 1;
+                events = eventService.findAllEvents(pageNumber, request.getParameterValues("filter-parameters-targets"), request.getParameterValues("filter-parameters-names"), request.getParameterValues("filter-parameters-values"), true);
+            }
+            String[] n1 = request.getParameterValues("filter-parameters-values");
+            String[] n2 = request.getParameterValues("filter-parameters-labels");
+            if (n1 != null) {
+                int count = 0;
+                for (String val : n1) {
+                    hm.put(n2[count], val);
+                    count++;
+                }
             }
         }
-        System.out.println("MOSTRANDO "+lastPage+" ************************************************************************************************************************************************************************");
+        
+        
+        //System.out.println("MOSTRANDO "+lastPage+" ************************************************************************************************************************************************************************");
+        
         List<ConfigurationFiles> configurationFilesAll = configurationFileService.findAll();
         model.addAttribute("hm", hm);
         model.addAttribute("lastPage", lastPage);

@@ -36,13 +36,6 @@
                 <!--<input type="hidden" name="filterFlag"  value="true" />-->
                 <div class="table-responsive">
                     <table class="table">
-<!--                        <thead>
-                            <tr>
-                                <th colspan="2">Date</th>
-                                <th colspan="2">User</th>
-                                <th colspan="2">Description</th>
-                            </tr>
-                        </thead>-->
                         <tbody>
                             <tr>
                                 <td>User Name:</td>
@@ -72,19 +65,32 @@
                                     <input type="hidden" name="filter-parameters-labels" value="email" />
                                     <input type="text" name="filter-parameters-values" value="${hm.email}" />
                                 </td>
-                                <td colspan="4"></td>
+                                <td>State:</td>
+                                <td>
+                                    <input type="hidden" name="filter-parameters-targets" value="userStates.name" />
+                                    <input type="hidden" name="filter-parameters-labels" value="state" />
+                                    <input type="text" name="filter-parameters-values" value="${hm.state}" />
+                                </td>
+                                <td>Profile:</td>
+                                <td>
+                                    <input type="hidden" name="filter-parameters-targets" value="profiles.type" />
+                                    <input type="hidden" name="filter-parameters-labels" value="profiles" />
+                                    <input type="text" name="filter-parameters-values" value="${hm.profiles}" />
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="5"></td>
                                 <td>
                                     <a href="<c:url value="/users/list" />" class="btn btn-primary">Reset</a>
-                                    <button type="submit" class="btn btn-md btn-success filter-submit">Apply Filter</button>
+                                    <button type="submit" class="btn btn-md btn-success filter-submit">Apply</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <!--<input type="hidden" name="filter-parameters-names" value="user" />-->
+                <input type="hidden" name="filter-parameters-names" value="userStates" />
+                <input type="hidden" name="filter-parameters-names" value="profiles" />
                 <input type="hidden" id="pageNumber" name="pageNumber" value="1" />
             </form>
         </div>
@@ -108,7 +114,7 @@
                             <th>Last Name</th>
                             <th>Email</th>
                             <th>State</th>
-                            <th>Roles</th>
+                            <th>Profiles</th>
                             <th>Action</th>
                         </tr>
                     </thead>

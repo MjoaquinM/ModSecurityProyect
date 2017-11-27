@@ -13,7 +13,7 @@
                         <tr>
                             <td>
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-5 control-lable" for="userName">User Name</label>
+                                    <label class="col-md-5 control-lable" for="userName">User Name (*)</label>
                                     <div class="col-md-7">
                                         <form:input type="text" path="userName" id="userName" class="form-control input-sm"/>
                                         <div class="has-error">
@@ -26,7 +26,7 @@
                         <tr>
                             <td>
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-5 control-lable" for="firstName">First Name</label>
+                                    <label class="col-md-5 control-lable" for="firstName">First Name (*)</label>
                                     <div class="col-md-7">
                                         <form:input type="text" path="firstName" id="firstName" class="form-control input-sm"/>
                                         <div class="has-error">
@@ -39,7 +39,7 @@
                         <tr>
                             <td>
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-5 control-lable" for="lastName">Last Name</label>
+                                    <label class="col-md-5 control-lable" for="lastName">Last Name (*)</label>
                                     <div class="col-md-7">
                                         <form:input type="text" path="lastName" id="lastName" class="form-control input-sm"/>
                                         <div class="has-error">
@@ -52,7 +52,7 @@
                         <tr>
                             <td>
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-5 control-lable" for="email">Email</label>
+                                    <label class="col-md-5 control-lable" for="email">Email (*)</label>
                                     <div class="col-md-7">
                                         <form:input type="text" path="email" id="email" class="form-control input-sm"/>
                                         <div class="has-error">
@@ -65,7 +65,7 @@
                         <tr>
                             <td>
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-5 control-lable" for="password">Password</label>
+                                    <label class="col-md-5 control-lable" for="password">Password (*)</label>
                                     <div class="col-md-7">
                                         <form:input type="password" path="password" id="password" class="form-control input-sm"/>
                                         <div class="has-error">
@@ -78,7 +78,7 @@
                         <tr>
                             <td>
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-5 control-lable" for="state">State</label>
+                                    <label class="col-md-5 control-lable" for="state">State (*)</label>
                                     <div class="col-md-7">
                                         <form:select path="userStates.id" multiple="false" class="form-control input-sm">
                                             <c:forEach items="${userStates}" var="us">
@@ -95,7 +95,7 @@
                         <tr>
                             <td>
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-5 control-lable" for="state">Profiles</label>
+                                    <label class="col-md-5 control-lable" for="state">Profiles (*)</label>
                                     <div class="col-md-7">
                                         <form:select path="profiles" items="${roles}" multiple="true" itemValue="id" itemLabel="type" class="form-control input-sm"/>
                                         <div class="has-error">

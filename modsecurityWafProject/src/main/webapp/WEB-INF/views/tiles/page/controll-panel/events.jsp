@@ -15,7 +15,7 @@
         <!-- /.col-lg-12 -->
     </div>
     <div class="row" style="text-align:center; padding-bottom: 10px;">
-        <button type="button" class="btn btn-lg btn-danger" id="apply-configuration">
+        <button type="button" class="btn btn-lg btn-danger" id="delete-all-events">
             Delete All
         </button>
     </div>
@@ -81,6 +81,16 @@
                                     <input type="hidden" name="filter-parameters-labels" value="serverIpDestination" />
                                     <input type="text" name="filter-parameters-values" value="${hm.serverIpDestination}" />
                                 </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"></td>
+                                <td>Transaction ID</td>
+                                <td>
+                                    <input type="hidden" name="filter-parameters-targets" value="transactionId" />
+                                    <input type="hidden" name="filter-parameters-labels" value="transactionId" />
+                                    <input type="text" name="filter-parameters-values" value="${hm.transactionId}" />
+                                </td>
+                                <td colspan="2"></td>
                             </tr>
                             <tr>
                                 <td colspan="5"></td>

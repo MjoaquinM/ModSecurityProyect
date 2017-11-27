@@ -84,9 +84,14 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
                 }
             }
         }
+        System.out.println("Mostrando Paginacion ************************************************************************************************************************************************************************************************************************************************************");
+        
         if (pagination) {
             crit.setFirstResult((pageNumber - 1) * pageSize);
             crit.setMaxResults(pageSize);
+            System.out.println("Pagino");
+        }else{
+            System.out.println("No Pagino");
         }
         
         List<Event> events = new ArrayList<>();
@@ -117,6 +122,7 @@ public class EventDaoImpl extends AbstractDao<Integer, Event> implements EventDa
 //        for (Date key : keys){
 //            ordEvent.add(dateEvent.get(key));
 //        }
+        System.out.println("Cantidad: "+events.size());
         return events;
     }
     

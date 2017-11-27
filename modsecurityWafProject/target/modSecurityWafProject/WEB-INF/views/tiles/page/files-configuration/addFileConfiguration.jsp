@@ -11,7 +11,7 @@
                         <tr>
                             <td>
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-3 control-lable" for="pathName">File Path</label>
+                                    <label class="col-md-3 control-lable" for="pathName">File Path (*)</label>
                                     <div class="col-md-7">
                                         <form:input type="text" path="pathName" id="pathName" class="form-control input-sm" />
                                         <div class="has-error">
@@ -30,7 +30,7 @@
                         <tr id="nameRow">
                             <td colspan="2">
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-3 control-lable" for="name">Name</label>
+                                    <label class="col-md-3 control-lable" for="name">Name (*)</label>
                                     <div class="col-md-7">
                                         <form:input type="text" path="name" id="name" class="form-control input-sm"/>
                                         <div class="has-error">
@@ -56,7 +56,7 @@
                         <tr>
                             <td colspan="2">
                                 <div class="form-group col-md-12">
-                                    <label class="col-md-3 control-lable" for="configurationFileStates">State</label>
+                                    <label class="col-md-3 control-lable" for="configurationFileStates">State (*)</label>
                                     <div class="col-md-7">
                                         <form:select path="configurationFileStates.id" multiple="false" class="form-control input-sm">
                                             <c:forEach items="${configFilesStates}" var="cfs">

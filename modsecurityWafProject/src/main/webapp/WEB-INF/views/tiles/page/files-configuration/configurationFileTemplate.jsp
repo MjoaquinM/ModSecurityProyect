@@ -42,7 +42,7 @@
                         <td>
                             <c:out value="${currentFile.name}"/>
                         </td>
-                        <td>
+                        <td class="description-file-column">
                             <c:out value="${currentFile.description}"/>
                         </td>
                         <td>
@@ -51,7 +51,7 @@
                         <td>
                             <c:out value="${currentFile.configurationFileStates.name}"/>
                         </td>
-                        <td>
+                        <td style="min-width:100px;">
                             <a href="#" class="btn btn-success" id="edit-file-configuration-button" data-action="edit" data-id="${currentFile.id}" data-redirect-to="confFileTemp">
                                 <i class="fa fa-pencil" aria-hidden="true"></i>
                             </a>    
