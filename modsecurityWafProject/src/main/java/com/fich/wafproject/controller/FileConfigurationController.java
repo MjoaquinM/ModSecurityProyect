@@ -35,6 +35,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -351,19 +352,29 @@ public class FileConfigurationController {
         List<Boolean> lsState = new ArrayList<Boolean>();
         List<Boolean> lsStateIds = new ArrayList<Boolean>();
         List<String> ruleFiles = new ArrayList<String>();
-        String value = configurationFileAttributeService.findByName("SecRuleRemoveById").getValue();//VIEW THIS -> HARDCODE
+        
+        ConfigurationFilesAttributes cfa = configurationFileAttributeService.findByName("SecRuleRemoveById");//VIEW THIS -> HARDCODE
+        String value = cfa.getValue();
         String[] values = value.split(",");
         List<Rule> rules = ruleService.findAllRules();
         try{
-            String path = "/usr/share/modsecurity-crs/rules/";
+            //String path = "/usr/share/modsecurity-crs/rules/";
+            String path = cfa.getConfigurationFileAttributeGroups().getConfigurationFiles().getPathName();
+            String name = cfa.getConfigurationFileAttributeGroups().getConfigurationFiles().getName();
+            //path = path.replace("",cfa.getName());
+            System.out.println("****************************************************************************************************************");
+            System.out.println(path);
+            System.out.println(name);
+            path = path.replace(name,"");
+            //limpio = "voy a reemplazar esto".replace("reemplazar","eliminar");
+            System.out.println("****************************************************************************************************************");
             Process p = Runtime.getRuntime().exec("ls "+path);
             BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String line = null, fileToLine = "";
             Integer count = 0;
             
             while ((line = in.readLine()) != null) {
-                if(line.contains("REQUEST") || line.contains("RESPONSE")){
-//                    ls.add(line);
+                if(!line.contains(".example") && StringUtils.countOccurrencesOf(line,".")==1 && (line.contains(".conf") || line.contains("REQUEST") || line.contains("RESPONSE"))){
                     boolean flag = false, flagIds = false;
                     for(String val: values){
                         if(val.length()>=4 && line.contains(val.substring(0, 3)) && val.contains("-")){
@@ -452,13 +463,16 @@ public class FileConfigurationController {
             FileReader fr = new FileReader(cfa.getConfigurationFileAttributeGroups().getConfigurationFiles().getPathName());
             BufferedReader br = new BufferedReader(fr);
             java.io.File f = new java.io.File("/tmp/"+cfa.getConfigurationFileAttributeGroups().getConfigurationFiles().getName()); //ARGUMENT MUST BE A GOBAL VARIABLE
+            System.out.println("**************************************************************************************************");
+            System.out.println("Ruta: "+cfa.getConfigurationFileAttributeGroups().getConfigurationFiles().getPathName());
+            
             FileWriter w = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(w);
             PrintWriter wr = new PrintWriter(bw);
             String msgToHistoryLog = "Rule Block";
             while ((line = br.readLine()) != null) {
                 if (!line.isEmpty()) {
-                    if (line.contains(cfa.getName())){
+                    if (line.contains(cfa.getName()) && line.contains("REQUEST")){
                         line = line.replaceAll("#", "");
                         if(cfa.getConfigurationFileAttributeStates().getName().equalsIgnoreCase("LOCKED")){
                             msgToHistoryLog = msgToHistoryLog+" - Disable "+cfa.getName();
