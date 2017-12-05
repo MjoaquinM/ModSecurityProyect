@@ -11,6 +11,7 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">Events List</h1>
+            <a class="btn btn-md btn-primary" href="<c:url value="/archivosdereglas" />">Probar Parse Reglas</a>
         </div>
         <!-- /.col-lg-12 -->
     </div>

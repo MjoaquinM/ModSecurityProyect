@@ -218,11 +218,9 @@ public class FileConfigurationController {
             for (Object object : result.getAllErrors()) {
                 if(object instanceof FieldError) {
                     FieldError fieldError = (FieldError) object;
-//                    System.out.println(fieldError.getCode());
                 }
                 if(object instanceof ObjectError) {
                     ObjectError objectError = (ObjectError) object;
-//                    System.out.println(objectError.getCode());
                 }
             }
         }else{
@@ -448,6 +446,32 @@ public class FileConfigurationController {
             e.printStackTrace();
         }
         return ls;
+    }
+    
+    @RequestMapping(value = "/archivosdereglas", method = RequestMethod.GET)
+    public String parseRules(ModelMap model) throws IOException, InterruptedException {
+        String ruleDirectory = "/usr/share/modsecurity-crs/rules";
+        Process p = Runtime.getRuntime().exec("ls "+ruleDirectory);
+        BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        String line = "";
+        System.out.println("Mostrando linea: ");
+        ArrayList<String> imprimir = new ArrayList<String>();
+        while ((line = in.readLine()) != null) {
+            imprimir.add(line);
+            System.out.println(line);
+            
+            FileReader fr = new FileReader(ruleDirectory+"/"+line);
+            System.out.println("ARCHIVO: "+ruleDirectory+"/"+line);
+            BufferedReader br = new BufferedReader(fr);
+            String linefile = "";
+            while ((linefile = br.readLine()) != null) {
+                System.out.println(linefile);
+                //LEER CADA ARCHIVO Y SACAR LOS RULE ID
+            }
+
+        }
+        model.addAttribute("valores",imprimir);
+        return "aux";
     }
     
     @RequestMapping(value = "/configurationFiles/blockRules", method = RequestMethod.POST)
