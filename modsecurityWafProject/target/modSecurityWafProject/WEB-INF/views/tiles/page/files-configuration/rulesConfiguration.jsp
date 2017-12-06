@@ -9,10 +9,14 @@
         <div class="col-lg-12">
             <h1 class="page-header">Rules configuration</h1>
         </div>
-        <!-- /.col-lg-12 -->
+    </div>
+    <div class="row" style="text-align: center;">
+        <div class="col-lg-12">
+            <btn class="btn btn-md btn-primary" id="parse-rule-button">Actualizar Reglas y Archivos</btn>
+        </div>
     </div>
     <!-- /.row -->    
-        <div class="row">
+    <div class="row" style="margin-top:10px;">
         <!-- List of files configuration --->
         <div class="col-lg-12">
             <div class="panel panel-default">

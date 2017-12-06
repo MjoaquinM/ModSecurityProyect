@@ -48,7 +48,7 @@ public class Rule implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "ruleId")
     private String ruleId;
-    @Size(max = 255)
+    @Size(max = 1000)
     @Column(name = "message")
     private String message;
     @Size(max = 45)

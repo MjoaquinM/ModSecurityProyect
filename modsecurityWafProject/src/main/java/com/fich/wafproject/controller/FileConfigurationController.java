@@ -7,6 +7,7 @@ import com.fich.wafproject.model.ConfigurationFileAttributeType;
 import com.fich.wafproject.model.ConfigurationFileStates;
 import com.fich.wafproject.model.ConfigurationFiles;
 import com.fich.wafproject.model.ConfigurationFilesAttributes;
+import com.fich.wafproject.model.File;
 import com.fich.wafproject.model.Rule;
 import com.fich.wafproject.model.Users;
 import com.fich.wafproject.model.UsersHistory;
@@ -17,6 +18,7 @@ import com.fich.wafproject.service.ConfigurationFileAttributeTypeService;
 import com.fich.wafproject.service.ConfigurationFileAttributesStatesService;
 import com.fich.wafproject.service.ConfigurationFileService;
 import com.fich.wafproject.service.ConfigurationFileStatesService;
+import com.fich.wafproject.service.FileService;
 import com.fich.wafproject.service.RuleService;
 import com.fich.wafproject.service.UserService;
 import com.fich.wafproject.service.UsersHistoryService;
@@ -30,6 +32,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +58,9 @@ public class FileConfigurationController {
     
     @Autowired
     ConfigurationFileService configurationFileService;
+    
+    @Autowired
+    FileService fileService;
     
     @Autowired
     ConfigurationFileStatesService configurationFileStatesService;
@@ -387,6 +393,10 @@ public class FileConfigurationController {
                 }
                 count = count+1;
             }
+            ls.clear();
+            for(File f : fileService.findAllFiles()){
+                ls.add(f.getFileName());
+            }
             
             for(Rule rule : rules){
                 boolean flag = false;
@@ -448,8 +458,9 @@ public class FileConfigurationController {
         return ls;
     }
     
-    @RequestMapping(value = "/archivosdereglas", method = RequestMethod.GET)
-    public String parseRules(ModelMap model) throws IOException, InterruptedException {
+    @RequestMapping(value = "/configurationFiles/parseRules", method = RequestMethod.POST)
+    @ResponseBody
+    public String parseRules() throws IOException, InterruptedException {
         String ruleDirectory = "/usr/share/modsecurity-crs/rules";
         Process p = Runtime.getRuntime().exec("ls "+ruleDirectory);
         BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -457,20 +468,50 @@ public class FileConfigurationController {
         System.out.println("Mostrando linea: ");
         ArrayList<String> imprimir = new ArrayList<String>();
         while ((line = in.readLine()) != null) {
-            imprimir.add(line);
-            System.out.println(line);
+            if(!line.contains(".example") && line.contains(".conf") && (line.contains("RESPONSE") || line.contains("REQUEST"))){
+                imprimir.add(line);
             
-            FileReader fr = new FileReader(ruleDirectory+"/"+line);
-            System.out.println("ARCHIVO: "+ruleDirectory+"/"+line);
-            BufferedReader br = new BufferedReader(fr);
-            String linefile = "";
-            while ((linefile = br.readLine()) != null) {
-                System.out.println(linefile);
-                //LEER CADA ARCHIVO Y SACAR LOS RULE ID
-            }
+                /*Agrego archivo de reglas*/
+                File f = this.fileService.findByFileName(line);
+                if(f == null){
+                    f = new File();
+                }
+                f.setFileName(line);
+                f.setFilePath(ruleDirectory+"/"+line);
+                fileService.saveFile(f);
+                
+                
 
+                FileReader fr = new FileReader(ruleDirectory+"/"+line);
+                System.out.println("ARCHIVO: "+ruleDirectory+"/"+line);
+                BufferedReader br = new BufferedReader(fr);
+                String linefile = "";
+                String allLines = "";
+                while ((linefile = br.readLine()) != null) {
+                    allLines += linefile;
+                    System.out.println(linefile);
+                    //LEER CADA ARCHIVO Y SACAR LOS RULE ID
+                }
+                
+                List<Rule> rules = new ArrayList<Rule>();
+                
+                for(String block : allLines.split("id:")){
+                    HashMap<String,String> ruleParsed = this.customFunctions.parseRule(block);
+                    if(ruleParsed.get("exist")=="true"){
+                        Rule r = ruleService.findByRuleId(ruleParsed.get("id"));
+                        if(r == null){
+                            r = new Rule();
+                        }
+                        r.setFileId(f);
+                        r.setRuleId(ruleParsed.get("id"));
+                        r.setMessage(ruleParsed.get("msg"));
+                        r.setSeverity(ruleParsed.get("severity"));
+                        ruleService.saveRule(r);
+                    }
+                }
+            }
         }
-        model.addAttribute("valores",imprimir);
+//        model.addAttribute("valores",imprimir);
         return "aux";
     }
     

@@ -653,6 +653,21 @@ $(document).ready(function () {
         $('#blockRules').submit();
     });
     
+    
+    /* PARSE RULES AND FILES */
+    $('#parse-rule-button').on('click',function(){
+        alert('apretaste');
+        $.ajax({
+            url: 'parseRules',
+            method: 'POST',
+        }).done(function (response) {
+            alert('La actualizaci&oacuten de reglas fu&eacute existosa. Por favor actualice la p&aacutegina.');
+            
+        }).fail(function (e) {
+            alert('Hubo un error al actualizar las reglas.');
+        });
+    });
+    
     /************************MANAGE RULES END****************************/
     
     /************************EVENTS****************************/
