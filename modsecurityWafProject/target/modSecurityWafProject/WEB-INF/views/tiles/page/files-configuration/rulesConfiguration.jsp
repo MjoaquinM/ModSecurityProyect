@@ -12,7 +12,7 @@
     </div>
     <div class="row" style="text-align: center;">
         <div class="col-lg-12">
-            <btn class="btn btn-md btn-primary" id="parse-rule-button">Actualizar Reglas y Archivos</btn>
+            <btn class="btn btn-md btn-primary" id="parse-rule-button">Update rules and rules configuration files</btn>
         </div>
     </div>
     <!-- /.row -->    

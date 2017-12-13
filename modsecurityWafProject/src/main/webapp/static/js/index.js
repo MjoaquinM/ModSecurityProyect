@@ -650,24 +650,66 @@ $(document).ready(function () {
     });
     
     $('.block-rules-button').on('click',function(){
+        var modalFooter = 
+                '<button type="button" class="btn btn-primary" id="blockRule">Block</button>' +
+                '<button type="button" class="btn btn-secondary" data-dismiss="modal" id="blockRuleCancel">Cancel</button>';
+        
+        var modalTitle = 'Block rules';
+        var modalMessage = 'block selected rules?';
+        $('#rulesFileConfigurationModal').find('.modal-title').html(modalTitle);
+        $('#rulesFileConfigurationModal').find('.modal-footer').html(modalFooter);
+        $('#rulesFileConfigurationModal').find('.modal-body').html(modalMessage);
+        $('#rulesFileConfigurationModal').modal('show');
+    });
+    
+    $('#generic-modal-container').on('click', '#blockRule', function () {
         $('#blockRules').submit();
     });
     
     
     /* PARSE RULES AND FILES */
     $('#parse-rule-button').on('click',function(){
-        alert('apretaste');
+        /*<SHOW MODAL>*/
+        
+        var modalFooter = 
+                '<button type="button" class="btn btn-primary" id="parseRulesAndFiles">Parse</button>' +
+                '<button type="button" class="btn btn-secondary" data-dismiss="modal" id="parseRulesAndFilesCancel">Cancel</button>';
+        
+        var modalTitle = 'Update rules';
+        var modalMessage = 'You are about to update the list of files and system rules, this operation may take a few minutes, do you want to continue?';
+        $('#rulesFileConfigurationModal').find('.modal-title').html(modalTitle);
+        $('#rulesFileConfigurationModal').find('.modal-footer').html(modalFooter);
+        $('#rulesFileConfigurationModal').find('.modal-body').html(modalMessage);
+        $('#rulesFileConfigurationModal').modal('show');
+    });
+    
+    
+    $('#generic-modal-container').on('click', '#parseRulesAndFiles', function () {
+        var modalMessage = 'Parsing rules and files...';
+        $('#parseRulesAndFiles').remove();
+        $('#rulesFileConfigurationModal').find('.close').hide();
+        $('#parseRulesAndFilesCancel').hide();
+        $('#parseRulesAndFilesCancel').removeClass('btn-secondary');
+        $('#parseRulesAndFilesCancel').addClass('btn-primary');
+        $('#rulesFileConfigurationModal').find('.modal-body').html(modalMessage);
         $.ajax({
             url: 'parseRules',
             method: 'POST',
         }).done(function (response) {
-            alert('La actualizaci&oacuten de reglas fu&eacute existosa. Por favor actualice la p&aacutegina.');
-            
+            modalMessage = 'La actualizacion de reglas fue existosa. Por favor actualice la pagina.';
+            $('#rulesFileConfigurationModal').find('.modal-body').html(modalMessage);
+            $('#parseRulesAndFilesCancel').text('Acept');
+            $('#parseRulesAndFilesCancel').show();
+            $('#rulesFileConfigurationModal').find('.close').hide();
         }).fail(function (e) {
-            alert('Hubo un error al actualizar las reglas.');
+            modalMessage = 'Hubo un error al actualizar las reglas.';
+            $('#rulesFileConfigurationModal').find('.modal-body').html(modalMessage);
+            $('#parseRulesAndFilesCancel').text('Acept');
+            $('#parseRulesAndFilesCancel').show();
+            $('#rulesFileConfigurationModal').find('.close').hide();
         });
     });
-    
+        
     /************************MANAGE RULES END****************************/
     
     /************************EVENTS****************************/

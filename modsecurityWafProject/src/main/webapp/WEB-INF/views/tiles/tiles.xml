@@ -133,6 +133,7 @@
    <definition name="rulesConf" extends="admin-layout">  
        <put-attribute name="title" value="Rules Configuration" />  
        <put-attribute name="body" value="/WEB-INF/views/tiles/page/files-configuration/rulesConfiguration.jsp" />  
+       <put-attribute name="modal" value="/WEB-INF/views/tiles/template/modal.jsp" />
    </definition>
    
    <!--****************** FILES CONFIGURATION MODULE - END ******************-->
